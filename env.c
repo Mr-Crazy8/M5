@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:48:53 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/16 16:29:30 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:16:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ t_env *env_maker(char *env[], t_env **env_struct)
         if (split)
         {
             ft_lstadd_back_env(env_struct,  env_node_maker(split));
-            while (split[++j])
-                free((split[j]));
-            free(split);
+			free_split_str(split);
         }
         i++;
     }
