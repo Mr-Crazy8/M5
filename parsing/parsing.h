@@ -21,6 +21,26 @@
 #define SET 0
 #define GET 1
 
+typedef struct s_collet
+{
+   char *adders;
+   void *add;
+   size_t size;
+   int in_use;
+   struct s_collet *next;
+} t_collet;
+
+void remove_node(void *addr_str, t_collet **head);
+void ft_free_unused(t_collet **addres_list);
+void ft_in_use(void *adders, t_collet *addres_list);
+void ft_not_in_use(void *adders, t_collet *addres_list);
+void	ft_lstadd_back_addres(t_collet **lst, t_collet *new);
+t_collet	*addres_node_maker(void *addres, size_t size);
+t_collet *collet(t_collet *addres_list, void *adders, size_t size);
+void	*ft_malloc(t_collet **addres_list,size_t size);
+char	*addres_to_string(void *ptr);
+void ft_free(void *addr, t_collet **addres_list);
+
 
 typedef struct t_data
 {
