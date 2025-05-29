@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/29 17:13:25 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:21:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,9 +328,11 @@ int main(int argc, char *argv[], char *env[])
             continue;
 		 }
 		token_list = tokin_list_maker(preprocessed_input);
+		free(preprocessed_input);
 		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))
 		{
 			cmd = parser(token_list);
+			free_token_list(token_list);
 			expand_handle(cmd, env_struct, get_or_set(GET, 0));
 			ambiguous_finder(cmd);
 			process_quotes_for_cmd(cmd, 1);
@@ -347,11 +349,11 @@ int main(int argc, char *argv[], char *env[])
 			free_cmd_list(cmd);
 			cmd = NULL;
 		}
-		free(preprocessed_input);
+		
 		// 	infos.c_lflag &= ~(ECHOCTL);
 		// tcsetattr(1, TCSANOW, &infos);
 	}
-		// free_token_list(token_list);
+	
 	//free_env_struct(env_struct);
 	return 0;
 }
