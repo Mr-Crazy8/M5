@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/28 17:25:41 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:00:29 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,10 @@ void check_here_doc(t_cmd *cmd, t_env *env)
                 	{
                     	tmp_redir->fd = fd[1];
                     	close(fd[0]);
+						// free(fd[0]);
+						// free(fd[1]);
+						free(fd);
+						
                 	}
                 	else
                 	{
@@ -263,6 +267,10 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	}
 }
 
+void ff()
+{
+	system("leaks minishell");
+}
 
 int main(int argc, char *argv[], char *env[])
 {
@@ -273,7 +281,7 @@ int main(int argc, char *argv[], char *env[])
 	// cmd->data.exit_status = 0;
 	char *preprocessed_input;
 		struct termios infos;
-
+	atexit(ff);
 	(void)argc;
 	(void)argv;
 	if(!isatty(1))
@@ -295,6 +303,11 @@ int main(int argc, char *argv[], char *env[])
 		if (!input)
 		{
 			printf("exit\n");
+			free_env_struct(env_struct);
+			if (cmd) 
+				free_cmd_list(cmd);
+    		if (token_list) 
+				free_token_list(token_list);
 			break ;
 		}
 		// if(global_sig != 0)
@@ -310,7 +323,10 @@ int main(int argc, char *argv[], char *env[])
 		}
 		preprocessed_input = preprocess_command(input); 
          if (!preprocessed_input)
+		 {
+			free(input);
             continue;
+		 }
 		token_list = tokin_list_maker(preprocessed_input);
 		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))
 		{
@@ -324,13 +340,18 @@ int main(int argc, char *argv[], char *env[])
 			expand_handle(cmd, env_struct, cmd->data.exit_status);
 			// free_cmd_list(cmd);
 			global_sig = 0;
-			free(input);
+			//free(input);
 		}
-		// free_cmd_list(cmd);
-		free_token_list(token_list);
+		if (cmd)
+		{
+			free_cmd_list(cmd);
+			cmd = NULL;
+		}
+		free(preprocessed_input);
+		//free_token_list(token_list);
 		// 	infos.c_lflag &= ~(ECHOCTL);
 		// tcsetattr(1, TCSANOW, &infos);
 	}
-	free_env_struct(env_struct);
+	//free_env_struct(env_struct);
 	return 0;
 }

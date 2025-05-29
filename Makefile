@@ -1,6 +1,6 @@
 
-CC = gcc
-CFLAGS = -Wall -g  -fsanitize=address -I/mnt/homes/anel-men/.brew/opt/readline/include
+CC = cc
+CFLAGS = -Wall  -I/mnt/homes/anel-men/.brew/opt/readline/include
 
 # Target executable name
 NAME = minishell
