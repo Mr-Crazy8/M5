@@ -7,7 +7,31 @@
     
 // }
 
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	size_t			total_size;
+	void			*ptr;
+	unsigned char	*b_ptr;
+	size_t			i;
 
+	i = 0;
+	total_size = nmemb * size;
+	if (nmemb == 0 || size == 0)
+		return (malloc(1));
+	if (nmemb && size
+		&& total_size / nmemb != size)
+		return (NULL);
+	ptr = malloc(total_size);
+	if (ptr == NULL)
+		return (NULL);
+	b_ptr = (unsigned char *)ptr;
+	while (i < total_size)
+	{
+		b_ptr[i] = 0;
+		i++;
+	}
+	return (ptr);
+}
 
 int expand_handle_helper0(t_exp_helper *expand)
 {
@@ -58,7 +82,7 @@ int ensure_buffer_space(t_exp_helper *expand, size_t additional_needed)
 		new_size = expand->buffer_size * 2;
 		if (new_size < expand->j + additional_needed + 1)
 			new_size = expand->j + additional_needed + 1024;
-		new_buffer = calloc(1, new_size);
+		new_buffer = ft_calloc(1, new_size);
 		if (!new_buffer)
 		{
             write(2, "minishell: memory allocation failed\n", 37);

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/29 17:21:38 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:09:17 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,7 @@ int main(int argc, char *argv[], char *env[])
 	env_struct = env_maker(env, &env_struct);
 	if(!env_struct)
 		env_null(&env_struct);
+	add_one_shlvl(env_struct);
 	token_list = NULL;
 	tcgetattr(1, &infos);
 	infos.c_lflag &= ~(ECHOCTL);
@@ -303,11 +304,11 @@ int main(int argc, char *argv[], char *env[])
 		if (!input)
 		{
 			printf("exit\n");
-			free_env_struct(env_struct);
-			if (cmd) 
-				free_cmd_list(cmd);
-    		if (token_list) 
-				free_token_list(token_list);
+			// free_env_struct(env_struct);
+			// if (cmd) 
+			// 	free_cmd_list(cmd);
+    		// if (token_list) 
+			// 	free_token_list(token_list);
 			break ;
 		}
 		// if(global_sig != 0)
@@ -328,6 +329,7 @@ int main(int argc, char *argv[], char *env[])
             continue;
 		 }
 		token_list = tokin_list_maker(preprocessed_input);
+		
 		free(preprocessed_input);
 		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))
 		{
@@ -340,20 +342,16 @@ int main(int argc, char *argv[], char *env[])
 			print_cmd(cmd);
 			check_line(&cmd, env_struct, env);
 			expand_handle(cmd, env_struct, cmd->data.exit_status);
-			// free_cmd_list(cmd);
+			
+			free_cmd_list(cmd);
 			global_sig = 0;
 			free(input);
 		}
-		if (cmd)
-		{
-			free_cmd_list(cmd);
-			cmd = NULL;
-		}
-		
+
 		// 	infos.c_lflag &= ~(ECHOCTL);
 		// tcsetattr(1, TCSANOW, &infos);
 	}
 	
-	//free_env_struct(env_struct);
+	free_env_struct(env_struct);
 	return 0;
 }

@@ -41,7 +41,7 @@
 // char	*addres_to_string(void *ptr);
 // void ft_free(void *addr, t_collet **addres_list);
 
-
+void	*ft_calloc(size_t nmemb, size_t size);
 
 typedef struct t_data
 {

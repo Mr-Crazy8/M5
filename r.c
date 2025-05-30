@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:33:44 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/28 15:00:14 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:02:32 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,4 +244,5 @@ void ft_excute_commands(t_cmd *cmd, t_env **env_list)
         perror("fork failed");
         ft_free_split(split_path);
     }
+    free_split_str(env_doble);
 }

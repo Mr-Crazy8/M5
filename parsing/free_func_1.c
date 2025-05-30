@@ -33,16 +33,9 @@ void free_split_str(char **split_str)
 void free_cmd_list_hp(char **str, char **str_befor)
 {
     if (str)
-    {
         free_split_str(str);
-        str = NULL;
-    }
     if (str_befor)
-    {
         free_split_str(str_befor);
-        str_befor = NULL;
-    }
-
 }
 void free_cmd_list(t_cmd *cmd_list)
 {
