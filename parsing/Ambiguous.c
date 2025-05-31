@@ -46,7 +46,7 @@ void ambiguous_checker(t_redir *redir)
             }
         if (!tmp->file || tmp->file[0] == '\0')
             tmp->Ambiguous = 1;
-        else if (tmp->file && check_for_space(tmp->file) == 1) 
+        else if (tmp->file && check_for_space(tmp->file) == 1 && tmp->orig_token[0] == '$') 
             tmp->Ambiguous = 1;
         else
             tmp->file = ft_strtrim(tmp->file, " ");

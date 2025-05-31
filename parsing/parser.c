@@ -26,6 +26,34 @@ void skip_redirections_hp(char str, int *quote_state)
     }
 }
 
+// static int skip_redirections(char *str)
+// {
+//     int i;
+//     int quote_state; // 0: no quote, 1: single quote, 2: double quote
+
+//     quote_state = 0;
+//     i = 0;
+//     if (!str)
+//         return (0);
+//     while (str[i])
+//     {
+//         skip_redirections_hp(str[i], &quote_state);
+//         if ((str[i] == '<' || str[i] == '>') && quote_state == 0)
+//         {
+//             i++;
+//             while (str[i] && str[i] == ' ')
+//                 i++;
+//             while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
+//                 i++;
+//         }
+//         else if (str[i] == ' ' && quote_state == 0)
+//             i++;
+//         else
+//             break;
+//     }
+//     return (i);
+// }
+
 static int skip_redirections(char *str)
 {
     int i;
@@ -41,10 +69,23 @@ static int skip_redirections(char *str)
         if ((str[i] == '<' || str[i] == '>') && quote_state == 0)
         {
             i++;
+            if (str[i] == '<' || str[i] == '>')
+                i++;
             while (str[i] && str[i] == ' ')
                 i++;
-            while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
+            quote_state = 0;
+            while (str[i] && 
+                  ((quote_state != 0) ||
+                   (str[i] != ' ' && str[i] != '<' && str[i] != '>')))
+            {
+                skip_redirections_hp(str[i], &quote_state);
                 i++;
+            }
+            if (quote_state != 0)
+            {
+                while (str[i] && str[i] != '<' && str[i] != '>')
+                    i++;
+            }
         }
         else if (str[i] == ' ' && quote_state == 0)
             i++;
@@ -199,7 +240,6 @@ char *init_cmd_buffer(char *str, int *i, int *result_len, int *quote_state)
     
     result[0] = '\0';
     *i = skip_redirections(str);
-    
     return (result);
 }
 

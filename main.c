@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/30 18:19:38 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/31 10:21:42 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,7 +336,6 @@ int main(int argc, char *argv[], char *env[])
 	while (1)
 	{
 		input = readline("minishell $> ");
-		printf("======== %s\n", input);
 		if (!input)
 		{
 			printf("exit\n");

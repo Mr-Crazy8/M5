@@ -137,7 +137,7 @@ int is_special_export_case(t_cmd *cmd)
         
     if (strcmp(cmd->cmd, "export") != 0)
         return 0;  // Not export command
-        
+    
     return 1;  // It's export command, we'll check each argument individually
 }
 
@@ -268,9 +268,16 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
 int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
 {
     char *equals;
+    int was_variable = 0;
     if (!current->args)
         return 0;
-    if (!current->cmd || strcmp(current->cmd, "export") != 0) 
+    
+    if (current->args_befor_quotes_remover && 
+        current->args_befor_quotes_remover[0] && 
+        strchr(current->args_befor_quotes_remover[0], '$')) {
+        was_variable = 1;
+    }
+    if (!current->cmd || strcmp(current->cmd, "export") != 0 || was_variable) 
     {
         (*i) = 0;
         while (current->args && current->args[(*i)]) 
