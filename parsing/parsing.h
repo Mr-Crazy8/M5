@@ -29,7 +29,7 @@
 //    int in_use;
 //    struct s_collet *next;
 // } t_collet;
-
+char *chenger_back(char *str);
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
 // void ft_in_use(void *adders, t_collet *addres_list);

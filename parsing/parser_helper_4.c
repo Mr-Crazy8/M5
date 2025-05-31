@@ -35,25 +35,25 @@ t_redir *creat_redir_list(char *str)
     t_redir *tmp_node;
     t_redir *tmp_list;
     char **split_str;
+    char *redir;
     int i;
 
     i = 0;
     tmp_list = NULL;
     tmp_node = NULL;
-    split_str = ft_split_q(redir_extracter(str), ' ');
+    redir = redir_extracter(str);
+    split_str = ft_split_q(redir, ' ');
     if (!split_str)
         return (NULL);
-    
+    free(redir);
     while(split_str[i])
     {
-        // Handle case where redirection has no filename or empty filename
         if ((strcmp(split_str[i], ">") == 0 || 
             strcmp(split_str[i], ">>") == 0 ||
             strcmp(split_str[i], "<") == 0 || 
             strcmp(split_str[i], "<<") == 0) && 
             (!split_str[i+1] || split_str[i+1][0] == '\0'))
         {
-            // Create node with empty filename
             if (strcmp(split_str[i], ">") == 0)
                 tmp_node = creat_redir_node(1, ft_strdup(""));
             else if (strcmp(split_str[i], ">>") == 0)

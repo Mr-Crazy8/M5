@@ -97,8 +97,8 @@ static char *join_redir(char *result, char *temp)
         
     }
     else
-        result = temp;
-    return (result);
+        return temp;
+    // return (result);
 }
 
 char *redir_extracter(char *str)

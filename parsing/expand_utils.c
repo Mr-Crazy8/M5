@@ -351,7 +351,8 @@ void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
         
         should_split = 1;
         
-        if (current->cmd && strcmp(current->cmd, "export") == 0) {
+        if (current->cmd && strcmp(current->cmd, "export") == 0) 
+        {
             should_split = is_special_export_case(current);
         }
         split_the_rest(current, should_split, expand->had_removed_var);

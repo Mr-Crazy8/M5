@@ -6,7 +6,7 @@
 // {
     
 // }
-
+char *trim_whitespace(char *str);
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	size_t			total_size;
@@ -210,23 +210,17 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
             {
                 expand->i++;
             } 
-            // Handle case where $ is followed by a quote (like $"HOME" or $'HOME')
-            // But ONLY if the $ itself is not inside double quotes
             else if ((expand->original[expand->i] == '"' || expand->original[expand->i] == '\'') && 
                      expand->quote_state == 0) // $ is not inside any quotes
             {
-                // Check if it's $$"HOME" case by looking at the character before the first $
                 if (expand->i >= 2 && expand->original[expand->i - 2] == '$') 
                 {
-                    // This is $$"HOME" case, don't remove the $
                     if (!ensure_buffer_space(expand, 1)) {
                         return (0);
                     }
                     expand->expanded[expand->j++] = '$';
                     return (1);
                 }
-                // Single $ followed by quote and $ is not in quotes - remove the $ and continue
-                // Don't increment i, let the quote be processed normally
                 return (1);
             }
             else {
@@ -258,10 +252,7 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
             expand->var_name[var_len] = '\0';
             if (is_valid_key(expand->var_name) != 1)
             {
-                // var = ft_strtrim(chenger(lookup_variable(expand->var_name, env)), " ");
-                var = chenger(lookup_variable(expand->var_name, env));
-                // var = ft_strjoin(" ", var);
-
+                var = chenger(trim_whitespace((lookup_variable(expand->var_name, env))));
             }
 
             
@@ -302,19 +293,38 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
     return (0);
 }
 
+char *trim_whitespace(char *str)
+{
+
+    // int i = 0;
+    int start = 0;
+    int lent ;
+
+     if (!str)
+        return NULL;
+
+    while (str[start] && is_whitespace(str[start]))
+        start++;
+    
+    lent = ft_strlen(&str[start]);
+    return(ft_substr(str, start, lent));
+}
+
+
 void  process_string_hp(t_exp_helper *expand)
 {
     if (expand->expanded)
     {
 	    expand->expanded[expand->j] = '\0';
-        char *trim = ft_strtrim(expand->expanded, " ");
-        if (!trim)
-        {
-            expand->expanded = NULL;
-            return;
-        }
-        free(expand->expanded);
-        expand->expanded = trim;
+        // char *trim = trim_whitespace(expand->expanded);
+        // if (!trim)
+        // {
+        //     free(expand->expanded); 
+        //     expand->expanded = NULL;
+        //     return;
+        // }
+        // free(expand->expanded);
+        // expand->expanded = trim;
     }
 }
 

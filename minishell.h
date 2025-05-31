@@ -195,7 +195,7 @@ int     remove_env(t_env **env_list, char *variable);
 int     is_valid_key(char *key);
 int ft_exit(char **args, t_data data);
 int    ft_env(t_cmd *cmd, t_env *env_list);
-
+char *chenger_back(char *str);
 t_env   *env_maker(char *env[], t_env **env_struct);
 int ft_export(char **str, t_env **env_list);
 void    updat_env(t_env **env_list, char *key, char *value);

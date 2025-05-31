@@ -112,14 +112,18 @@ void    set_env(t_env **env, char *key, char *value)
 {
     t_env *tmp;
     t_env *new_node = NULL;
-
+    char *old_value;
 	tmp = *env;
 	while(tmp)
 	{
         if(ft_strcmp(tmp->key, key) == 0)
 		{
             if (tmp->value)
+            {
+                old_value = tmp->value;
                 tmp->value = ft_strjoin(tmp->value, value);
+                free(old_value);
+            }
             tmp->is_not_active = 0;
 		}
 		tmp = tmp->next;

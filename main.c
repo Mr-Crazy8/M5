@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/29 18:09:17 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:19:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void execute_single_command(t_cmd *cmd, t_env *list_env, char *env[])
 			cmd->data.new_pwd = get_value_env("PWD", &list_env);
 			excute_builting(&cmd, list_env, env);
 			get_or_set(SET, cmd->data.exit_status);
+			return ;
 		}
 		else
 		{
@@ -271,6 +272,40 @@ void ff()
 {
 	system("leaks minishell");
 }
+char *chenger_back(char *str)
+{
+    int i = 0;
+
+    while (str && str[i])
+    {
+        if (str[i] == 10)
+            str[i] = '\'';
+        else if (str[i] == 11)
+            str[i] = '\"';
+        i++;
+    }
+    return str;
+}
+
+void change_back_cmd(t_cmd *cmd)
+{
+	t_cmd *tmp;
+	int i = 0;
+	tmp = cmd;
+
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->args[i])
+		{
+			tmp->args[i] = chenger_back(tmp->args[i]);
+			i++;
+		}
+		tmp->cmd = chenger_back(tmp->cmd);
+		tmp = tmp->next;
+	}
+}
+
 
 int main(int argc, char *argv[], char *env[])
 {
@@ -301,6 +336,7 @@ int main(int argc, char *argv[], char *env[])
 	while (1)
 	{
 		input = readline("minishell $> ");
+		printf("======== %s\n", input);
 		if (!input)
 		{
 			printf("exit\n");
@@ -323,6 +359,7 @@ int main(int argc, char *argv[], char *env[])
 			continue;
 		}
 		preprocessed_input = preprocess_command(input); 
+			free(input);
          if (!preprocessed_input)
 		 {
 			free(input);
@@ -336,8 +373,10 @@ int main(int argc, char *argv[], char *env[])
 			cmd = parser(token_list);
 			free_token_list(token_list);
 			expand_handle(cmd, env_struct, get_or_set(GET, 0));
+			
 			ambiguous_finder(cmd);
 			process_quotes_for_cmd(cmd, 1);
+			change_back_cmd(cmd);
 			file_opener(cmd, env_struct);
 			print_cmd(cmd);
 			check_line(&cmd, env_struct, env);
@@ -345,7 +384,11 @@ int main(int argc, char *argv[], char *env[])
 			
 			free_cmd_list(cmd);
 			global_sig = 0;
-			free(input);
+			
+		}
+		else if (token_list)
+		{
+			free_token_list(token_list);
 		}
 
 		// 	infos.c_lflag &= ~(ECHOCTL);
@@ -355,3 +398,5 @@ int main(int argc, char *argv[], char *env[])
 	free_env_struct(env_struct);
 	return 0;
 }
+
+

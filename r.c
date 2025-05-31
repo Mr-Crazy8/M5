@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:33:44 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/29 18:02:32 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:04:36 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,12 +192,17 @@ void ft_excute_commands(t_cmd *cmd, t_env **env_list)
     pid_t child_pid;
     split_path = NULL;
 
+    puts("kkkk");
     env_doble = convert_env_list(env_list);
     if(!cmd->args || !cmd->args[0])
+    {
+        free_split_str(env_doble);   
         return ;
+    }
     if(ft_strchr(cmd->args[0], '/'))
     {
             handle_absolute_path(cmd, env_doble);
+            free_split_str(env_doble);
             return ;
     }
     child_pid = fork();
@@ -214,25 +219,32 @@ void ft_excute_commands(t_cmd *cmd, t_env **env_list)
                 write(2, cmd->args[0], ft_strlen(cmd->args[0]));
                 write(2, ": is a directory\n", 17);
                 cmd->data.exit_status = get_or_set(SET, 126);
+                free_split_str(env_doble);
                 exit(126);
             }     
             if(access(cmd->args[0], X_OK) != -1)
             {
                 execve(cmd->args[0], cmd->args, env_doble);
+                free_split_str(env_doble);
                 exit(0);
             }
             else
             {
                 ft_print_error(cmd);
+                free_split_str(env_doble);
             }
         }
         else
         {
             split_path = ft_split(path, ':');
             if (!split_path)
+            {
+                free_split_str(env_doble);
                 return ;
+            }
             ft_execute_path_command(cmd, env_doble, split_path);
             ft_free_split(split_path);
+            free_split_str(env_doble);
         }
     }
     else if(child_pid > 0)
