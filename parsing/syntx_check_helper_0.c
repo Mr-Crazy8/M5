@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:26:07 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/31 10:51:21 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:13:51 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,31 +87,6 @@ void	print_error(char *str, int *i)
 		write(2, "minishell: syntax error near unexpected token `<'\n",
 			51);
 }
-
-// int	invalid_filename_checker(char *str, int *i)
-// {
-// 	char	operator_type;
-
-// 	operator_type = str[(*i)];
-// 	(*i)++;
-// 	if (str[(*i)] == operator_type)
-// 		(*i)++;
-// 	while (str[(*i)] && str[(*i)] == ' ')
-// 		(*i)++;
-// 	if (str[(*i)] == '\0' || str[(*i)] == '>'
-// 		|| str[(*i)] == '<' || str[(*i)] == '|')
-// 	{
-// 		print_error(str, i);
-// 		return (1);
-// 	}
-// 	else
-// 	{
-// 		while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '>'
-// 			&& str[(*i)] != '<' && str[(*i)] != '|')
-// 			(*i)++;
-// 	}
-// 	return (0);
-// }
 
 int	invalid_filename_checker(char *str, int *i)
 {

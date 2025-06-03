@@ -30,6 +30,7 @@
 //    struct s_collet *next;
 // } t_collet;
 char *chenger_back(char *str);
+
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
 // void ft_in_use(void *adders, t_collet *addres_list);
@@ -113,8 +114,13 @@ typedef struct s_exp_helper {
     int had_removed_var;
     
 } t_exp_helper;
-
-
+int	ft_isdigiti(int c);
+char *chenger(char *str);
+char *trim_whitespace(char *str);
+int pls_conter(char *str);
+int is_valid_var_name(char *str, int len);
+int should_split_arg(char *arg, char *original_arg);
+void free_expanded(t_exp_helper *expand);
 void	ft_putstr_fd(char *s, int fd);
 void print_file_error(char *file, int i);
 void file_opener(t_cmd *cmd, t_env *env);

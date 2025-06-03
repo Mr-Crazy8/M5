@@ -26,34 +26,6 @@ void skip_redirections_hp(char str, int *quote_state)
     }
 }
 
-// static int skip_redirections(char *str)
-// {
-//     int i;
-//     int quote_state; // 0: no quote, 1: single quote, 2: double quote
-
-//     quote_state = 0;
-//     i = 0;
-//     if (!str)
-//         return (0);
-//     while (str[i])
-//     {
-//         skip_redirections_hp(str[i], &quote_state);
-//         if ((str[i] == '<' || str[i] == '>') && quote_state == 0)
-//         {
-//             i++;
-//             while (str[i] && str[i] == ' ')
-//                 i++;
-//             while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
-//                 i++;
-//         }
-//         else if (str[i] == ' ' && quote_state == 0)
-//             i++;
-//         else
-//             break;
-//     }
-//     return (i);
-// }
-
 static int skip_redirections(char *str)
 {
     int i;
@@ -160,39 +132,6 @@ void cmd_extracter_hp_2(char *str, int *i, char *result, int *result_len, int qu
         result[(*result_len)++] = str[(*i)++];
 }
 
-// void cmd_extracter_hp_2(char *str, int *i, char *result, int *result_len)
-// {
-//     if (str[(*i)] == ' ')
-//         {
-//             result[(*result_len)++] = ' ';
-//             (*i)++;
-//             while (str[(*i)] && str[(*i)] == ' ')
-//                 (*i)++;
-//         }
-//     else
-//             result[(*result_len)++] = str[(*i)++];
-
-// }
-
-// char *cmd_extracter_hp_3(char *result, int *result_len)
-// {
-//     char *trimmed;
-//     char *final;
-//     int len;
-
-//      result[(*result_len)] = '\0';
-//     trimmed = result;
-//     while (*trimmed == ' ')
-//         trimmed++;
-//     final = ft_strdup(trimmed);
-//     len = ft_strlen(final);
-//     while (len > 0 && final[len-1] == ' ')
-//         final[--len] = '\0';
-//     free(result);
-//     return (final);
-
-// }
-
 char *cmd_extracter_hp_3(char *result, int *result_len, int had_quotes)
 {
     char *trimmed;
@@ -221,7 +160,6 @@ char *cmd_extracter_hp_3(char *result, int *result_len, int had_quotes)
     return (final);
 }
 
-
 char *init_cmd_buffer(char *str, int *i, int *result_len, int *quote_state)
 {
     char *result;
@@ -242,29 +180,6 @@ char *init_cmd_buffer(char *str, int *i, int *result_len, int *quote_state)
     *i = skip_redirections(str);
     return (result);
 }
-
-// char *cmd_extracter(char *str)
-// {
-//     char *result;
-//     int i;
-//     int result_len;
-//     int quote_state;
-
-//     result = init_cmd_buffer(str, &i, &result_len, &quote_state);
-//     if (!result)
-//         return (NULL);
-//     while (str[i])
-//     {
-//         cmd_extracter_hp_0(str[i], &quote_state);
-//         if (quote_state == 0 && (str[i] == '>' || str[i] == '<'))
-//             cmd_extracter_hp_1(str, &quote_state, &i, &result_len, result);
-//         else
-//             cmd_extracter_hp_2(str, &i, result, &result_len);
-//     }
-    
-//     return (cmd_extracter_hp_3(result, &result_len));
-// }
-
 
 char *cmd_extracter(char *str)
 {
@@ -294,7 +209,6 @@ char *cmd_extracter(char *str)
     return (cmd_extracter_hp_3(result, &result_len, had_quotes));  // Pass had_quotes
 }
 
-
 t_redir *creat_redir_node(int type, char *file)
 {
     t_redir *tmp;
@@ -311,11 +225,6 @@ t_redir *creat_redir_node(int type, char *file)
 
     return (tmp);
 }
-
-
-
-
-
 
 t_cmd *creat_cmd_node(char *str,  t_token *tp,  int pipe_out)
 {
@@ -345,7 +254,6 @@ t_cmd *creat_cmd_node(char *str,  t_token *tp,  int pipe_out)
     tmp->next = NULL;
     return (tmp);
 }
-
 
 t_cmd *parser(t_token *token_list)
 {

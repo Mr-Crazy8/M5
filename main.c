@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/31 10:21:42 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:09:16 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,56 +131,100 @@ void check_sig(t_cmd *cmd)
 	}
 }
 
+// void check_line(t_cmd **command, t_env *env_list, char *env[])
+// {
+// 	 t_cmd	*cmd;
+// 	  cmd = *command;
+// 	  int fd_input ;
+// 	  int fd_output ;
+
+// 	// signal(SIGINT, handel_signal);
+// 	// signal(SIGQUIT, SIG_IGN);
+//     fd_input = dup(0);
+// 	fd_output = dup(1);
+// 	// check_sig(cmd);
+// 	check_here_doc(*command, env_list);
+// 	if (cmd->pipe_out)
+// 	{
+// 		dup2(fd_input, 0);
+// 		dup2(fd_output, 1);
+// 		close(fd_input);
+// 		close(fd_output);
+// 		ft_excute_mult_pipe(cmd, env_list, env);
+// 		// get_or_set(SET, cmd->data.exit_status);
+// 		return ;
+// 	}
+// 	else
+// 	{
+// 		if(cmd->redirs)
+// 		{
+// 			if(cmd->redirs->fd == -1)
+// 			{
+// 					dup2(fd_input, 0);
+// 					dup2(fd_output, 1);
+// 					close(fd_input);
+// 					close(fd_output);
+// 					cmd->data.exit_status = get_or_set(SET, 1);
+// 					return ;
+// 			}
+// 			ft_redircte(cmd->redirs, env_list, *command);
+// 			execute_single_command(cmd, env_list, env);
+// 		}
+// 		else
+// 			execute_single_command(cmd, env_list, env);
+// 	}
+// 	// check_sig(cmd);
+// 	dup2(fd_input, 0);
+// 	dup2(fd_output, 1);
+// 	close(fd_input);
+// 	close(fd_output);
+// }
+
 void check_line(t_cmd **command, t_env *env_list, char *env[])
 {
-	 t_cmd	*cmd;
-	  cmd = *command;
-	  int fd_input ;
-	  int fd_output ;
+    t_cmd    *cmd;
+    cmd = *command;
+    int fd_input ;
+    int fd_output ;
 
-	// signal(SIGINT, handel_signal);
-	// signal(SIGQUIT, SIG_IGN);
-	check_sig(cmd);
-	check_here_doc(*command, env_list);
+    // if ((*command)->redirs != NULL)
+        check_here_doc(*command, env_list);
     fd_input = dup(0);
-	fd_output = dup(1);
-	if (cmd->pipe_out)
-	{
-		dup2(fd_input, 0);
-		dup2(fd_output, 1);
-		close(fd_input);
-		close(fd_output);
-		ft_excute_mult_pipe(cmd, env_list, env);
-		get_or_set(SET, cmd->data.exit_status);
-		return ;
-	}
-	else
-	{
-		if(cmd->redirs)
-		{
-			if(cmd->redirs->fd == -1)
-			{
-					dup2(fd_input, 0);
-					dup2(fd_output, 1);
-					close(fd_input);
-					close(fd_output);
-					cmd->data.exit_status = get_or_set(SET, 1);
-					return ;
-			}
-			ft_redircte(cmd->redirs, env_list, *command);
-			execute_single_command(cmd, env_list, env);
-		}
-		else
-			execute_single_command(cmd, env_list, env);
-	}
-	check_sig(cmd);
-	dup2(fd_input, 0);
-	dup2(fd_output, 1);
-	close(fd_input);
-	close(fd_output);
+    fd_output = dup(1);
+    if (cmd->pipe_out)
+    {
+        ft_excute_mult_pipe(cmd, env_list, env);
+        get_or_set(SET, cmd->data.exit_status);
+        dup2(fd_input, 0);
+        dup2(fd_output, 1);
+        close(fd_input);
+        close(fd_output);
+        return ;
+    }
+    else
+    {
+        if(cmd->redirs)
+        {
+            if(cmd->redirs->fd == -1)
+            {
+                    dup2(fd_input, 0);
+                    dup2(fd_output, 1);
+                    close(fd_input);
+                    close(fd_output);
+                    cmd->data.exit_status = get_or_set(SET, 1);
+                    return ;
+            }
+            ft_redircte(cmd->redirs, env_list, *command);
+            execute_single_command(cmd, env_list, env);
+        }
+        else
+            execute_single_command(cmd, env_list, env);
+    }
+    dup2(fd_input, 0);
+    dup2(fd_output, 1);
+    close(fd_input);
+    close(fd_output);
 }
-
-
 
 void add_one_shlvl(t_env *env)
 {
@@ -268,10 +312,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	}
 }
 
-void ff()
-{
-	system("leaks minishell");
-}
+
 char *chenger_back(char *str)
 {
     int i = 0;
@@ -302,6 +343,13 @@ void change_back_cmd(t_cmd *cmd)
 			i++;
 		}
 		tmp->cmd = chenger_back(tmp->cmd);
+		i = 0;
+		t_redir *tp = tmp->redirs;
+		while (tp)
+		{
+			tp->file = chenger_back(tp->file);
+			tp = tp->next;
+		}
 		tmp = tmp->next;
 	}
 }
@@ -316,10 +364,9 @@ int main(int argc, char *argv[], char *env[])
 	// cmd->data.exit_status = 0;
 	char *preprocessed_input;
 		struct termios infos;
-	atexit(ff);
 	(void)argc;
 	(void)argv;
-	if(!isatty(1))
+	if(!isatty(1) || !isatty(0))
 	{
 		exit(1);
 	}
@@ -331,10 +378,10 @@ int main(int argc, char *argv[], char *env[])
 	tcgetattr(1, &infos);
 	infos.c_lflag &= ~(ECHOCTL);
 	tcsetattr(1, TCSANOW, &infos);
-	signal(SIGINT, handel_signal);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		signal(SIGINT, handel_signal);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell $> ");
 		if (!input)
 		{

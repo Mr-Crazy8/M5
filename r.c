@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:33:44 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/30 18:04:36 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:28:31 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ void ft_excute_commands(t_cmd *cmd, t_env **env_list)
     pid_t child_pid;
     split_path = NULL;
 
-    puts("kkkk");
     env_doble = convert_env_list(env_list);
     if(!cmd->args || !cmd->args[0])
     {
@@ -208,8 +207,8 @@ void ft_excute_commands(t_cmd *cmd, t_env **env_list)
     child_pid = fork();
     if(child_pid == 0)
     {
-        // signal(SIGINT, SIG_DFL);
-        // signal(SIGQUIT, SIG_DFL);
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         path = check_path(env_list);
         if(!path)
         {

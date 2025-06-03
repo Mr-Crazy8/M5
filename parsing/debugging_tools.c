@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-void	print_tokens(t_token *token_list)
+void	print_tokens(t_token *token_list)   /// must be delete
 {
 	t_token	*current;
 	int		i;
@@ -15,7 +15,7 @@ void	print_tokens(t_token *token_list)
 	}
 }
 
-void	print_env(t_env *env_struct)
+void	print_env(t_env *env_struct)  /// must be delete
 {
 	t_env *tmp;
 
@@ -30,7 +30,7 @@ void	print_env(t_env *env_struct)
 }
 
 
-void print_cmd(t_cmd *cmd_list)
+void print_cmd(t_cmd *cmd_list)   /// must be delete
 {
     t_cmd *tmp;
     int i = 0;

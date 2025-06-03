@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:07:47 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/18 17:32:20 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:09:31 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,6 @@ int	is_whitespace(char c)
 		|| c == '\r' || c == '\v' || c == '\f');
 }
 
-// char	*ft_substr(char const *s, unsigned int start, size_t len)
-// {
-// 	size_t	s_len;
-// 	char	*substr;
-
-// 	if (s == NULL)
-// 	{
-// 		return (NULL);
-// 	}
-// 	s_len = ft_strlen(s);
-// 	if (start >= s_len)
-// 		return (ft_strdup(""));
-// 	if (len > s_len - start)
-// 		len = s_len - start;
-// 	substr = (char *)malloc((len + 1) * sizeof(char));
-// 	if (substr == NULL)
-// 		return (NULL);
-// 	ft_strncpy(substr, s + start, len);
-// 	substr[len] = '\0';
-// 	return (substr);
-// }
 
 int	special_character_cheker(char character)
 {

@@ -177,6 +177,8 @@ int ft_handel_export(char **str, t_env **lst)
            if (ft_check(*lst, key) == 1)
            {
                 printf("%s\n", str[i]);
+                free(key);
+                free(value);
                 i++;
                 continue;
            }

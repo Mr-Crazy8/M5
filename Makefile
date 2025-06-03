@@ -18,6 +18,8 @@ SRCS = r.c parsing/ft_split.c libft_utils.c echo.c \
 		parsing/free_func_1.c           parsing/syntx_check.c parsing/Ambiguous.c\
 		parsing/ft_itoa.c               parsing/syntx_check_helper_0.c \
 		parsing/lexer.c                 parsing/syntx_check_helper_1.c   Heredoc_Expansion.c\
+		parsing/expand_utils_1.c parsing/expand_utils_2.c parsing/expand_utils_3.c \
+		parsing/expand_utils_4.c parsing/expand_utils_5.c parsing/expand_utils_6.c \
 
 # Object files
 OBJS = $(SRCS:.c=.o)

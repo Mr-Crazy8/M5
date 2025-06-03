@@ -62,3 +62,31 @@ char **free_split_q(char **split, size_t j)
 }
 
 
+void free_string_array(char **array)
+{
+    if (!array)
+        return;
+    int i = 0;
+    while (array[i])
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
+
+void free_expanded(t_exp_helper *expand)
+{
+    if (expand) 
+     {
+        if (expand->expanded)
+            free(expand->expanded);
+        if (expand->var_name)
+            free(expand->var_name);
+        if (expand->var_value)
+            free(expand->var_value);
+        free(expand);
+    }
+    
+}
+
