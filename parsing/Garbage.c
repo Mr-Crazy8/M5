@@ -1,6 +1,13 @@
-#include "parsing.h"
+// #include "parsing.h"
 
-
+// typedef struct s_collet
+// {
+//    char *adders;
+//    void *add;
+//    size_t size;
+//    int in_use;
+//    struct s_collet *next;
+// } t_collet;
 
 // void ft_free(void *addr, t_collet **addres_list)
 // {
@@ -89,6 +96,12 @@
 //       if (strcmp(string_addres, tmp->adders) == 0)
 //       {
 //          tmp->in_use--;
+//          if (tmp->in_use <= 0)
+//          {
+//             free(string_addres);
+//             remove_node(tmp->adders, addres_list);
+//             return;
+//          }
 //          break;
 //       }
 //       tmp = tmp->next;

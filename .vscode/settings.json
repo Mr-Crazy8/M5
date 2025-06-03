@@ -3,6 +3,7 @@
         "bitset": "c",
         "functional": "c",
         "iterator": "c",
-        "memory": "c"
+        "memory": "c",
+        "parsing.h": "c"
     }
 }

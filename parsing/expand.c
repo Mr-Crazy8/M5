@@ -135,14 +135,14 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
         extracting = extracting_the_key_value(expand, exit_status, env, pipe_out);
         if (extracting == 0)
             return 0;
-        else if (extracting == 1)
-            return 1;
         if (expand->var_value)
         {
            res_adding_var = adding_var_value(expand);
            if (res_adding_var == 0)
                 return 0;
         }
+        else if (extracting == 1)
+            return 1;
         return (1);
     }
     return (0);
@@ -282,10 +282,13 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
         {
             if (redir->file)
             {
+                if (redir->type != 3)
+                {
                 process_string(redir->file, expand, env, exit_status, cmd_list->pipe_out);
                 free(redir->file);
                 redir->file = expand->expanded;
                 expand->expanded = NULL;
+                }
             }
             redir = redir->next;
         }

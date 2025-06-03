@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:48:37 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:50:05 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:50:42 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int pls_conter(char *str)
 int helper3(t_exp_helper *expand, int exit_status, int pipe_out)
 {
     static int was_there_a_pipe_befor = 0;
+
     if (pipe_out == 1)
         was_there_a_pipe_befor++;
 	if (expand->original[expand->i] == '?')

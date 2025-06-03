@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/02 13:09:16 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/03 13:49:16 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,10 @@ void change_back_cmd(t_cmd *cmd)
 		tmp = tmp->next;
 	}
 }
-
+void ff()
+{
+	system("leaks minishell");
+}
 
 int main(int argc, char *argv[], char *env[])
 {
@@ -361,6 +364,7 @@ int main(int argc, char *argv[], char *env[])
 	t_env *env_struct = NULL;
 	char *input;
 	t_cmd *cmd = NULL;
+	atexit(ff);
 	// cmd->data.exit_status = 0;
 	char *preprocessed_input;
 		struct termios infos;
@@ -424,7 +428,7 @@ int main(int argc, char *argv[], char *env[])
 			process_quotes_for_cmd(cmd, 1);
 			change_back_cmd(cmd);
 			file_opener(cmd, env_struct);
-			print_cmd(cmd);
+			// print_cmd(cmd);
 			check_line(&cmd, env_struct, env);
 			expand_handle(cmd, env_struct, cmd->data.exit_status);
 			

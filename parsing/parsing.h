@@ -21,14 +21,7 @@
 #define SET 0
 #define GET 1
 
-// typedef struct s_collet
-// {
-//    char *adders;
-//    void *add;
-//    size_t size;
-//    int in_use;
-//    struct s_collet *next;
-// } t_collet;
+
 char *chenger_back(char *str);
 
 // void remove_node(void *addr_str, t_collet **head);
@@ -118,6 +111,7 @@ int	ft_isdigiti(int c);
 char *chenger(char *str);
 char *trim_whitespace(char *str);
 int pls_conter(char *str);
+int helper3(t_exp_helper *expand, int exit_status, int pipe_out);
 int is_valid_var_name(char *str, int len);
 int should_split_arg(char *arg, char *original_arg);
 void free_expanded(t_exp_helper *expand);
