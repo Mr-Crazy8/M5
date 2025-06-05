@@ -2,6 +2,7 @@
 #include <ctype.h>
 #define MAX_BUFFER_SIZE (1ULL << 30) // 1GB max buffer size
 
+
 int var_name_extract(t_exp_helper *expand)
 {
 
@@ -58,6 +59,7 @@ int alloc_var_name(t_exp_helper *expand)
     expand->var_name[var_len] = '\0';
     return (2);
 }
+
 void value_extracter(t_exp_helper *expand, t_env *env)
 {
     char *var = NULL;
@@ -97,6 +99,7 @@ int adding_var_value(t_exp_helper *expand)
     return (1);
 
 }
+
 
 int extracting_the_key_value(t_exp_helper *expand, int exit_status, t_env *env, int pipe_out)
 {
@@ -152,6 +155,7 @@ void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status
 {
 	if (!expand_fill_str(expand, str))
 	{
+        free(expand->expanded);
 		expand->expanded = NULL;
 		return;
 	}
@@ -168,7 +172,8 @@ void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status
 			expand->expanded[expand->j++] = expand->original[expand->i++];
 		}
 	}
-    expand->expanded[expand->j] = '\0';
+    if (expand->expanded)
+        expand->expanded[expand->j] = '\0';
 }
 
 

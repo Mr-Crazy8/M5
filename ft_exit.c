@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:26:45 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/21 12:33:49 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:27:35 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int ft_exit(char **args, t_data data)
     long    n;
     
     // status = 0;
-    ft_putendl_fd("exit", 1);
+    ft_putendl_fd("exit", 2);
     
     if (!args || !args[1])
     {

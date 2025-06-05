@@ -88,11 +88,9 @@ void file_opener(t_cmd *cmd, t_env *env)
     {
         tp = tmp->redirs;
         while (tp)
-        {
-            // if(tp->type == 3)
-            //     heredoc(tp->file, env, get_or_set(GET, 0), tp->orig_token);   
+        {   
             fd = open_file(cmd, tp->type, tp->file);
-            if (fd == -1)
+            if (fd == -1 && tp->type != 3)
             {
                 tp->fd = fd;
                 break;

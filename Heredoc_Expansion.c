@@ -263,6 +263,32 @@ char *heredoc_delemter(char *orig_token)
     return ft_strdup(orig_token);
 }
 
+int expand_heredoc_helper1(t_exp_helper *expand, int exit_status, t_env *env, int pipe_out)
+{
+    char *var;
+    int extracting;
+    // size_t var_len;
+    
+    int res_adding_var;
+    var = NULL;
+    if (expand->original[expand->i] == '$') // Not in single quotes
+    {
+        expand->i++;
+        extracting = extracting_the_key_value(expand, exit_status, env, pipe_out);
+        if (extracting == 0)
+            return 0;
+        if (expand->var_value)
+        {
+           res_adding_var = adding_var_value(expand);
+           if (res_adding_var == 0)
+                return 0;
+        }
+        else if (extracting == 1)
+            return 1;
+        return (1);
+    }
+    return (0);
+}
 
 void doc_expand(char *str, t_exp_helper *expand,
                    t_env *env, int exit_status)
@@ -272,7 +298,7 @@ void doc_expand(char *str, t_exp_helper *expand,
     
     while (expand->original[expand->i]) {
         if (!expand_handle_helper0(expand)
-            && !expand_handle_helper1(expand, exit_status, env, 0))
+            && !expand_heredoc_helper1(expand, exit_status, env, 0))
             expand->expanded[expand->j++] = expand->original[expand->i++];
     }
     expand->expanded[expand->j] = '\0';
@@ -290,8 +316,6 @@ char *process_heredoc_epxand(char *line, t_env *env, int exit_status, char *orig
     doc_expand(line, expand, env, exit_status);
     result = expand->expanded;
     free(expand);
-
-    // printf("ep =========> %s\n", result);
     return result;
 }
 
@@ -348,7 +372,6 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter)
             free(processed_delimiter);
             return NULL;
        }
-        printf("line =================== %s\n", line);
        if (strcmp(line, processed_delimiter) == 0)
        {
         free(line);

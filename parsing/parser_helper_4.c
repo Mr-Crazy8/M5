@@ -13,20 +13,23 @@ int creat_redir_list_helper(char *str)
 
 t_redir *creat_redir_list_helper0(char *str1, char *str2)
 {
-
-    char *str = ft_strdup(str2);
-    if (strcmp(str1, ">>") == 0 && str2 != NULL
-            && creat_redir_list_helper(str2) == 1)
-            return(creat_redir_node(2, str));
-    else if (strcmp(str1, "<<") == 0 && str2 != NULL
-             && creat_redir_list_helper(str2) == 1)
-            return(creat_redir_node(3, str));
-    else if (strcmp(str1, ">") == 0 && str2 != NULL
-                && creat_redir_list_helper(str2) == 1)
-                return(creat_redir_node(1, str));
-    else if (strcmp(str1, "<") == 0 && str2 != NULL
-                && creat_redir_list_helper(str2) == 1)
-               return(creat_redir_node(0, str));
+    char *str;
+    if (!str2 || creat_redir_list_helper(str2) != 1)
+        return (NULL);
+    
+    str = ft_strdup(str2);
+    if (!str)
+        return (NULL);
+    
+    if (strcmp(str1, ">>") == 0)
+        return(creat_redir_node(2, str));
+    else if (strcmp(str1, "<<") == 0)
+        return(creat_redir_node(3, str));
+    else if (strcmp(str1, ">") == 0)
+        return(creat_redir_node(1, str));
+    else if (strcmp(str1, "<") == 0)
+        return(creat_redir_node(0, str));
+    free(str);
     return (NULL);
 }
 

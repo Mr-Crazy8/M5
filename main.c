@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/03 13:49:16 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:28:09 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,10 @@ void check_line(t_cmd **command, t_env *env_list, char *env[])
             }
             ft_redircte(cmd->redirs, env_list, *command);
             execute_single_command(cmd, env_list, env);
+    dup2(fd_input, 0);
+    dup2(fd_output, 1);
+    close(fd_input);
+    close(fd_output);
         }
         else
             execute_single_command(cmd, env_list, env);
@@ -262,7 +266,7 @@ void add_one_shlvl(t_env *env)
         if (!new_node)
             return;
             
-        new_node->key = strdup("SHLVL");
+        new_node->key = strdup("SHELVL");
         new_node->value = strdup("1");
         new_node->is_not_active = 0;
         new_node->next = NULL;
@@ -353,10 +357,10 @@ void change_back_cmd(t_cmd *cmd)
 		tmp = tmp->next;
 	}
 }
-void ff()
-{
-	system("leaks minishell");
-}
+// void ff()
+// {
+// 	system("leaks minishell");
+// }
 
 int main(int argc, char *argv[], char *env[])
 {
@@ -364,7 +368,8 @@ int main(int argc, char *argv[], char *env[])
 	t_env *env_struct = NULL;
 	char *input;
 	t_cmd *cmd = NULL;
-	atexit(ff);
+	// atexit(ff);
+	int exit_status = 0;
 	// cmd->data.exit_status = 0;
 	char *preprocessed_input;
 		struct termios infos;
@@ -405,6 +410,7 @@ int main(int argc, char *argv[], char *env[])
 		add_history(input);
 		if (check_quotes(input))
 		{
+			exit_status = get_or_set(SET, 258); 
 			free(input);
 			continue;
 		}
@@ -428,14 +434,16 @@ int main(int argc, char *argv[], char *env[])
 			process_quotes_for_cmd(cmd, 1);
 			change_back_cmd(cmd);
 			file_opener(cmd, env_struct);
-			// print_cmd(cmd);
+			print_cmd(cmd);
 			check_line(&cmd, env_struct, env);
-			expand_handle(cmd, env_struct, cmd->data.exit_status);
+			//expand_handle(cmd, env_struct, cmd->data.exit_status);
 			
 			free_cmd_list(cmd);
 			global_sig = 0;
 			
 		}
+		else if (error_pipi(token_list)  || check_syntax_errors(token_list))
+			exit_status = get_or_set(SET, 258); 
 		else if (token_list)
 		{
 			free_token_list(token_list);

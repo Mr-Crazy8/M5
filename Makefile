@@ -1,6 +1,6 @@
 
 CC = cc
-CFLAGS = -Wall  -I/mnt/homes/anel-men/.brew/opt/readline/include
+CFLAGS = -Wall  -I/mnt/homes/anel-men/.brew/opt/readline/include -fsanitize=address -g
 
 # Target executable name
 NAME = minishell
@@ -20,6 +20,7 @@ SRCS = r.c parsing/ft_split.c libft_utils.c echo.c \
 		parsing/lexer.c                 parsing/syntx_check_helper_1.c   Heredoc_Expansion.c\
 		parsing/expand_utils_1.c parsing/expand_utils_2.c parsing/expand_utils_3.c \
 		parsing/expand_utils_4.c parsing/expand_utils_5.c parsing/expand_utils_6.c \
+		parsing/parsing_utiles.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)

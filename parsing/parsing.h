@@ -23,7 +23,6 @@
 
 
 char *chenger_back(char *str);
-
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
 // void ft_in_use(void *adders, t_collet *addres_list);
@@ -226,4 +225,9 @@ int	is_valid_key(char *key);
 char	**ft_split(char const *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
+int extracting_the_key_value(t_exp_helper *expand, int exit_status, t_env *env, int pipe_out);
+int var_name_extract(t_exp_helper *expand);
+int alloc_var_name(t_exp_helper *expand);
+void value_extracter(t_exp_helper *expand, t_env *env);
+int adding_var_value(t_exp_helper *expand);
 #endif

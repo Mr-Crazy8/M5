@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:48:37 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/03 11:50:42 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:01:48 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char *trim_whitespace(char *str)
         start++;
     
     lent = ft_strlen(&str[start]);
+    
     return(ft_substr(str, start, lent));
 }
 

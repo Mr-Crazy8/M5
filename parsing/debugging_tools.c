@@ -44,7 +44,7 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
         
         // Check if cmd is NULL before printing
         if (tmp->cmd)
-            printf("command name : %s\n", tmp->cmd);
+            printf("command name : [%s]\n", tmp->cmd);
         else
             printf("command name : (null)\n");
             
@@ -52,7 +52,7 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
         if (tmp->args) {
             while (tmp->args[i])
             {
-                printf("command args : %s\n", tmp->args[i]);
+                printf("command args : [%s]\n", tmp->args[i]);
                 i++;
             }
         }
@@ -61,7 +61,7 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
         if (tmp->args_befor_quotes_remover) {
             while (tmp->args_befor_quotes_remover[j])
             {
-                printf("args befor quotes remover : %s\n", tmp->args_befor_quotes_remover[j]);
+                printf("args befor quotes remover : [%s]\n", tmp->args_befor_quotes_remover[j]);
                 j++;
             }
         }
@@ -77,13 +77,13 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
                 
                 // Check if orig_token is NULL before printing
                 if (tp->orig_token)
-                    printf("file name befor the expanend : %s\n", tp->orig_token);
+                    printf("file name befor the expanend : [%s]\n", tp->orig_token);
                 else
                     printf("file name befor the expanend : (null)\n");
                     
                 // Check if file is NULL before printing
                 if (tp->file)
-                    printf("file name : %s\n", tp->file);
+                    printf("file name : [%s]\n", tp->file);
                 else
                     printf("file name : (null)\n");
                     
@@ -98,31 +98,4 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
     }   
 }
 
-void print_ambiguous_redir_errors(t_cmd *cmd)
-{
-    t_cmd *tmp;
-    t_redir *redir;
-    char *prefix = "minishell: ";
-    char *suffix = ": ambiguous redirect\n";
-    char *error_msg;
 
-    tmp = cmd;
-    while (tmp)
-    {
-        redir = tmp->redirs;
-        while (redir)
-        {
-            if (redir->Ambiguous)
-            {
-                write(2, prefix, ft_strlen(prefix));
-                if (redir->orig_token)
-                    write(2, redir->orig_token, ft_strlen(redir->orig_token));
-                else
-                    write(2, "$EMPTY", 6);
-                write(2, suffix, ft_strlen(suffix));
-            }
-            redir = redir->next;
-        }
-        tmp = tmp->next;
-    }
-}
