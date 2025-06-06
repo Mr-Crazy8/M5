@@ -6,11 +6,46 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/06 10:56:44 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 12:02:43 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+
+int is_append_assignment(char *str)
+{
+    char *equals_pos;
+    char *ptr;
+    int plus_count = 0;
+    
+    if (!str)
+        return 0;
+    
+    // Find the equals sign
+    equals_pos = strchr(str, '=');
+    if (!equals_pos)
+        return 0;
+    
+    // Check if there's exactly one + right before the =
+    if (equals_pos > str && *(equals_pos - 1) == '+')
+    {
+        // Count how many consecutive + characters before =
+        ptr = equals_pos - 1;
+        while (ptr >= str && *ptr == '+')
+        {
+            plus_count++;
+            ptr--;
+        }
+        
+        // Valid append assignment has exactly one +
+        if (plus_count == 1)
+            return 1;
+    }
+    
+    return 0;
+}
+
 
 int should_split_arg(char *arg, char *original_arg)
 {
@@ -19,30 +54,32 @@ int should_split_arg(char *arg, char *original_arg)
     
     if (!arg || !*arg)
         return 0;
-    int is_append = pls_conter(original_arg);
-
-    printf("is_append should split arg %d\n", is_append);
     
-    if (is_append == 1 )
+    // First check: if original argument has += pattern, never split
+    if (original_arg && is_append_assignment(original_arg))
         return 0;
-    
+    if (is_append_assignment(arg))
+    {
+        return 0;
+    }
+
     if (strchr(arg, '$'))
         return 1;
-    
     equals = strchr(arg, '=');
     if (!equals)
         return 0; 
     if (!is_valid_var_name(arg, equals - arg))
         return 1;
-    
     if (original_arg) 
     {
         orig_equals = strchr(original_arg, '=');
-        if (orig_equals && check_var_quotes(original_arg, orig_equals) && pls_conter(original_arg) != 1)
+        if (orig_equals && check_var_quotes(original_arg, orig_equals))
             return 1;
     }
+    
     return 0; 
 }
+
 
 
 char **split_if_needed(char *str)

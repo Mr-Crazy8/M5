@@ -21,7 +21,7 @@
 #define SET 0
 #define GET 1
 
-
+int is_append_assignment(char *str);
 char *chenger_back(char *str);
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
