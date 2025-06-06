@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:48:37 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/05 22:49:39 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:07:27 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,24 @@ char *trim_whitespace(char *str)
     return(ft_substr(str, start, lent));
 }
 
-// int pls_conter_helper(char *str, int *pls_count, int *j, int *i)
-// {
+int pls_conter_helper(char *str, int *pls_count, int *j, int *i)
+{
 
-//     if (str[(*i)] == '+' && str[(*i) + 1] == '=' && ((*pls_count) == 0 || (*pls_count) == 1) )
-//     {
-//         if ((*i) == 0 || (!isalpha(str[0]) && str[0] != '_'))
-//             return 0; // Invalid key name
-//         while ((*j) < (*i))
-//         {
-//             if (!isalnum(str[(*j)]) && str[(*j)] != '_')
-//                 return 0; // Invalid character in key name
-//             (*j)++;
-//         }
-//         return 1; // Valid += assignment
-//     }
-//     return 0;
+    if (str && str[(*i)] == '+' && str[(*i) + 1] == '=' && ((*pls_count) == 0 || (*pls_count) == 1) )
+    {
+        if ((*i) == 0 || (!isalpha(str[0]) && str[0] != '_'))
+            return 0; // Invalid key name
+        while ((*j) < (*i))
+        {
+            if (!isalnum(str[(*j)]) && str[(*j)] != '_')
+                return 0; // Invalid character in key name
+            (*j)++;
+        }
+        return 1; // Valid += assignment
+    }
+    return 0;
 
-// }
+}
 
 // int pls_conter_helper(char *str, int *pls_count, int *j, int *i)
 // {
@@ -75,24 +75,7 @@ char *trim_whitespace(char *str)
 //     }
 //     return 0;
 // }
-int pls_conter_helper(char *str, int *pls_count, int *j, int *i)
-{
-    // Remove the quote checks completely
-    if (str && str[(*i)] == '+' && str[(*i) + 1] == '=' && ((*pls_count) == 0 || (*pls_count) == 1))
-    {
-        // Check only the part before '+='
-        int k = 0;
-        while (k < (*i))
-        {
-            if ((k == 0 && !isalpha(str[k]) && str[k] != '_') || 
-                (k > 0 && !isalnum(str[k]) && str[k] != '_' && str[k] != '\'' && str[k] != '"'))
-                return 0;  // Invalid character in variable name
-            k++;
-        }
-        return 1;  // Valid append operation
-    }
-    return 0;
-}
+
 int pls_conter(char *str)
 {
     int i;

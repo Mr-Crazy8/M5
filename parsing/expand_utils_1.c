@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:17:36 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/05 22:44:00 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:35:13 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int is_valid_var_name(char *str, int len)
 int check_var_quotes(char *orig_arg, char *orig_equals)
 {
     int j = 0;
-    int is_append = pls_conter(orig_arg);
-    printf("orig_arg === %s\n", orig_arg);
-    printf("is_append === %d\n", is_append);
-    if (is_append)
-        return 0;
+    // int is_append = pls_conter(orig_arg);
+    // printf("orig_arg === %s\n", orig_arg);
+    // printf("is_append === %d\n", is_append);
+    // if (is_append)
+    //     return 0;
     while (j < (orig_equals - orig_arg))
     {
         if ((orig_arg[j] == '\'' || orig_arg[j] == '"' || orig_arg[j] == '$')) 

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:42:21 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/05 22:47:44 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:03:40 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,80 @@ void split_the_rest_helper_01(t_cmd *current, char *equals, int *i, int force_sp
     }
 }
 
+// void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
+// {
+//     int force_split;
+//     int count;
+//     char *orig_equals;
+//     // int append = pls_conter(current->args_befor_quotes_remover[*i]);
+//     // printf("append  010 ===== %d\n", append);
+//     force_split = 0;
+//     if (current->args[(*i)] && equals)
+//     {
+//         if (isdigit(current->args[(*i)][0]))
+//             force_split = 1;
+//         if (current->args_befor_quotes_remover) 
+//         {
+//             count = 0;
+//             while (current->args_befor_quotes_remover[count])
+//                 count++;
+//             if (*i < count && current->args_befor_quotes_remover[*i]) 
+//             {
+//                 orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
+//                 if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
+//                     force_split = 1;
+//             }
+//         }
+//     }
+//     split_the_rest_helper_01(current, equals, i, force_split, should_split);
+// }
+
 void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
 {
     int force_split;
     int count;
     char *orig_equals;
-    int append = pls_conter(current->args_befor_quotes_remover[*i]);
-    printf("append  010 ===== %d\n", append);
+    int is_append;
+    
+    is_append = 0;
+    if (current->args_befor_quotes_remover && current->args_befor_quotes_remover[*i])
+        is_append = pls_conter(current->args_befor_quotes_remover[*i]);
+        
+    printf("append value in helper: %d\n", is_append);
+    
+    // If it's a valid append operation, never force split
+    if (is_append == 1)
+    {
+        split_the_rest_helper_01(current, equals, i, 0, 0); // Force no splitting
+        return;
+    }
+    
     force_split = 0;
     if (current->args[(*i)] && equals)
     {
         if (isdigit(current->args[(*i)][0]))
             force_split = 1;
+            
         if (current->args_befor_quotes_remover) 
         {
             count = 0;
             while (current->args_befor_quotes_remover[count])
                 count++;
+                
             if (*i < count && current->args_befor_quotes_remover[*i]) 
             {
                 orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
-                if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals) && pls_conter(current->args_befor_quotes_remover[*i]))
+                // CHANGED: Only check var quotes without considering append case
+                if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
                     force_split = 1;
             }
         }
     }
+    
     split_the_rest_helper_01(current, equals, i, force_split, should_split);
 }
+
+
 
 int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
 {

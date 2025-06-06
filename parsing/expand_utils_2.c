@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/06 10:17:38 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:56:44 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int should_split_arg(char *arg, char *original_arg)
     if (original_arg) 
     {
         orig_equals = strchr(original_arg, '=');
-        if (orig_equals && check_var_quotes(original_arg, orig_equals))
+        if (orig_equals && check_var_quotes(original_arg, orig_equals) && pls_conter(original_arg) != 1)
             return 1;
     }
     return 0; 
