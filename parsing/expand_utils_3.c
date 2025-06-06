@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:42:21 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/06 12:18:02 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:28:06 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,20 @@
 //     char **split;
 //     int word_count;
 //     char **new_args;
-     
+//     int count = 0;
+    
 //     if (!current->args[(*i)] || (!should_split && !force_split))
+//         return;
+//     if (current->args_befor_quotes_remover) 
+//     {
+//         while (current->args_befor_quotes_remover[count])
+//             count++;
+//     }
+//     if (current->args_befor_quotes_remover && *i < count && 
+//         current->args_befor_quotes_remover[*i] && 
+//         is_append_assignment(current->args_befor_quotes_remover[*i]) && key_is_var(current->args_befor_quotes_remover[*i]))
+//         return;
+//     if (is_append_assignment(current->args[*i]))
 //         return;
 //     if (!equals || should_split || force_split)
 //     {
@@ -45,25 +57,36 @@ void split_the_rest_helper_01(t_cmd *current, char *equals, int *i, int force_sp
     char **split;
     int word_count;
     char **new_args;
+    int count = 0;
     
     if (!current->args[(*i)] || (!should_split && !force_split))
         return;
+    if (current->args_befor_quotes_remover) 
+    {
+        while (current->args_befor_quotes_remover[count])
+            count++;
+    }
     
-    // NEW: Check for append assignment before splitting
-    if (current->args_befor_quotes_remover && 
+    // Check for variable key append assignment - should NOT skip splitting
+    if (current->args_befor_quotes_remover && *i < count && 
         current->args_befor_quotes_remover[*i] && 
-        is_append_assignment(current->args_befor_quotes_remover[*i]))
+        is_var_key_append(current->args_befor_quotes_remover[*i]))
     {
-        printf("Detected append assignment, not splitting: %s\n", current->args_befor_quotes_remover[*i]);
-        return; // Don't split append assignments
+        // Force split for variable key append assignments
+        force_split = 1;
+        should_split = 1;
     }
+    else if (current->args_befor_quotes_remover && *i < count && 
+        current->args_befor_quotes_remover[*i] && 
+        is_append_assignment(current->args_befor_quotes_remover[*i]) && 
+        !is_var_key_append(current->args_befor_quotes_remover[*i]))
+        return;
     
-    // Also check the current processed argument
-    if (is_append_assignment(current->args[*i]))
-    {
-        printf("Detected append assignment in processed arg, not splitting: %s\n", current->args[*i]);
-        return; // Don't split append assignments
-    }
+    if (is_append_assignment(current->args[*i]) && 
+        !(current->args_befor_quotes_remover && *i < count && 
+          current->args_befor_quotes_remover[*i] && 
+          is_var_key_append(current->args_befor_quotes_remover[*i])))
+        return;
     
     if (!equals || should_split || force_split)
     {
@@ -85,33 +108,6 @@ void split_the_rest_helper_01(t_cmd *current, char *equals, int *i, int force_sp
     }
 }
 
-// void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
-// {
-//     int force_split;
-//     int count;
-//     char *orig_equals;
-//     force_split = 0;
-//     if (current->args[(*i)] && equals)
-//     {
-//         if (isdigit(current->args[(*i)][0]))
-//             force_split = 1;
-//         if (current->args_befor_quotes_remover) 
-//         {
-//             count = 0;
-//             while (current->args_befor_quotes_remover[count])
-//                 count++;
-//             if (*i < count && current->args_befor_quotes_remover[*i]) 
-//             {
-//                 orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
-//                 if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
-//                     force_split = 1;
-//             }
-//         }
-//     }
-//     split_the_rest_helper_01(current, equals, i, force_split, should_split);
-// }
-
-
 void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
 {
     int force_split;
@@ -119,30 +115,36 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
     char *orig_equals;
     
     force_split = 0;
+    count = 0;
+    if (current->args_befor_quotes_remover) 
+    {
+        while (current->args_befor_quotes_remover[count])
+            count++;
+    }
     
-    // NEW: Early check for append assignment
-    if (current->args_befor_quotes_remover && 
+    if (current->args_befor_quotes_remover && *i < count && 
+        current->args_befor_quotes_remover[*i] &&
+        is_var_key_append(current->args_befor_quotes_remover[*i]))
+    {
+        force_split = 1;
+        should_split = 1;
+    }
+    else if (current->args_befor_quotes_remover && *i < count && 
         current->args_befor_quotes_remover[*i] &&
         is_append_assignment(current->args_befor_quotes_remover[*i]))
     {
-        return; // Don't process append assignments further
+        return;
     }
-    
     if (current->args[(*i)] && equals)
     {
         if (isdigit(current->args[(*i)][0]))
             force_split = 1;
-        if (current->args_befor_quotes_remover) 
+        if (current->args_befor_quotes_remover && *i < count && 
+            current->args_befor_quotes_remover[*i]) 
         {
-            count = 0;
-            while (current->args_befor_quotes_remover[count])
-                count++;
-            if (*i < count && current->args_befor_quotes_remover[*i]) 
-            {
-                orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
-                if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
-                    force_split = 1;
-            }
+            orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
+            if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
+                force_split = 1;
         }
     }
     split_the_rest_helper_01(current, equals, i, force_split, should_split);
@@ -177,62 +179,97 @@ int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
     return 0;
 }
 
+
 // void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
 // {
 //     int i;
 //     char *equals;
 //     int arg_should_split;
+//     int count = 0;
 
 //     if (split_the_rest_hp(current, &should_split, &i))
 //         return;
+//     if (current->args_befor_quotes_remover) 
+//     {
+//         while (current->args_befor_quotes_remover[count])
+//             count++;
+//     }
+    
 //     i = 1; 
 //     while (current->args && current->args[i]) 
 //     {
+//         if (current->args_befor_quotes_remover && 
+//             i < count &&
+//             current->args_befor_quotes_remover[i] && 
+//             is_append_assignment(current->args_befor_quotes_remover[i]))
+//         {
+//             i++;
+//             continue;
+//         }
+        
 //         equals = strchr(current->args[i], '=');
 //         if (had_removed_var == 1)
 //             arg_should_split = 1;
-//         else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
+//         else if (!equals && current->args_befor_quotes_remover && i < count && 
 //             current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
 //             arg_should_split = 1; 
-//         else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
+//         else if (current->args_befor_quotes_remover && i < count) 
 //             arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
 //         else
 //             arg_should_split = should_split_arg(current->args[i], NULL);
+        
 //         split_the_rest_helper(equals, arg_should_split, current, &i);
 //         i++;
 //     }
 // }
+
 
 void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
 {
     int i;
     char *equals;
     int arg_should_split;
+    int count = 0;
 
     if (split_the_rest_hp(current, &should_split, &i))
         return;
+    if (current->args_befor_quotes_remover) 
+    {
+        while (current->args_befor_quotes_remover[count])
+            count++;
+    }
     
     i = 1; 
     while (current->args && current->args[i]) 
     {
-        // NEW: Check for append assignment first
+        // Check for variable key append assignment first
         if (current->args_befor_quotes_remover && 
-            i < ft_lint(current->args_befor_quotes_remover) &&
+            i < count &&
+            current->args_befor_quotes_remover[i] && 
+            is_var_key_append(current->args_befor_quotes_remover[i]))
+        {
+            // Force split for variable key append assignments
+            split_the_rest_helper(strchr(current->args[i], '='), 1, current, &i);
+            i++;
+            continue;
+        }
+        
+        if (current->args_befor_quotes_remover && 
+            i < count &&
             current->args_befor_quotes_remover[i] && 
             is_append_assignment(current->args_befor_quotes_remover[i]))
         {
-            printf("Skipping split for export append: %s\n", current->args_befor_quotes_remover[i]);
             i++;
-            continue; // Skip splitting for append assignments
+            continue;
         }
         
         equals = strchr(current->args[i], '=');
         if (had_removed_var == 1)
             arg_should_split = 1;
-        else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
+        else if (!equals && current->args_befor_quotes_remover && i < count && 
             current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
             arg_should_split = 1; 
-        else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
+        else if (current->args_befor_quotes_remover && i < count) 
             arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
         else
             arg_should_split = should_split_arg(current->args[i], NULL);

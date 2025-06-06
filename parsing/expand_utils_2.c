@@ -6,11 +6,75 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/06 12:02:43 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:22:49 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+
+int is_var_key_append(char *original_arg)
+{
+    char *dollar_pos;
+    char *plus_equals_pos;
+    
+    if (!original_arg)
+        return 0;
+    
+    // Look for $ at the beginning
+    if (original_arg[0] != '$')
+        return 0;
+    
+    // Find the += pattern
+    plus_equals_pos = strstr(original_arg, "+=");
+    if (!plus_equals_pos)
+        return 0;
+    
+    // Make sure $ comes before +=
+    dollar_pos = strchr(original_arg, '$');
+    if (dollar_pos && dollar_pos < plus_equals_pos)
+        return 1;
+    
+    return 0;
+}
+
+
+int key_is_var(char *str)
+{
+    if (!str || str[0] == '\0')
+        return 0;
+    
+    // Check if string starts with $
+    return (str[0] == '$');
+}
+
+int has_quotes_before_plus(char *str)
+{
+    char *equals_pos;
+    char *plus_pos;
+    int j;
+    
+    if (!str)
+        return 0;
+    
+    equals_pos = strchr(str, '=');
+    if (!equals_pos || equals_pos == str)
+        return 0;
+    if (*(equals_pos - 1) == '+') 
+    {
+        plus_pos = equals_pos - 1;
+        j = 0;
+        while (j < (plus_pos - str))
+        {
+            if (str[j] == '\'' || str[j] == '"') 
+                return 1;
+            j++;
+        }
+    }
+    
+    return 0;
+}
+
 
 
 int is_append_assignment(char *str)
@@ -22,29 +86,28 @@ int is_append_assignment(char *str)
     if (!str)
         return 0;
     
-    // Find the equals sign
+    if (key_is_var(str) || has_quotes_before_plus(str))
+        return 0;
+    
     equals_pos = strchr(str, '=');
     if (!equals_pos)
         return 0;
-    
-    // Check if there's exactly one + right before the =
     if (equals_pos > str && *(equals_pos - 1) == '+')
     {
-        // Count how many consecutive + characters before =
         ptr = equals_pos - 1;
         while (ptr >= str && *ptr == '+')
         {
             plus_count++;
             ptr--;
         }
-        
-        // Valid append assignment has exactly one +
         if (plus_count == 1)
             return 1;
     }
     
     return 0;
 }
+
+
 
 
 int should_split_arg(char *arg, char *original_arg)
@@ -54,15 +117,16 @@ int should_split_arg(char *arg, char *original_arg)
     
     if (!arg || !*arg)
         return 0;
-    
-    // First check: if original argument has += pattern, never split
+    if (original_arg && key_is_var(original_arg) == 1)
+        return 1;
+    if (original_arg && has_quotes_before_plus(original_arg))
+        return 1;
+     if (original_arg && is_var_key_append(original_arg))
+        return 1;
     if (original_arg && is_append_assignment(original_arg))
         return 0;
     if (is_append_assignment(arg))
-    {
         return 0;
-    }
-
     if (strchr(arg, '$'))
         return 1;
     equals = strchr(arg, '=');
@@ -104,7 +168,6 @@ char **split_if_needed(char *str)
         while (result[count])
             count++;
     }
-    
     if (count <= 1) 
         return (free_string_array(result), NULL);
     return result;

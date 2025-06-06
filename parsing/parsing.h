@@ -20,7 +20,8 @@
 
 #define SET 0
 #define GET 1
-
+int key_is_var(char *str);
+int is_var_key_append(char *original_arg);
 int is_append_assignment(char *str);
 char *chenger_back(char *str);
 // void remove_node(void *addr_str, t_collet **head);
@@ -230,4 +231,5 @@ int var_name_extract(t_exp_helper *expand);
 int alloc_var_name(t_exp_helper *expand);
 void value_extracter(t_exp_helper *expand, t_env *env);
 int adding_var_value(t_exp_helper *expand);
+
 #endif

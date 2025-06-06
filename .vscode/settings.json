@@ -4,6 +4,7 @@
         "functional": "c",
         "iterator": "c",
         "memory": "c",
-        "parsing.h": "c"
+        "parsing.h": "c",
+        "sstream": "c"
     }
 }
