@@ -196,16 +196,11 @@ t_exp_helper *alloc_expand()
 
 void case_handle(t_cmd *current, int *i, int *pls_case, int *should_split)
 {
-    if (pls_conter(current->args[(*i)]) == 1)
-                (*pls_case) = 1;
     if (((current->args[(*i)][0] == '\'' && current->args[(*i)][strlen(current->args[(*i)]) - 1] == '\'') ||
             (current->args[(*i)][0] == '"' && current->args[(*i)][strlen(current->args[(*i)]) - 1] == '"')) && current->args[(*i) + 1] != NULL)
                (*should_split) = 0;
     else
     {
-        if (strchr(current->args[(*i)], '$'))
-            (*should_split) = 1;
-        else 
             (*should_split) = 1;
     } 
 
@@ -230,6 +225,7 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
     {
         should_split = 0;
         i = 0;
+        pls_case = 0;
         while (current->args && current->args[i])
         {
             case_handle(current, &i, &pls_case, &should_split);
@@ -299,8 +295,7 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
         }
         current = current->next;
     }
-    if (pls_case == 1 && should_split == 1) 
-        should_split = 0;
+    printf("pls_case   == %d\n", pls_case);
     if (should_split | had_empty_var)
         apply_word_splitting(cmd_list, expand);
     else

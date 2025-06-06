@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:42:21 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:43:20 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/05 22:47:44 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
     int force_split;
     int count;
     char *orig_equals;
-
+    int append = pls_conter(current->args_befor_quotes_remover[*i]);
+    printf("append  010 ===== %d\n", append);
     force_split = 0;
     if (current->args[(*i)] && equals)
     {
@@ -59,7 +60,7 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
             if (*i < count && current->args_befor_quotes_remover[*i]) 
             {
                 orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
-                if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
+                if (orig_equals && check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals) && pls_conter(current->args_befor_quotes_remover[*i]))
                     force_split = 1;
             }
         }

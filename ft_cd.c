@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:05:15 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/26 18:01:45 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:37:59 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ char *get_value_env(char *key, t_env **list)
 {
 	t_env   *tmp;
 
+
+	  if (!list || !*list || !key)
+        return (NULL);
+
+		
 	tmp = *list;
-	while(tmp)
+	while(tmp != NULL && tmp->key != NULL)
 	{
 		if(ft_strcmp(tmp->key, key) == 0)
 		{

@@ -70,9 +70,6 @@ minishell $> echo $?
 
 
 
-
-
-
 ***********************
 declare -x f=" -la"
 minishell $> ls$f

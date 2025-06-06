@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/04 20:28:09 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:55:20 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,14 @@ void execute_single_command(t_cmd *cmd, t_env *list_env, char *env[])
         // signal(SIGQUIT, SIG_IGN);
 		if(!is_builtin(cmd->args))
 		{
-			cmd->data.new_pwd = get_value_env("PWD", &list_env);
+			if (list_env) 
+			{
+            cmd->data.new_pwd = get_value_env("PWD", &list_env);
+			}
+		else 
+		{
+            cmd->data.new_pwd = NULL;
+        }
 			excute_builting(&cmd, list_env, env);
 			get_or_set(SET, cmd->data.exit_status);
 			return ;

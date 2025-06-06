@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/03 11:50:06 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:17:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ int should_split_arg(char *arg, char *original_arg)
     
     if (!arg || !*arg)
         return 0;
+    int is_append = pls_conter(original_arg);
+
+    printf("is_append should split arg %d\n", is_append);
+    
+    if (is_append == 1 )
+        return 0;
+    
     if (strchr(arg, '$'))
         return 1;
     

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:33:17 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/21 11:18:58 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/06/05 22:47:31 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,48 @@
 
 #include "minishell.h"
 
+
+// void del(void *content)
+// {
+//     free(content);
+// }
+
+// int remove_env(t_env **env_list, char *variable)
+// {
+//     t_env *tmp;
+//     t_env *to_delete;
+
+//     if (!*env_list || !env_list)
+//         return (0);
+//     if (ft_strcmp((*env_list)->key, variable) == 0)
+//     {
+//         puts("HHH\n");
+//         to_delete = *env_list;
+//         *env_list = (*env_list)->next;
+//         // del(to_delete->key);
+//         del(to_delete->value);
+//         // free(to_delete);
+//         return (1);
+//     }
+    
+//     // Check rest of list
+//     tmp = *env_list;
+//     while (tmp->next)
+//     {
+//         if (ft_strcmp(tmp->next->key, variable) == 0)
+//         {
+//             to_delete = tmp->next;
+//             tmp->next = tmp->next->next;
+//             del(to_delete->key);
+//             del(to_delete->value);
+//             free(to_delete);
+//             return (1);
+//         }
+//         tmp = tmp->next;
+//     }
+    
+//     return (0); // Variable not found
+// }
 
 void del(void *content)
 {
@@ -32,12 +74,13 @@ int remove_env(t_env **env_list, char *variable)
         return (0);
     if (ft_strcmp((*env_list)->key, variable) == 0)
     {
-        puts("HHH\n");
         to_delete = *env_list;
         *env_list = (*env_list)->next;
-        // del(to_delete->key);
-        del(to_delete->value);
-        // free(to_delete);
+        // Fix: Free both key and value, and the node itself
+        del(to_delete->key);
+        if (to_delete->value)
+            del(to_delete->value);
+        free(to_delete);
         return (1);
     }
     
@@ -50,7 +93,8 @@ int remove_env(t_env **env_list, char *variable)
             to_delete = tmp->next;
             tmp->next = tmp->next->next;
             del(to_delete->key);
-            del(to_delete->value);
+            if (to_delete->value)
+                del(to_delete->value);
             free(to_delete);
             return (1);
         }
