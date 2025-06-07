@@ -295,7 +295,6 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
         }
         current = current->next;
     }
-    printf("pls_case   == %d\n", pls_case);
     if (should_split | had_empty_var)
         apply_word_splitting(cmd_list, expand);
     else

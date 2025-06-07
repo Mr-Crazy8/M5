@@ -5,6 +5,7 @@
         "iterator": "c",
         "memory": "c",
         "parsing.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "tct": "c"
     }
 }

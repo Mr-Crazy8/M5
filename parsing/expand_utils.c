@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:44:29 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:34:15 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ void cmd_splitting(t_cmd *cmd_list )
         } 
 }
 
-void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
+void  apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
 {
     t_cmd *current = cmd_list;
     int should_split;
     
+    printf("line 46 expand_utils\n");
     while (current)
     {
         cmd_splitting(current);

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/05 18:55:20 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/07 21:22:55 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,11 @@ void handel_signal(int sig)
 {
 	struct termios infos;
 
-	if (sig == SIGINT)
+	if (sig == SIGINT && here_doc_static(GET, 0) == 1)
+	{
+		signal_static(SET, 1);
+	}
+	else if (sig == SIGINT)
 	{
 		global_sig = sig;
 		ft_putstr_fd("\n", 1);
@@ -283,7 +287,50 @@ void add_one_shlvl(t_env *env)
         tmp->next = new_node;
     }
 }
+int max_heredoc_checker(t_cmd *cmd)
+{
+	t_cmd *tmp = cmd;
+	t_redir *tp = NULL;
+	int count = 0;
+	while (tmp)
+	{
+		tp = tmp->redirs;
+		while (tp)
+		{
+			if (tp->type == 3)
+				count++;
+			tp = tp->next;
+		}
+		tmp = tmp->next;
+	}
+	if (count > 16)
+		{
+			write(2, "minishell:  maximum here-document count exceeded\n", 50);
+			get_or_set(SET, 2);
+			return 1;
+		}
+	return 0;
+}
 
+int heredoc_count(t_cmd *cmd)
+{
+	t_cmd *tmp = cmd;
+	t_redir *tp = NULL;
+	int count = 0;
+	while (tmp)
+	{
+		tp = tmp->redirs;
+		while (tp)
+		{
+			if (tp->type == 3)
+				count++;
+			tp = tp->next;
+		}
+		tmp = tmp->next;
+	}
+
+	return count;
+}
 void check_here_doc(t_cmd *cmd, t_env *env)
 {
 	 /* 0:<, 1:>, 2:>>, 3:<< */
@@ -292,7 +339,10 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	tmp_redir = NULL;
 	tmp = cmd;
 	int *fd;
-
+	
+	if (max_heredoc_checker(cmd) == 1)
+		return;
+	int here_doc_count = heredoc_count(cmd);
 	while (tmp)
 	{
 		tmp_redir = tmp->redirs;
@@ -300,7 +350,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 		{
 			if (tmp_redir->type == 3)
 				{
-					fd = heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token);
+					fd = heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token, here_doc_count);
 					// printf("%d\n", fd[1]);
 					if (fd != NULL)
                 	{

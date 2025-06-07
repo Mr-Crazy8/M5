@@ -351,23 +351,32 @@ int *write_to_file(char *str)
     return fd;
 }
 
-int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter)
+int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int here_doc_count)
 {
     char *line;
     char *heredoc;
     char *tmp1;
     char *tmp2;
     char *processed_delimiter =  ft_strdup(delmeter);
-    printf("c=================== %s\n", processed_delimiter);
+    int count = 0;
     heredoc = NULL;
 
     //  printf("delimiter : ==============> %s\n", delmeter);
     //  printf("processed_delimiter : ==============> %s\n", processed_delimiter);
     while(1)
     {
-       line = readline("> ");
+       here_doc_static(SET, 1);
+       if (signal_static(GET, 0) == 1)
+        {
+            count++;
+            if (count == here_doc_count)
+                signal_static(SET, 0);
+            break;
+        }
+        else
+            line = readline("> ");
        if (!line)
-       {
+       {    
             write(1, "\n", 1);
             free(processed_delimiter);
             return NULL;
@@ -404,6 +413,7 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter)
             heredoc = tmp2;
         }
     }
+    here_doc_static(SET, 0);
    
     free(processed_delimiter);
     return write_to_file(heredoc);

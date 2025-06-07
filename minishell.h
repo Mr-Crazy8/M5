@@ -209,7 +209,8 @@ void    ft_free_split(char **str);
 void value_empty(t_env **env_list, char *key);
 
 
-int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter);
+// int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter);
+int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int here_doc_count);
 
 int get_or_set(int type, int status); // for intialize or get exit status;
 void wait_for_children(t_cmd *cmd, pid_t child_pid);

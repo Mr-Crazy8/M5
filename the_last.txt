@@ -96,3 +96,9 @@ bash-3.2$ << a cat
 [+] ambiguous
 [+] += case in export
 [+] whait space triming
+
+
+
+bash: maximum here-document count exceeded
+the exit
+

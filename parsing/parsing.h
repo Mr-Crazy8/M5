@@ -24,6 +24,7 @@ int key_is_var(char *str);
 int is_var_key_append(char *original_arg);
 int is_append_assignment(char *str);
 char *chenger_back(char *str);
+
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
 // void ft_in_use(void *adders, t_collet *addres_list);
@@ -107,6 +108,12 @@ typedef struct s_exp_helper {
     int had_removed_var;
     
 } t_exp_helper;
+
+int	signal_static(int type, int status);
+int	here_doc_static(int type, int status);
+
+
+int has_quotes_in_previous_args(t_cmd *current, int current_index);
 int	ft_isdigiti(int c);
 char *chenger(char *str);
 char *trim_whitespace(char *str);
