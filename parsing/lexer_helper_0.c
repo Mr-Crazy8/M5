@@ -6,48 +6,48 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:04:29 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/18 17:32:15 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:07:39 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	ft_strlen(const char *str)
-{
-	int	i;
+// int	ft_strlen(const char *str)
+// {
+// 	int	i;
 
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	if (str == NULL)
+// 		return (0);
+// 	while (str[i])
+// 		i++;
+// 	return (i);
+// }
 
-char	*ft_strdup(const char *s)
-{
-	int		i;
-	int		j;
-	int		s_len;
-	char	*dup;
+// char	*ft_strdup(const char *s)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		s_len;
+// 	char	*dup;
 
-	i = 0;
-	j = 0;
-	s_len = ft_strlen(s);
-	dup = (char *)malloc(s_len + 1);
-	if (dup == NULL)
-	{
-		return (NULL);
-	}
-	while (s[i] != '\0')
-	{
-		dup[j] = s[i];
-		j++;
-		i++;
-	}
-	dup[j] = '\0';
-	return (dup);
-}
+// 	i = 0;
+// 	j = 0;
+// 	s_len = ft_strlen(s);
+// 	dup = (char *)malloc(s_len + 1);
+// 	if (dup == NULL)
+// 	{
+// 		return (NULL);
+// 	}
+// 	while (s[i] != '\0')
+// 	{
+// 		dup[j] = s[i];
+// 		j++;
+// 		i++;
+// 	}
+// 	dup[j] = '\0';
+// 	return (dup);
+// }
 
 
 

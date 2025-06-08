@@ -16,7 +16,7 @@
 #include<fcntl.h>
 #include<limits.h>
 #include <errno.h>
-
+#include "get_next_line/get_next_line.h"
 
 #define SET 0
 #define GET 1
@@ -24,7 +24,6 @@ int key_is_var(char *str);
 int is_var_key_append(char *original_arg);
 int is_append_assignment(char *str);
 char *chenger_back(char *str);
-
 // void remove_node(void *addr_str, t_collet **head);
 // void ft_free_unused(t_collet **addres_list);
 // void ft_in_use(void *adders, t_collet *addres_list);
@@ -176,7 +175,7 @@ void	fill_num_string(char *str, long num, int len);
 char	*ft_itoa(int n);
 int	ft_isalnum(int c);
 int	is_valid_var_char(char c);
-int	ft_strlen(const char *str);
+// int	ft_strlen(const char *str);
 char	*ft_strdup(const char *s);
 t_token	*creat_token(char *data, char *token_type);
 char	*ft_strncpy(char *dest, const char *src, unsigned int n);

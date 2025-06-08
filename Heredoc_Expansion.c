@@ -361,20 +361,31 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, 
     int count = 0;
     heredoc = NULL;
 
+    here_doc_static(SET, 1);    // Tell signal handler we're in heredoc     // Clear any previous signal
+
     //  printf("delimiter : ==============> %s\n", delmeter);
     //  printf("processed_delimiter : ==============> %s\n", processed_delimiter);
     while(1)
     {
-       here_doc_static(SET, 1);
+
+        if (signal_static(GET, 0) == 1)
+        {
+            count++;
+            if (count == here_doc_count)
+                signal_static(SET, 0);
+            printf("break\n");
+            break;
+        }
+        else
+        line = readline("> ");
        if (signal_static(GET, 0) == 1)
         {
             count++;
             if (count == here_doc_count)
                 signal_static(SET, 0);
+            printf("break\n");
             break;
         }
-        else
-            line = readline("> ");
        if (!line)
        {    
             write(1, "\n", 1);
@@ -413,9 +424,16 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, 
             heredoc = tmp2;
         }
     }
-    here_doc_static(SET, 0);
-   
+
+    if (signal_static(GET, 0) == 1 && count == here_doc_count)
+    {
+        signal_static(SET, 0);
+        return NULL;
+    }
     free(processed_delimiter);
+   
+    here_doc_static(SET, 0);    // Clear heredoc status when done
+    // Clear signal status
     return write_to_file(heredoc);
 }
 

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/07 21:22:55 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/08 13:43:52 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ void execute_single_command(t_cmd *cmd, t_env *list_env, char *env[])
 			get_or_set(SET, cmd->data.exit_status);
 		}
 }
+
+
+
 void handel_signal(int sig)
 {
 	struct termios infos;
@@ -107,6 +110,13 @@ void handel_signal(int sig)
 	if (sig == SIGINT && here_doc_static(GET, 0) == 1)
 	{
 		signal_static(SET, 1);
+		// rl_done = 1;
+            ft_putstr_fd("\n", 1);
+        //     // Update display
+            // rl_on_new_line();
+            // rl_redisplay();
+            // rl_replace_line("", 0);
+  		
 	}
 	else if (sig == SIGINT)
 	{
@@ -370,7 +380,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 		}
 		
 		tmp = tmp->next;
-	}
+	}	
 }
 
 
@@ -446,6 +456,7 @@ int main(int argc, char *argv[], char *env[])
 	tcsetattr(1, TCSANOW, &infos);
 	while (1)
 	{
+		
 		signal(SIGINT, handel_signal);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell $> ");

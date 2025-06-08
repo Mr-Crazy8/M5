@@ -8,6 +8,7 @@
 #include <termios.h>
 #include "parsing/parsing.h"
 
+
 // #define SET 0
 // #define GET 1
 
@@ -177,7 +178,7 @@
 // void	free_token_list(t_token *token_list);
 // /// HNa 
 
-char	*ft_strchr(char *s, int c);
+// char	*ft_strchr(char *s, int c);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_lstadd_back(t_env **lst, t_env *new);

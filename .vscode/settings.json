@@ -6,6 +6,7 @@
         "memory": "c",
         "parsing.h": "c",
         "sstream": "c",
-        "tct": "c"
+        "tct": "c",
+        "minishell.h": "c"
     }
 }
