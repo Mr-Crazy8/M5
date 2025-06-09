@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/09 11:10:46 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:23:52 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,7 +360,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 		{
 			if (tmp_redir->type == 3)
 				{
-					heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token, tmp_redir->fd[0]);
+					heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token,  );
 				}
 			tmp_redir = tmp_redir->next;
 		}
@@ -415,6 +415,33 @@ void change_back_cmd(t_cmd *cmd)
 // 	system("leaks minishell");
 // }
 
+
+char *change_space(char *str)
+{
+	int i = 0;
+	int quote_state = 0;
+	while(str && str[i])
+	{
+		if (str[i] == '\'')
+		{
+			if (quote_state == 0)
+				quote_state = 1;
+			else if (quote_state == 1)
+				quote_state = 0;
+		}
+		else if (str[i] == '"')
+		{
+			if (quote_state == 0)
+				quote_state = 2;
+			else if (quote_state == 2)
+				quote_state = 0;
+		}
+		if (str[i] >= 9 && str[i] <=13 && quote_state == 0)
+			str[i] = ' ';
+		i++;
+	}
+	return str;
+}
 int main(int argc, char *argv[], char *env[])
 {
 	t_token *token_list;
@@ -475,7 +502,8 @@ int main(int argc, char *argv[], char *env[])
 			free(input);
             continue;
 		 }
-		token_list = tokin_list_maker(preprocessed_input);
+		 char *new_input = change_space(preprocessed_input);
+		token_list = tokin_list_maker(new_input);
 		
 		free(preprocessed_input);
 		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))

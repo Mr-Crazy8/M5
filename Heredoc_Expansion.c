@@ -6,17 +6,15 @@ char *random_dir(void)
     int fd;
     unsigned char *raw_bytes;
     char *result;
-    int dir_size = 14; /* Corrected to match actual number of directories */
+    int dir_size = 14; 
     static int i = 0;
     unsigned int index;
     int j = 0;
-   
-    /* Allocate memory for random bytes */
     raw_bytes = malloc(sizeof(unsigned char) * 5);
     if (raw_bytes == NULL) {
         return NULL;
     }
-    dir = malloc(sizeof(char *) * (dir_size + 1)); /* +1 for NULL terminator */
+    dir = malloc(sizeof(char *) * (dir_size + 1));
     if (dir == NULL) {
         free(raw_bytes);
         return NULL;

@@ -67,11 +67,12 @@ void value_extracter(t_exp_helper *expand, t_env *env)
     if (is_valid_key(expand->var_name) != 1)
         {
         lk_var = lookup_variable(expand->var_name, env);
-        var = chenger(trim_whitespace((lk_var)));
+        var = chenger(ft_strtrim((lk_var), " "));
         free(lk_var);
     }
     if (var != NULL)
         expand->var_value = var;
+    printf("[%s]\n", expand->var_value);
     free(expand->var_name);
     expand->var_name = NULL;
 }
@@ -94,6 +95,7 @@ int adding_var_value(t_exp_helper *expand)
     }
     memcpy(expand->expanded + expand->j, expand->var_value, len);
     expand->j += len;
+    printf("----[%s]-----\n", expand->expanded);
     free(expand->var_value);
     expand->var_value = NULL;
     return (1);

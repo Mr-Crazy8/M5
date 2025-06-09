@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/09 11:31:50 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:00:25 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,24 @@
     
 //     return 0;
 // }
+
+int has_empty_quotes_before_var(char *str)
+{
+    if (!str || strlen(str) < 3)
+        return 0;
+    
+    // Check for ""$ pattern (empty quotes followed by variable)
+    if (str[0] == '"' && str[1] == '"' && str[2] == '$')
+        return 1;
+    
+    // Check for ''$ pattern
+    if (str[0] == '\'' && str[1] == '\'' && str[2] == '$')
+        return 1;
+        
+    return 0;
+}
+
+
 int is_var_key_append(char *original_arg)
 {
     char *dollar_pos;
@@ -52,13 +70,17 @@ int is_var_key_append(char *original_arg)
         return 0;
     
     // Find the += pattern
-    plus_equals_pos = strstr(original_arg, "+=");
+    plus_equals_pos = strstr(dollar_pos, "+="); // Start looking from $ position
     if (!plus_equals_pos)
         return 0;
     
-    // Make sure $ comes before +=
+    // Make sure $ comes before += and there's no other $ between them
     if (dollar_pos < plus_equals_pos)
-        return 1;
+    {
+        char *next_dollar = strchr(dollar_pos + 1, '$');
+        if (!next_dollar || next_dollar > plus_equals_pos)
+            return 1;
+    }
     
     return 0;
 }
