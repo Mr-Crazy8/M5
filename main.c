@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/08 13:43:52 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:10:46 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void handel_signal(int sig)
 		signal_static(SET, 1);
 		// rl_done = 1;
             ft_putstr_fd("\n", 1);
+			        rl_done = 1;
         //     // Update display
             // rl_on_new_line();
             // rl_redisplay();
@@ -209,9 +210,9 @@ void check_line(t_cmd **command, t_env *env_list, char *env[])
     int fd_output ;
 
     // if ((*command)->redirs != NULL)
-        check_here_doc(*command, env_list);
     fd_input = dup(0);
     fd_output = dup(1);
+        check_here_doc(*command, env_list);
     if (cmd->pipe_out)
     {
         ft_excute_mult_pipe(cmd, env_list, env);
@@ -226,7 +227,7 @@ void check_line(t_cmd **command, t_env *env_list, char *env[])
     {
         if(cmd->redirs)
         {
-            if(cmd->redirs->fd == -1)
+            if(cmd->redirs->fd[0] == -1)
             {
                     dup2(fd_input, 0);
                     dup2(fd_output, 1);
@@ -349,7 +350,6 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	tmp_redir = NULL;
 	tmp = cmd;
 	int *fd;
-	
 	if (max_heredoc_checker(cmd) == 1)
 		return;
 	int here_doc_count = heredoc_count(cmd);
@@ -360,21 +360,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 		{
 			if (tmp_redir->type == 3)
 				{
-					fd = heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token, here_doc_count);
-					// printf("%d\n", fd[1]);
-					if (fd != NULL)
-                	{
-                    	tmp_redir->fd = fd[1];
-                    	close(fd[0]);
-						// free(fd[0]);
-						// free(fd[1]);
-						free(fd);
-						
-                	}
-                	else
-                	{
-                    tmp_redir->fd = -1;
-                }
+					heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token, tmp_redir->fd[0]);
 				}
 			tmp_redir = tmp_redir->next;
 		}

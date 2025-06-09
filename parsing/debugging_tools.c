@@ -87,7 +87,7 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
                 else
                     printf("file name : (null)\n");
                     
-                printf("fd for the file : %d\n", tp->fd);
+                printf("fd for the file : %d\n", tp->fd[0]);
                 printf("ambiguous %d\n", tp->Ambiguous);
                 tp = tp->next;
             }

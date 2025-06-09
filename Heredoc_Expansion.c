@@ -170,7 +170,7 @@ int *heredoc_opener(void)
 
     if (random_name) {
         fd_heredoc[0] = open(random_name, O_CREAT | O_WRONLY, 0644);
-        fd_heredoc[1] = open(random_name, O_CREAT | O_RDONLY, 0644);
+        fd_heredoc[1] = open(random_name,  O_RDONLY, 0644);
         unlink(random_name);
         free(random_name);  
     }
@@ -324,73 +324,42 @@ void	ft_putchar_fd(char c, int fd)
 	write(fd, &c, 1);
 }
 
-int *write_to_file(char *str)
+void write_to_file(char *str, int fd)
 {
-    // if (!str)
-    //     return NULL;
-        
+ 
     int i = 0;
-    int *fd = heredoc_opener();
-    if (fd == NULL) // Check for NULL instead of < 0
-        return NULL; // Changed from -1
     if (str == NULL)
-        ft_putchar_fd(0, fd[0]);
+        ft_putchar_fd(0, fd);
     else {
     while (str && str[i])
     {
-        ft_putchar_fd(str[i], fd[0]);
+        ft_putchar_fd(str[i], fd);
         i++;
     }
 
     }
-
-    // printf("fd[0] %d\n", fd[0]);
-
-    // lseek(fd, 0, SEEK_SET);
     free(str);
-    return fd;
 }
 
-int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int here_doc_count)
+void heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int fd)
 {
+    printf("heredoc\n");
     char *line;
     char *heredoc;
     char *tmp1;
     char *tmp2;
     char *processed_delimiter =  ft_strdup(delmeter);
-    int count = 0;
+    // int count = 0;
     heredoc = NULL;
 
-    here_doc_static(SET, 1);    // Tell signal handler we're in heredoc     // Clear any previous signal
-
-    //  printf("delimiter : ==============> %s\n", delmeter);
-    //  printf("processed_delimiter : ==============> %s\n", processed_delimiter);
     while(1)
     {
-
-        if (signal_static(GET, 0) == 1)
-        {
-            count++;
-            if (count == here_doc_count)
-                signal_static(SET, 0);
-            printf("break\n");
-            break;
-        }
-        else
         line = readline("> ");
-       if (signal_static(GET, 0) == 1)
-        {
-            count++;
-            if (count == here_doc_count)
-                signal_static(SET, 0);
-            printf("break\n");
-            break;
-        }
        if (!line)
        {    
             write(1, "\n", 1);
             free(processed_delimiter);
-            return NULL;
+            return ;
        }
        if (strcmp(line, processed_delimiter) == 0)
        {
@@ -404,7 +373,7 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, 
        if (!tmp1)
        {
         free(processed_delimiter);
-        return NULL;
+        return ;
        }
         if (heredoc == NULL)
             {
@@ -419,22 +388,16 @@ int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, 
             if (!tmp2)
             {
                 free(processed_delimiter);
-                return NULL;
+                return ;
             }
             heredoc = tmp2;
         }
     }
 
-    if (signal_static(GET, 0) == 1 && count == here_doc_count)
-    {
-        signal_static(SET, 0);
-        return NULL;
-    }
     free(processed_delimiter);
    
-    here_doc_static(SET, 0);    // Clear heredoc status when done
-    // Clear signal status
-    return write_to_file(heredoc);
+
+   write_to_file(heredoc, fd);
 }
 
 

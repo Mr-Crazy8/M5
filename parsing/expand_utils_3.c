@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:42:21 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/07 18:57:35 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:09:32 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,10 @@ int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
     int was_variable = 0;
     if (!current->args)
         return 0;
-     printf("line 131 expand_utils_3\n");
     if (current->args_befor_quotes_remover && 
         current->args_befor_quotes_remover[0] && 
         strchr(current->args_befor_quotes_remover[0], '$')) {
         was_variable = 1;
-          printf("line 136 expand_utils_3\n");
     }
     if (!current->cmd || strcmp(current->cmd, "export") != 0 || was_variable) 
     {
@@ -150,7 +148,7 @@ int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
         while (current->args && current->args[(*i)]) 
         {
             equals = strchr(current->args[(*i)], '=');
-              printf("line 143 expand_utils_3\n");
+              printf("\n");
             split_the_rest_helper(equals, (*should_split), current, &(*i));
             (*i)++;
         }
@@ -170,7 +168,6 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
     char *equals;
     int arg_should_split;
     int count = 0;
-    printf("line 162 expand_utils_3\n");
     if (split_the_rest_hp(current, &should_split, &i))
         return;
         
@@ -185,14 +182,12 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
     {
         // CRITICAL FIX: Check for $var+= pattern explicitly to fix the problem
         int is_var_append = 0;
-         printf("line 179 expand_utils_3\n");
         if (current->args_befor_quotes_remover && i < count && 
             current->args_befor_quotes_remover[i])
         {
             char *arg = current->args_befor_quotes_remover[i];
             if (is_var_key_append(arg))
             {
-                printf("line 186 expand_utils_3\n");
                 char *plus_eq = strstr(arg, "+=");
                 if (plus_eq)
                 {
@@ -202,7 +197,6 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
         }
         if (is_var_append)
         {
-             printf("line 196 expand_utils_3\n");
             equals = strchr(current->args[i], '=');
             split_the_rest_helper(equals, 1, current, &i); 
             i++;
@@ -230,13 +224,11 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
             arg_should_split = 1; 
         else if (current->args_befor_quotes_remover && i < count) 
         {
-            printf("line 220 expand_utils_3\n");
             arg_should_split = should_split_arg(current->args[i], 
                                                current->args_befor_quotes_remover[i]);
         }
         else
         {
-             printf("line 226 expand_utils_3\n");
             arg_should_split = should_split_arg(current->args[i], NULL);
         }
         

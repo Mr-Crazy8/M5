@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:10:36 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/07 22:06:22 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/08 14:13:17 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,24 @@ int		ft_list_size(t_env *begin_list)
     }
 	return (size);
 }
-// char	*ft_strchr(char *s, int c)
-// {
-// 	int		i;
-// 	char	m;
+char	*ft_strchr(char *s, int c)
+{
+	int		i;
+	char	m;
 
-// 	i = 0;
-// 	m = c;
-// 	while (s[i] != '\0')
-// 	{
-// 		if (s[i] == m)
-// 			return ((char *)&s[i]);
-// 		i++;
-// 	}
-// 	if (m == '\0')
-// 		return ((char *)&s[i]);
-// 	return (NULL);
+	i = 0;
+	m = c;
+	while (s[i] != '\0')
+	{
+		if (s[i] == m)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (m == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
 	
-// }
+}
 
 int ft_strcmp(char *s1, char *s2)
 {

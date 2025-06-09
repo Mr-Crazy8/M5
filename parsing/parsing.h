@@ -16,10 +16,10 @@
 #include<fcntl.h>
 #include<limits.h>
 #include <errno.h>
-#include "get_next_line/get_next_line.h"
 
 #define SET 0
 #define GET 1
+
 int key_is_var(char *str);
 int is_var_key_append(char *original_arg);
 int is_append_assignment(char *str);
@@ -34,7 +34,7 @@ char *chenger_back(char *str);
 // void	*ft_malloc(t_collet **addres_list,size_t size);
 // char	*addres_to_string(void *ptr);
 // void ft_free(void *addr, t_collet **addres_list);
-
+int	ft_strlen(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 typedef struct t_data
@@ -71,7 +71,7 @@ typedef struct s_redir
 {
     int type;             /* 0:<, 1:>, 2:>>, 3:<< */
     char *file;           /* Filename or heredoc delimiter */
-    int fd;
+    int *fd;
     int Ambiguous;
     char    *orig_token;  /* Original token with quotes */
     char *heredoc_delemter; /* Fully processed delimiter for matching */
@@ -108,6 +108,9 @@ typedef struct s_exp_helper {
     
 } t_exp_helper;
 
+
+
+void check_here_doc(t_cmd *cmd, t_env *env);
 int	signal_static(int type, int status);
 int	here_doc_static(int type, int status);
 
@@ -188,7 +191,8 @@ int special_character_cheker_with_quotes(char character, int quote_state);
 void scan_for_token(char *input, int *i, int input_length, int *start_index);
 void handle_block(char *input, int *i, int input_length, t_token **token_list);
 t_token	*tokin_list_maker(char *input);
-int open_file(t_cmd *cmd, int type, char *file);
+int *open_file(t_cmd *cmd, int type, char *file);
+int *heredoc_opener(void);
 // void print_file_error(char *file, int i, int Ambiguous);
 char	*ft_strjoin(char const *s1, char const *s2);
 void process_redir_helper(char str, int *quote_state);

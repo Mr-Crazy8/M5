@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/07 18:26:34 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:31:50 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ int is_var_key_append(char *original_arg)
     if (!original_arg)
         return 0;
     
-    // Look for $ at the beginning
-    if (original_arg[0] != '$')
+    // Find the first $ character (anywhere in the string, not just at beginning)
+    dollar_pos = strchr(original_arg, '$');
+    if (!dollar_pos)
         return 0;
     
     // Find the += pattern
@@ -56,8 +57,7 @@ int is_var_key_append(char *original_arg)
         return 0;
     
     // Make sure $ comes before +=
-    dollar_pos = strchr(original_arg, '$');
-    if (dollar_pos && dollar_pos < plus_equals_pos)
+    if (dollar_pos < plus_equals_pos)
         return 1;
     
     return 0;
@@ -147,7 +147,6 @@ int should_split_arg(char *arg, char *original_arg)
     // Check for variable key with append format (e.g. $f+=value or ""$f+=value)
     // We want to ensure this triggers splitting
     int app = is_var_key_append(original_arg);
-    printf("append case %d\n", app);
     if (original_arg && app)
         return 1; // Force split
         

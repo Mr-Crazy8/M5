@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:59:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/04 20:25:09 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:22:52 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,30 @@ void ft_redircte(t_redir *rederction, t_env *env, t_cmd *cmd)
 
     while(tmp)
     {
-        if(tmp->type == 0)
+        if (tmp->type == 3)
         {
-            dup2(tmp->fd, 0);
-            close(tmp->fd); 
+          if (tmp->fd >= 0)
+            {
+                dup2(tmp->fd[1], 0);
+                close(tmp->fd[1]); 
+            }
+        }
+        else if(tmp->type == 0)
+        {
+            dup2(tmp->fd[0], 0);
+            close(tmp->fd[0]); 
         }
         else if (tmp->type == 1)
         {
-            dup2(tmp->fd, 1);
-            close(tmp->fd);
+            dup2(tmp->fd[0], 1);
+            close(tmp->fd[0]);
             
         }
         else if(tmp->type == 2 )
         {
-            dup2(tmp->fd, 1);
-            close (tmp->fd);
+            dup2(tmp->fd[0], 1);
+            close (tmp->fd[0]);
         }  
-        else if (tmp->type == 3)
-        {
-          if (tmp->fd >= 0)
-            {
-                dup2(tmp->fd, 0);
-                close(tmp->fd);  // Close after duplication
-                    tmp->fd = -1;    // Mark as closed
-            }
-        }
         tmp = tmp->next;
     }
 }

@@ -190,6 +190,8 @@ char	**free_split(char **split, size_t j);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 int    echo(char **argv);
 int     ft_strcmp(char *s1, char *s2);
+char	*ft_strchr(char *s, int c);
+
 void    del(void *content);
 int ft_unset(t_env **env_list, char **variables);
 int     remove_env(t_env **env_list, char *variable);
@@ -211,7 +213,7 @@ void value_empty(t_env **env_list, char *key);
 
 
 // int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter);
-int *heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int here_doc_count);
+void heredoc(char *delmeter, t_env *env, int exit_status, char *orig_delimiter, int fd);
 
 int get_or_set(int type, int status); // for intialize or get exit status;
 void wait_for_children(t_cmd *cmd, pid_t child_pid);

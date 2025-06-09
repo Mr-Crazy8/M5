@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:22:58 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/31 18:02:50 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:30:18 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void check_close_red(t_cmd *cmd, t_cmd *prev, t_env *env)
             close(cmd->fd_pipe[0]);
             close(cmd->fd_pipe[1]);
         }
-        if (!isatty(cmd->redirs->fd)) //check if this function is working;
+        if (!isatty(cmd->redirs->fd[0])) //check if this function is working;
             ft_redircte(cmd->redirs, env, cmd);
 }
 
@@ -148,7 +148,7 @@ void ft_free_redrect(t_redir *redir)
         return ;
     while (tmp && tmp->fd)
     {
-        close(tmp->fd);
+        close(tmp->fd[0]);
         tmp = tmp->next;
     }
 
@@ -158,17 +158,15 @@ void ft_excute_mult_pipe(t_cmd *cmd, t_env *list_env, char *env[])
     pid_t pid;
     t_cmd *prev = NULL;
     t_cmd *head = NULL;
+    t_cmd *tmp = cmd;
     int last_pid = 0;
     int status = 0;
     int last_status = 0;
 
     head = cmd;
-
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
-
     pipe_all(cmd);
-     
     while (cmd)
     {
         pid = fork();
@@ -193,7 +191,7 @@ void ft_excute_mult_pipe(t_cmd *cmd, t_env *list_env, char *env[])
                 check_close_red(cmd, prev, list_env);
             }
             close_all_pipes(head);
-            if(cmd->redirs == NULL || cmd->redirs->fd != -1)
+            if(cmd->redirs == NULL || cmd->redirs->fd[0] != -1)
                 execute_single_command(cmd, list_env, env);
             last_status = cmd->data.exit_status;
             exit(cmd->data.exit_status);

@@ -18,45 +18,57 @@
    O_EVTONLY       descriptor requested for event notifications only
    O_CLOEXEC       mark as close-on-exec */
 
-int open_file(t_cmd *cmd, int type, char *file)
+int *open_file(t_cmd *cmd, int type, char *file)
 {
-    int fd;
+    int *fd = NULL;
+    int *fd_heredoc;
+    fd = malloc(2 * sizeof(int));
+    fd[0] = -1;
 
-    fd = -1;
+    if (type == 3)
+    {
+       fd_heredoc = heredoc_opener();
+    }
     if (type == 0)
     {
-        fd = open(file, O_RDONLY);
+        fd[0] = open(file, O_RDONLY);
+        fd[1] = -1;
         if(access(file, R_OK) == -1)
         {
             print_file_error(file, 3);
             cmd->data.exit_status = get_or_set(SET, 1);
         }
-        else if (fd == -1)
+        else if (fd[0] == -1)
             print_file_error(file, 0);
     }
     if (type == 1)
     {
-        fd = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+        fd[0] = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+        fd[1] = -1;
         if(access(file, W_OK) == -1)
         {
             print_file_error(file, 3);
             cmd->data.exit_status = get_or_set(SET, 1);
         }
-        else if (fd == -1)
+        else if (fd[0] == -1)
             print_file_error(file, 1);
         
     }
     if (type == 2)
     {
-        fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        fd[0] = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        fd[1] = -1;
         if(access(file, W_OK) == -1)
         {
             print_file_error(file, 3);
             cmd->data.exit_status = get_or_set(SET, 1);
         }
-        if (fd == -1)
+        if (fd[0] == -1)
             print_file_error(file, 2);
     }
+
+    if (type == 3)
+        return fd_heredoc;
     return fd;
 }
 
@@ -82,15 +94,18 @@ void file_opener(t_cmd *cmd, t_env *env)
 {
     t_cmd *tmp;
     t_redir *tp = NULL;
-    int fd;
+    int *fd;
     tmp = cmd;
+
     while (tmp)
     {
         tp = tmp->redirs;
         while (tp)
         {   
             fd = open_file(cmd, tp->type, tp->file);
-            if (fd == -1 && tp->type != 3)
+            printf("fd 1 =====> [%d]\n", fd[0]);
+            printf("fd 2 =====> [%d]\n", fd[1]);
+            if (fd[0] == -1)
             {
                 tp->fd = fd;
                 break;
