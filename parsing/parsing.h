@@ -192,7 +192,7 @@ int special_character_cheker_with_quotes(char character, int quote_state);
 void scan_for_token(char *input, int *i, int input_length, int *start_index);
 void handle_block(char *input, int *i, int input_length, t_token **token_list);
 t_token	*tokin_list_maker(char *input);
-int *open_file(t_cmd *cmd, int type, char *file);
+int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous);
 int *heredoc_opener(void);
 // void print_file_error(char *file, int i, int Ambiguous);
 char	*ft_strjoin(char const *s1, char const *s2);

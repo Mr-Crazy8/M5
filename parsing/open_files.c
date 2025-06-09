@@ -18,7 +18,7 @@
    O_EVTONLY       descriptor requested for event notifications only
    O_CLOEXEC       mark as close-on-exec */
 
-int *open_file(t_cmd *cmd, int type, char *file)
+int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
 {
     int *fd = NULL;
     int *fd_heredoc;
@@ -29,7 +29,7 @@ int *open_file(t_cmd *cmd, int type, char *file)
     {
        fd_heredoc = heredoc_opener();
     }
-    if (type == 0)
+    if (type == 0 && Ambiguous != 1)
     {
         fd[0] = open(file, O_RDONLY);
         fd[1] = -1;
@@ -41,7 +41,7 @@ int *open_file(t_cmd *cmd, int type, char *file)
         else if (fd[0] == -1)
             print_file_error(file, 0);
     }
-    if (type == 1)
+    if (type == 1 && Ambiguous != 1)
     {
         fd[0] = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
         fd[1] = -1;
@@ -54,7 +54,7 @@ int *open_file(t_cmd *cmd, int type, char *file)
             print_file_error(file, 1);
         
     }
-    if (type == 2)
+    if (type == 2 && Ambiguous != 1)
     {
         fd[0] = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
         fd[1] = -1;
@@ -66,7 +66,11 @@ int *open_file(t_cmd *cmd, int type, char *file)
         if (fd[0] == -1)
             print_file_error(file, 2);
     }
-
+    if (type != 3 && Ambiguous == 1)
+    {
+        fd[0] = -1;
+        fd[1] = -1;
+    }
     if (type == 3)
         return fd_heredoc;
     return fd;
@@ -102,12 +106,8 @@ void file_opener(t_cmd *cmd, t_env *env)
         tp = tmp->redirs;
         while (tp)
         {   
-            if (tp->Ambiguous == 1)
-            {
-                if (tp->type != 3)
-                    break;
-            }
-            fd = open_file(cmd, tp->type, tp->file);
+            
+            fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
             printf("fd 1 =====> [%d]\n", fd[0]);
             printf("fd 2 =====> [%d]\n", fd[1]);
             if (fd[0] == -1)
