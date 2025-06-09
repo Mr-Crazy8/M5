@@ -6,20 +6,22 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/09 12:32:08 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:49:34 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 void cmd_splitting(t_cmd *cmd_list )
-{
+{    
      t_cmd *current = cmd_list;
      int word_count;
      int arg_count;
      char **new_args;
      char **split;
-     if (current->args && current->args[0] && current->cmd &&
+
+     
+     if (current && current->args && current->args[0] && current->cmd &&
             strcmp(current->args[0], current->cmd) == 0) 
         {
             split = split_if_needed(current->cmd);
@@ -43,7 +45,6 @@ void  apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
     t_cmd *current = cmd_list;
     int should_split;
     
-
     while (current)
     {
         cmd_splitting(current);
@@ -55,7 +56,6 @@ void  apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
             should_split = is_special_export_case(current);
         }
         split_the_rest(current, should_split, expand->had_removed_var);
-        print_cmd(current);
         current = current->next;
     }
     free_expanded(expand);

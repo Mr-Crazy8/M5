@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/09 14:23:52 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:09:57 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,7 +360,7 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 		{
 			if (tmp_redir->type == 3)
 				{
-					heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token,  );
+					heredoc(tmp_redir->file, env, 0, tmp_redir->orig_token, tmp_redir->fd[0]);
 				}
 			tmp_redir = tmp_redir->next;
 		}
@@ -376,9 +376,9 @@ char *chenger_back(char *str)
 
     while (str && str[i])
     {
-        if (str[i] == 10)
+        if (str[i] == 3)
             str[i] = '\'';
-        else if (str[i] == 11)
+        else if (str[i] == 4)
             str[i] = '\"';
         i++;
     }
@@ -420,6 +420,7 @@ char *change_space(char *str)
 {
 	int i = 0;
 	int quote_state = 0;
+	
 	while(str && str[i])
 	{
 		if (str[i] == '\'')

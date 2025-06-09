@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:42:21 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/09 12:29:29 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:48:41 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,11 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
     int count = 0;
     if (split_the_rest_hp(current, &should_split, &i))
         return;
-        
     if (current->args_befor_quotes_remover) 
     {
         while (current->args_befor_quotes_remover[count])
             count++;
     }
-    
     i = 1; 
     while (current->args && current->args[i]) 
     {

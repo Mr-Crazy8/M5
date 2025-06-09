@@ -102,6 +102,11 @@ void file_opener(t_cmd *cmd, t_env *env)
         tp = tmp->redirs;
         while (tp)
         {   
+            if (tp->Ambiguous == 1)
+            {
+                if (tp->type != 3)
+                    break;
+            }
             fd = open_file(cmd, tp->type, tp->file);
             printf("fd 1 =====> [%d]\n", fd[0]);
             printf("fd 2 =====> [%d]\n", fd[1]);

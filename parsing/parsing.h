@@ -174,6 +174,7 @@ void	free_token_list(t_token *token_list);
 char **free_split_q(char **split, size_t j);
 void free_split_str(char **split_str);
 int	get_num_length(long num);
+char *change_space(char *str);
 void	fill_num_string(char *str, long num, int len);
 char	*ft_itoa(int n);
 int	ft_isalnum(int c);

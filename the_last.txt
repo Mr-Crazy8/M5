@@ -58,7 +58,6 @@ is there any pipe ? : 0
 
 
 this is ambuguous
-minishell $> > ""$a
 command name : (null)
 redir list
 0:<, 1:>, 2:>>, 3:<< 

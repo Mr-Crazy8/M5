@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:46:00 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:47:46 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:06:23 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ char *chenger(char *str)
     while (str[i])
     {
         if (str[i] == '\'')
-            str[i] = 10;
+            str[i] = 3;
         else if (str[i] == '\"')
-            str[i] = 11;
+            str[i] = 4;
         i++;
     }
     return (str);

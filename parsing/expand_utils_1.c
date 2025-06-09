@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:17:36 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/06 10:35:13 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:50:06 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int ft_lint(char **str)
 
 int is_special_export_case(t_cmd *cmd)
 {
+
     if (!cmd || !cmd->cmd || !cmd->args || !cmd->args[0])
         return 0;
         
