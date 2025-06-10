@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/10 18:23:43 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:27:24 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,16 @@
 
 
 #include "parsing.h"
-
+void print_old(char **str);
+char **copy_string_array(char **array);
+void free_string_array_partial(char **array, int count);
 
 int is_valid_var_name(char *str, int len)
 {
     int i = 0;
     if (!str || len <= 0)
         return 0;
+ 
     if ((!isalpha(str[0]) && str[0] != '_'))
         return 0;
     if (str[len - 1] == '+')
@@ -94,28 +97,32 @@ int should_split_arg(char *arg, char *original_arg)
         return 0;
     if (strchr(arg, '$'))
     {
+        printf("100 should_split_arg\n");
         return 1;
     }
     
     equals = strchr(arg, '=');
     if (!equals)
-    {
+    {   
+        printf("107 should_split_arg\n");
         return 0; 
     }
     if (!is_valid_var_name(arg, equals - arg))
-    {
+    {   
+        printf("112 should_split_arg\n");
         return 1;
     }
     
     if (original_arg) 
     {
         orig_equals = strchr(original_arg, '=');
-        printf("check_var_quotes [%d]   [%s]\n", check_var_quotes(original_arg, orig_equals), original_arg);
         if (orig_equals && check_var_quotes(original_arg, orig_equals))
         {
+            printf("121 should_split_arg\n");
             return 1;
         }
     }
+    printf("125 should_split_arg\n");
     return 0; 
 }
 
@@ -218,23 +225,26 @@ int ft_lint(char **str)
 void cmd_splitting_helper(t_cmd *current, char **new_args, char **split, int word_count, int arg_count)
 {
     int j;
+    char **old_args = current->args;
 
-    new_args[0] = strdup(split[0]);
-    j = 1;
+    // Add all split words
+    j = 0;
     while (j < word_count) 
-        {
-            new_args[j] = strdup(split[j]);
-                    j++;
-        }
-        j = 1;
-        while (j < arg_count) 
-            {
-                new_args[j+word_count-1] = current->args[j];
-                    j++;
-            }
-            new_args[arg_count+word_count-1] = NULL;
-            j = 0;
-                current->args = new_args;
+    {
+        new_args[j] = strdup(split[j]);
+        j++;
+    }
+    
+    j = 1;
+    while (j < arg_count) 
+    {
+        new_args[word_count + j - 1] = old_args[j];
+        j++;
+    }
+    
+    new_args[arg_count + word_count - 1] = NULL;
+    current->args = new_args;
+    free(old_args); 
 }
 
 void prepare_new_args(char **new_args, t_cmd *current, int i)
@@ -284,7 +294,6 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
     int word_count;
     char **new_args;
     int force_split = 0;
-
     if (current->args[(*i)] && equals)
     {
         if (isdigit(current->args[(*i)][0]))
@@ -338,7 +347,7 @@ int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
         while (current->args && current->args[(*i)]) 
         {
             equals = strchr(current->args[(*i)], '=');
-            split_the_rest_helper(equals, (*should_split), current, &(*i));
+            split_the_rest_helper(equals, (*should_split), current, i);
             (*i)++;
         }
         return 1;
@@ -346,32 +355,151 @@ int  split_the_rest_hp(t_cmd *current, int *should_split, int *i)
     return 0;
 }
 
+
 void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
 {
     int i;
     char *equals;
     int arg_should_split;
-
+    char **args_copy;
+    char **args_before_copy;
+    int original_count;
+    int current_count;
+    
     if (split_the_rest_hp(current, &should_split, &i))
         return;
-    i = 1; 
-    while (current->args && current->args[i]) 
+    
+    // Create copies of the arrays for safe iteration
+    original_count = ft_lint(current->args);
+    args_copy = copy_string_array(current->args);
+    args_before_copy = copy_string_array(current->args_befor_quotes_remover);
+    
+    if (!args_copy)
+        return;
+    
+    i = 1;
+    while (i < ft_lint(current->args)) // Use current array length, not original
     {
-        equals = strchr(current->args[i], '=');
-        if (had_removed_var == 1)
+        // Check if we've gone beyond our original copied data
+        if (i >= original_count)
+            break;
+            
+        // Use the copy for decision making
+        equals = strchr(args_copy[i], '=');
+        if (equals && equals > args_copy[i] && *(equals - 1) == '+')
+        {
+            printf("421________[%s]______\n", args_before_copy && i < ft_lint(args_before_copy) ? args_before_copy[i] : "NULL");
+            arg_should_split = 0;  // Don't split += assignments
+        }
+        else if (had_removed_var == 1)
+        {
+            printf("426________[%s]______\n", args_before_copy && i < ft_lint(args_before_copy) ? args_before_copy[i] : "NULL");
             arg_should_split = 1;
-        else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
-            current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
-            arg_should_split = 1; 
-        else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
-            arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
+        }
+        else if (!equals && args_before_copy && i < ft_lint(args_before_copy) &&
+                args_before_copy[i] && strchr(args_before_copy[i], '$'))
+        {
+            printf("432________[%s]______\n", args_before_copy[i]);
+            arg_should_split = 1;
+        }
+        else if (args_before_copy && i < ft_lint(args_before_copy))
+        {
+            printf("437________[%s]______\n", args_before_copy[i]);
+            arg_should_split = should_split_arg(current->args[i], args_before_copy[i]);
+        }
         else
+        {
+            printf("442________[%s]______\n", args_before_copy && i < ft_lint(args_before_copy) ? args_before_copy[i] : "NULL");
             arg_should_split = should_split_arg(current->args[i], NULL);
+        }
+        
+        // Apply splitting to the original array
+        printf("________[%d]______[%s]______\n", arg_should_split, 
+               args_before_copy && i < ft_lint(args_before_copy) ? args_before_copy[i] : "NULL");
+        
+        int old_i = i;
         split_the_rest_helper(equals, arg_should_split, current, &i);
-        i++;
+        
+        // If no splitting occurred, increment normally
+        // If splitting occurred, i was already updated by split_the_rest_helper
+        if (i == old_i)
+            i++;
     }
+    
+    // Clean up the copies
+    free_string_array(args_copy);
+    free_string_array(args_before_copy);
 }
 
+char **copy_string_array(char **array)
+{
+    char **copy;
+    int count;
+    int i;
+    
+    if (!array)
+        return (NULL);
+    
+    count = ft_lint(array);
+    copy = malloc(sizeof(char *) * (count + 1));
+    if (!copy)
+        return (NULL);
+    
+    i = 0;
+    while (i < count)
+    {
+        if (array[i])
+        {
+            copy[i] = ft_strdup(array[i]);
+            if (!copy[i])
+            {
+                free_string_array_partial(copy, i);
+                return (NULL);
+            }
+        }
+        else
+        {
+            copy[i] = NULL;
+        }
+        i++;
+    }
+    copy[count] = NULL;
+    return (copy);
+}
+
+
+// void free_string_array(char **array)
+// {
+//     int i;
+    
+//     if (!array)
+//         return;
+    
+//     i = 0;
+//     while (array[i])
+//     {
+//         free(array[i]);
+//         i++;
+//     }
+//     free(array);
+// }
+
+void free_string_array_partial(char **array, int count)
+{
+    int i;
+    
+    if (!array)
+        return;
+    
+    i = 0;
+    while (i < count)
+    {
+        if (array[i])
+            free(array[i]);
+        i++;
+    }
+    free(array);
+}
 
 
 void cmd_splitting(t_cmd *cmd_list )
@@ -381,6 +509,7 @@ void cmd_splitting(t_cmd *cmd_list )
      int arg_count;
      char **new_args;
      char **split;
+
      if (current->args && current->args[0] && current->cmd &&
             strcmp(current->args[0], current->cmd) == 0) 
         {
@@ -394,13 +523,23 @@ void cmd_splitting(t_cmd *cmd_list )
                 new_args = malloc(sizeof(char *) * (arg_count + word_count));
                 if (new_args)
                     cmd_splitting_helper(current, new_args, split, word_count, arg_count);
+      
             }
             if (split)
                 free_string_array(split);
         } 
 }
 
+void print_old(char **str)
+{
+    int i = 0;
 
+    while (str[i])
+    {
+        printf("print_old____[%s]___\n", str[i]);
+        i++;
+    }
+}
 
 void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
 {
@@ -409,7 +548,9 @@ void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
     
     while (current)
     {
+        
         cmd_splitting(current);
+        
         
         should_split = 1;
         
@@ -417,6 +558,8 @@ void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
             should_split = is_special_export_case(current);
         }
         split_the_rest(current, should_split, expand->had_removed_var);
+               
+
         current = current->next;
     }
      if (expand) 

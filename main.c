@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/09 15:09:57 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:59:21 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -474,6 +474,7 @@ int main(int argc, char *argv[], char *env[])
 		signal(SIGINT, handel_signal);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell $> ");
+		// input = ft_strdup("export $l=$a m+=$a n\"=$a\"");
 		if (!input)
 		{
 			printf("exit\n");
@@ -482,7 +483,7 @@ int main(int argc, char *argv[], char *env[])
 			// 	free_cmd_list(cmd);
     		// if (token_list) 
 			// 	free_token_list(token_list);
-			break ;
+			// break ;
 		}
 		// if(global_sig != 0)
 		// {
@@ -494,14 +495,14 @@ int main(int argc, char *argv[], char *env[])
 		{
 			exit_status = get_or_set(SET, 258); 
 			free(input);
-			continue;
+			// continue;
 		}
 		preprocessed_input = preprocess_command(input); 
 			free(input);
          if (!preprocessed_input)
 		 {
 			free(input);
-            continue;
+            // continue;
 		 }
 		 char *new_input = change_space(preprocessed_input);
 		token_list = tokin_list_maker(new_input);
