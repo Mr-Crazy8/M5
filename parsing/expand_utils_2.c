@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:21:58 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/09 12:00:25 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:27:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,37 @@ int has_empty_quotes_before_var(char *str)
 }
 
 
+// int is_var_key_append(char *original_arg)
+// {
+//     char *dollar_pos;
+//     char *plus_equals_pos;
+    
+//     if (!original_arg)
+//         return 0;
+    
+//     // Find the first $ character (anywhere in the string, not just at beginning)
+//     dollar_pos = strchr(original_arg, '$');
+//     if (!dollar_pos)
+//         return 0;
+    
+//     // Find the += pattern
+//     plus_equals_pos = strstr(dollar_pos, "+="); // Start looking from $ position
+//     if (!plus_equals_pos)
+//         return 0;
+    
+//     // Make sure $ comes before += and there's no other $ between them
+//     if (dollar_pos < plus_equals_pos)
+//     {
+//         char *next_dollar = strchr(dollar_pos + 1, '$');
+//         if (!next_dollar || next_dollar > plus_equals_pos)
+//             return 1;
+//     }
+    
+//     return 0;
+// }
+
+
+// Fixed is_var_key_append function
 int is_var_key_append(char *original_arg)
 {
     char *dollar_pos;
@@ -64,22 +95,28 @@ int is_var_key_append(char *original_arg)
     if (!original_arg)
         return 0;
     
-    // Find the first $ character (anywhere in the string, not just at beginning)
+    // Find the first $ character
     dollar_pos = strchr(original_arg, '$');
     if (!dollar_pos)
         return 0;
     
     // Find the += pattern
-    plus_equals_pos = strstr(dollar_pos, "+="); // Start looking from $ position
+    plus_equals_pos = strstr(original_arg, "+=");
     if (!plus_equals_pos)
         return 0;
     
-    // Make sure $ comes before += and there's no other $ between them
+    // Make sure $ comes before += and is part of the variable name
     if (dollar_pos < plus_equals_pos)
     {
+        // Check if there's another $ between the first one and +=
+        // If there is, it's not a valid variable append
         char *next_dollar = strchr(dollar_pos + 1, '$');
         if (!next_dollar || next_dollar > plus_equals_pos)
-            return 1;
+        {
+            // Make sure there's at least one valid character between $ and +=
+            if (plus_equals_pos > dollar_pos + 1)
+                return 1;
+        }
     }
     
     return 0;
@@ -124,32 +161,42 @@ int has_quotes_before_plus(char *str)
     
     return 0;
 }
-
-
-
+// Fixed is_append_assignment function
 int is_append_assignment(char *str)
 {
     char *equals_pos;
+    char *dollar_pos;
     char *ptr;
-    int plus_count = 0;
     
     if (!str)
         return 0;
     
-    if (key_is_var(str) || has_quotes_before_plus(str))
-        return 0;
-    
+    // Get the positions of key characters
     equals_pos = strchr(str, '=');
+    dollar_pos = strchr(str, '$');
+    
+    // No equals sign means it's not an assignment
     if (!equals_pos)
         return 0;
+    
+    // Check if it has a plus before equals
     if (equals_pos > str && *(equals_pos - 1) == '+')
     {
+        // If it's a variable key append ($var+=value), return 0
+        // as that's handled by is_var_key_append
+        if (dollar_pos && dollar_pos < equals_pos)
+            return 0;
+        
+        // Check if there's exactly one + before =
         ptr = equals_pos - 1;
+        int plus_count = 0;
         while (ptr >= str && *ptr == '+')
         {
             plus_count++;
             ptr--;
         }
+        
+        // Only return true if there's exactly one + before =
         if (plus_count == 1)
             return 1;
     }
@@ -158,6 +205,35 @@ int is_append_assignment(char *str)
 }
 
 
+// int is_append_assignment(char *str)
+// {
+//     char *equals_pos;
+//     char *ptr;
+//     int plus_count = 0;
+    
+//     if (!str)
+//         return 0;
+    
+//     if (key_is_var(str) || has_quotes_before_plus(str))
+//         return 0;
+    
+//     equals_pos = strchr(str, '=');
+//     if (!equals_pos)
+//         return 0;
+//     if (equals_pos > str && *(equals_pos - 1) == '+')
+//     {
+//         ptr = equals_pos - 1;
+//         while (ptr >= str && *ptr == '+')
+//         {
+//             plus_count++;
+//             ptr--;
+//         }
+//         if (plus_count == 1)
+//             return 1;
+//     }
+    
+//     return 0;
+// }
 int should_split_arg(char *arg, char *original_arg)
 {
     char *equals;
@@ -166,24 +242,20 @@ int should_split_arg(char *arg, char *original_arg)
     if (!arg || !*arg)
         return 0;
     
-    // Check for variable key with append format (e.g. $f+=value or ""$f+=value)
-    // We want to ensure this triggers splitting
-    int app = is_var_key_append(original_arg);
-    if (original_arg && app)
-        return 1; // Force split
+    // Check for variable key with append format (e.g. $var+=value)
+    if (original_arg && is_var_key_append(original_arg))
+        return 1; // Always split variable append assignments
         
-    // Handle other cases as before
+    // Check for regular key with append format (e.g. var+=value)
+    if (original_arg && is_append_assignment(original_arg))
+        return 0; // Don't split regular append assignments
+        
+    // Handle other cases
     if (original_arg && key_is_var(original_arg))
         return 1;
         
     if (original_arg && has_quotes_before_plus(original_arg))
         return 1;
-        
-    if (original_arg && is_append_assignment(original_arg))
-        return 0;
-        
-    if (is_append_assignment(arg))
-        return 0;
         
     if (strchr(arg, '$'))
         return 1;
@@ -204,6 +276,53 @@ int should_split_arg(char *arg, char *original_arg)
     
     return 0; 
 }
+
+// int should_split_arg(char *arg, char *original_arg)  +++++++++++++++
+// {
+//     char *equals;
+//     char *orig_equals = NULL;
+    
+//     if (!arg || !*arg)
+//         return 0;
+    
+//     // Check for variable key with append format (e.g. $f+=value or ""$f+=value)
+//     // We want to ensure this triggers splitting
+//     int app = is_var_key_append(original_arg);
+//     if (original_arg && app)
+//         return 1; // Force split
+        
+//     // Handle other cases as before
+//     if (original_arg && key_is_var(original_arg))
+//         return 1;
+        
+//     if (original_arg && has_quotes_before_plus(original_arg))
+//         return 1;
+        
+//     if (original_arg && is_append_assignment(original_arg))
+//         return 0;
+        
+//     if (is_append_assignment(arg))
+//         return 0;
+        
+//     if (strchr(arg, '$'))
+//         return 1;
+        
+//     equals = strchr(arg, '=');
+//     if (!equals)
+//         return 0; 
+        
+//     if (!is_valid_var_name(arg, equals - arg))
+//         return 1;
+        
+//     if (original_arg) 
+//     {
+//         orig_equals = strchr(original_arg, '=');
+//         if (orig_equals && check_var_quotes(original_arg, orig_equals))
+//             return 1;
+//     }
+    
+//     return 0; 
+// }
 
 // int should_split_arg(char *arg, char *original_arg)
 // {

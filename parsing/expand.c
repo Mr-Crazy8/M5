@@ -67,8 +67,12 @@ void value_extracter(t_exp_helper *expand, t_env *env)
     if (is_valid_key(expand->var_name) != 1)
         {
         lk_var = lookup_variable(expand->var_name, env);
-        var = chenger(ft_strdup(lk_var));
-        free(lk_var);
+        if (lk_var != NULL)
+        {
+            var = chenger(ft_strdup(lk_var));
+            free(lk_var);
+
+        }
     }
     if (var != NULL)
         expand->var_value = var;
