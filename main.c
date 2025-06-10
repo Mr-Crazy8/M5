@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/10 20:59:21 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:03:20 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,6 +443,8 @@ char *change_space(char *str)
 	}
 	return str;
 }
+
+
 int main(int argc, char *argv[], char *env[])
 {
 	t_token *token_list;
