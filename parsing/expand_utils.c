@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/10 16:17:18 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:23:43 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,16 @@
 
 int is_valid_var_name(char *str, int len)
 {
-    int i = 1;
+    int i = 0;
     if (!str || len <= 0)
         return 0;
     if ((!isalpha(str[0]) && str[0] != '_'))
         return 0;
+    if (str[len - 1] == '+')
+        len -= 1;
     while (i < len)
     {
-        if (!is_valid_var_char(str[i]))
+        if (is_valid_var_char(str[i]) != 1)
             return 0;
         i++;
     }
@@ -91,19 +93,28 @@ int should_split_arg(char *arg, char *original_arg)
     if (!arg || !*arg)
         return 0;
     if (strchr(arg, '$'))
+    {
         return 1;
+    }
     
     equals = strchr(arg, '=');
     if (!equals)
+    {
         return 0; 
+    }
     if (!is_valid_var_name(arg, equals - arg))
+    {
         return 1;
+    }
     
     if (original_arg) 
     {
         orig_equals = strchr(original_arg, '=');
+        printf("check_var_quotes [%d]   [%s]\n", check_var_quotes(original_arg, orig_equals), original_arg);
         if (orig_equals && check_var_quotes(original_arg, orig_equals))
+        {
             return 1;
+        }
     }
     return 0; 
 }
@@ -142,22 +153,6 @@ char **split_if_needed(char *str)
 
 
 
-
-// void free_string_array(char **array)
-// {
-//     if (!array)
-//         return;
-//     int i = 0;
-//     while (array[i])
-//         {
-//             free(array[i]);
-//             i++;
-//         }
-    
-//     free(array);
-// }
-
-
 int check_var_quotes(char *orig_arg, char *orig_equals)
 {
     int j = 0;
@@ -166,12 +161,16 @@ int check_var_quotes(char *orig_arg, char *orig_equals)
     while (j < (orig_equals - orig_arg))
     {
         if (orig_arg[j] == '\'' || orig_arg[j] == '"' || orig_arg[j] == '$') 
+        {
             return 1;  // Variable name has quotes or $ - split
+        }
         j++;
     }
     // Check if variable name starts with a digit or invalid character
     if (((isdigit(orig_arg[0]) || (!isalpha(orig_arg[0]) && orig_arg[0] != '_'))))
+    {
         return 1;
+    }
         
     return 0;
 }

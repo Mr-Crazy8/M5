@@ -180,7 +180,6 @@ void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status
     if (expand->expanded)
         expand->expanded[expand->j] = '\0';
     expand->expanded = ft_strtrim(change_space((expand->expanded)), " ");
-    printf("----[%s]-----\n", expand->expanded);
 }
 
 
