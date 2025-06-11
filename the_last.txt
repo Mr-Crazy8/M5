@@ -101,3 +101,207 @@ bash-3.2$ << a cat
 bash: maximum here-document count exceeded
 the exit
 
+
+
+
+
+export a="ls la" f="q k" d="ls la"
+export f="q k"
+export d="e" 
+
+export d=$a   // no split [done]
+export d""=$a  /// split [done]
+export ""d=$a /// split  [done]
+export "d"=$a  /// split [done]
+export d""="$a" /// no split [done]
+export ""d="$a" /// no split [done]
+export "d"="$a" /// no split [done]
+export $d=$a /// split    [done]
+export "$d"="$a" // no split [done]
+export $d="$a" ///  split [done]
+export d+=$a   // no split [done]
+export d""+=$a  /// split [done]
+export ""d+=$a /// split [done]
+export "d"+=$a  /// split  [done]
+export d""+="$a" /// no split [done]
+export ""d+="$a" /// no split [done]
+export "d"+="$a" /// no split [done]
+export $d+=$a /// split [done]
+export $d+="$a" ///  no split [done]
+export "$d"+="$a" /// no split [done]
+
+export [split]  [split] [split]
+export s""=$a   ""e=$a   $d=$a   [failed]
+export $d=$a    s""=$a   ""e=$a [done]
+export s""=$a   $d=$a    ""e=$a [done]
+export ""e=$a   $d=$a  s""=$a [done]
+export ""e=$a   s""=$a  $d=$a [failed]
+export "s"=$a   ""e=$a   $d=$a [failed]
+export $d=$a    "s"=$a   ""e=$a  [done]
+export "s"=$a   $d=$a    ""e=$a [done]
+export ""e=$a   $d=$a  "s"=$a [done]
+export ""e=$a   "s"=$a  $d=$a [failed]
+export s""=$a   "e"=$a   $d=$a [failed]
+export $d=$a    s""=$a   "e"=$a [done]
+export s""=$a   $d=$a    "e"=$a [done]
+export "e"=$a   $d=$a  s""=$a [done]
+export "e"=$a   s""=$a  $d=$a [failed]
+---[all is append]
+export s""+=$a   ""e+=$a   $d+=$a [failed]
+export $d+=$a    s""+=$a   ""e+=$a [done]
+export s""+=$a   $d+=$a    ""e+=$a [done]
+export ""e+=$a   $d+=$a  s""+=$a [done]
+export ""e+=$a   s""+=$a  $d+=$a [failed]
+export "s"+=$a   ""e+=$a   $d+=$a [failed]
+export $d+=$a    "s"+=$a   ""e+=$a [done]
+export "s"+=$a   $d+=$a    ""e+=$a [done]
+export ""e+=$a   $d+=$a  "s"+=$a [done]
+export ""e+=$a   "s"+=$a  $d+=$a [failed]
+export s""+=$a   "e"+=$a   $d+=$a [failed]
+export $d+=$a    s""+=$a   "e"+=$a [done]
+export s""+=$a   $d+=$a    "e"+=$a [done]
+export "e"+=$a   $d+=$a  s""+=$a [done]
+export "e"+=$a   s""+=$a  $d+=$a [failed]
+----[the first one is append]
+export s""+=$a   ""e=$a   $d=$a [failed]
+export $d+=$a    s""=$a   ""e=$a [done]
+export s""+=$a   $d=$a    ""e=$a [done]
+export ""e+=$a   $d=$a  s""=$a [done]
+export ""e+=$a   s""=$a  $d=$a [failed]
+export "s"+=$a   ""e=$a   $d=$a [failed]
+export $d+=$a    "s"=$a   ""e=$a [done]
+export "s"+=$a   $d=$a    ""e=$a [done]
+export ""e+=$a   $d=$a  "s"=$a [done]
+export ""e+=$a   "s"=$a  $d=$a [failed]
+export s""+=$a   "e"=$a   $d=$a [failed]
+export $d+=$a    s""=$a   "e"=$a [done]
+export s""+=$a   $d=$a    "e"=$a [done]
+export "e"+=$a   $d=$a  s""=$a [done]
+export "e"+=$a   s""=$a  $d=$a [failed]
+----------- [the second one is append]
+export s""=$a   ""e+=$a   $d=$a [failed]
+export $d=$a    s""+=$a   ""e=$a [done]
+export s""=$a   $d+=$a    ""e=$a [failed]
+export ""e=$a   $d+=$a  s""=$a [failed]
+export ""e=$a   s""+=$a  $d=$a [failed]
+export "s"=$a   ""e+=$a   $d=$a [failed]
+export $d=$a    "s"+=$a   ""e=$a [done]
+export "s"=$a   $d+=$a    ""e=$a [failed]
+export ""e=$a   $d+=$a  "s"=$a [failed]
+export ""e=$a   "s"+=$a  $d=$a [failed]
+export s""=$a   "e"+=$a   $d=$a [failed]
+export $d=$a    s""+=$a   "e"=$a [d]
+export s""=$a   $d+=$a    "e"=$a
+export "e"=$a   $d+=$a  s""=$a
+export "e"=$a   s""+=$a  $d=$a
+---------- [the last is append]
+export s""=$a   ""e=$a   $d+=$a
+export $d=$a    s""=$a   ""e+=$a 
+export s""=$a   $d=$a    ""e+=$a
+export ""e=$a   $d=$a  s""+=$a
+export ""e=$a   s""=$a  $d+=$a
+export "s"=$a   ""e=$a   $d+=$a
+export $d=$a    "s"=$a   ""e+=$a 
+export "s"=$a   $d=$a    ""e+=$a
+export ""e=$a   $d=$a  "s"+=$a
+export ""e=$a   "s"=$a  $d+=$a
+export s""=$a   "e"=$a   $d+=$a
+export $d=$a    s""=$a   "e"+=$a 
+export s""=$a   $d=$a    "e"+=$a
+export "e"=$a   $d=$a  s""+=$a
+export "e"=$a   s""=$a  $d+=$a
+export [split]  [split] [no split]
+export s""=$a   ""e=$a   "$d"="$a"
+export $d=$a    s""=$a   ""e="$a" 
+export s""=$a   $d=$a    ""e="$a"
+export ""e=$a   $d=$a  s""="$a"
+export ""e=$a   s""=$a  "$d"="$a"
+export "s"=$a   ""e=$a   "$d"="$a"
+export $d=$a    "s"=$a   ""e="$a" 
+export "s"=$a   $d=$a    ""e="$a"
+export ""e=$a   $d=$a  "s"="$a"
+export ""e=$a   "s"=$a  "$d"="$a"
+export s""=$a   "e"=$a   "$d"="$a"
+export $d=$a    s""=$a   "e"="$a" 
+export s""=$a   $d=$a    "e"="$a"
+export "e"=$a   $d=$a  s""="$a"
+export "e"=$a   s""=$a  "$d"="$a"
+---[all is append]
+export s""+=$a   ""e+=$a   "$d"+="$a"
+export $d+=$a    s""+=$a   ""e+="$a" 
+export s""+=$a   $d+=$a    ""e+="$a"
+export ""e+=$a   $d+=$a  s""+="$a"
+export ""e+=$a   s""+=$a  "$d"+="$a"
+export "s"+=$a   ""e+=$a   "$d"+="$a"
+export $d+=$a    "s"+=$a   ""e+="$a" 
+export "s"+=$a   $d+=$a    ""e+="$a"
+export ""e+=$a   $d+=$a  "s"+="$a"
+export ""e+=$a   "s"+=$a  "$d"+="$a"
+export s""+=$a   "e"+=$a   "$d"+="$a"
+export $d+=$a    s""+=$a   "e"+="$a" 
+export s""+=$a   $d+=$a    "e"+="$a"
+export "e"+=$a   $d+=$a  s""+="$a"
+export "e"+=$a   s""+=$a  "$d"+="$a"
+----[the first one is append]
+export s""+=$a   ""e=$a   "$d"="$a"
+export $d+=$a    s""=$a   ""e="$a" 
+export s""+=$a   $d=$a    ""e="$a"
+export ""e+=$a   $d=$a  s""="$a"
+export ""e+=$a   s""=$a  "$d"="$a"
+export "s"+=$a   ""e=$a   "$d"="$a"
+export $d+=$a    "s"=$a   ""e="$a" 
+export "s"+=$a   $d=$a    ""e="$a"
+export ""e+=$a   $d=$a  "s"="$a"
+export ""e+=$a   "s"=$a  "$d"="$a"
+export s""+=$a   "e"=$a   "$d"="$a"
+export $d+=$a    s""=$a   "e"="$a" 
+export s""+=$a   $d=$a    "e"="$a"
+export "e"+=$a   $d=$a  s""="$a"
+export "e"+=$a   s""=$a  "$d"="$a"
+----------- [the second one is append]
+export s""=$a   ""e+=$a   "$d"="$a"
+export $d=$a    s""+=$a   ""e="$a" 
+export s""=$a   $d+=$a    ""e="$a"
+export ""e=$a   $d+=$a  s""="$a"
+export ""e=$a   s""+=$a  "$d="$a"
+export "s"=$a   ""e+=$a   $d="$a"
+export $d=$a    "s"+=$a   ""e="$a" 
+export "s"=$a   $d+=$a    ""e="$a"
+export ""e=$a   $d+=$a  "s"="$a"
+export ""e=$a   "s"+=$a  $d="$a"
+export s""=$a   "e"+=$a   $d="$a"
+export $d=$a    s""+=$a   "e"="$a"
+export s""=$a   $d+=$a    "e"="$a"
+export "e"=$a   $d+=$a  s""="$a"
+export "e"=$a   s""+=$a  $d="$a"
+---------- [the last is append]
+export s""=$a   ""e=$a   $d+="$a"
+export $d=$a    s""=$a   ""e+="$a" 
+export s""=$a   $d=$a    ""e+="$a"
+export ""e=$a   $d=$a  s""+="$a"
+export ""e=$a   s""=$a  $d+="$a"
+export "s"=$a   ""e=$a   $d+="$a"
+export $d=$a    "s"=$a   ""e+="$a" 
+export "s"=$a   $d=$a    ""e+="$a"
+export ""e=$a   $d=$a  "s"+="$a"
+export ""e=$a   "s"=$a  $d+="$a"
+export s""=$a   "e"=$a   $d+="$a"
+export $d=$a    s""=$a   "e"+="$a" 
+export s""=$a   $d=$a    "e"+="$a"
+export "e"=$a   $d=$a  s""+="$a"
+export "e"=$a   s""=$a  $d+="$a"
+export [split]  [no split] [no split]
+export [no split]  [no split] [no split]
+export [no split]  [no split] [split]
+export [no split]  [split] [split]
+export [split]  [no split] [split]
+export [no split]  [split] [no split]
+append 
+export [split]  [split] [split]
+export [split]  [split] [no split]
+export [split]  [no split] [no split]
+export [no split]  [no split] [no split]
+export [no split]  [no split] [split]
+export [no split]  [split] [split]
+export [split]  [no split] [split]
+export [no split]  [split] [no split]

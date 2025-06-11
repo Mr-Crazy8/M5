@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/11 00:47:40 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:09:58 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,11 +163,9 @@ int should_split_arg(char *arg, char *original_arg)
     }
     
     // // For regular = assignments (not +=), check for spaces in value
-    // if (!is_append && strchr(equals + 1, ' '))
-    // {
-    //     printf("spaces in value should_split_arg\n");
-    //     return 1;
-    // }
+   if (!is_append && strchr(equals + 1, ' ') && 
+        original_arg && check_var_quotes(original_arg, strchr(original_arg, '=')))
+        return 1;
     
     // For += we DON'T split just because of spaces
     
@@ -447,6 +445,79 @@ int rebuild_cmd_args(char **new_args, t_cmd *current, char **split,
 //     }
 // }
 
+// void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
+// {
+//     char **split;
+//     int word_count;
+//     char **new_args;
+//     int force_split = 0;
+//     char *plus_equals;
+//     int is_append = 0;
+    
+//     if (current->args[(*i)])
+//     {
+//         // Check if this is an append operation
+//         plus_equals = strstr(current->args[(*i)], "+=");
+//         if (plus_equals && plus_equals < equals)
+//             is_append = 1;
+        
+//         // Handle digit at start
+//         if (isdigit(current->args[(*i)][0]))
+//             force_split = 1;
+            
+//         // Check original args before quotes removed
+//         if (current->args_befor_quotes_remover) 
+//         {
+//             int count = 0;
+//             while (current->args_befor_quotes_remover[count])
+//                 count++;
+                
+//             if (*i < count && current->args_befor_quotes_remover[*i]) 
+//             {
+//                 char *orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
+//                 char *orig_plus_equals = strstr(current->args_befor_quotes_remover[*i], "+=");
+                
+//                 // For regular assignments, check quotes in var name
+//                 if (!is_append && orig_equals && 
+//                     check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
+//                     force_split = 1;
+                
+//                 // For append operations, ONLY check for quotes/$ in var name
+//                 if (is_append && orig_plus_equals && orig_plus_equals < orig_equals &&
+//                     check_var_quotes(current->args_befor_quotes_remover[*i], orig_plus_equals))
+//                     force_split = 1;
+//             }
+//         }
+        
+//         // For regular assignments (not +=), check for spaces in value part
+//         if (!is_append && equals && strchr(equals + 1, ' '))
+//             force_split = 1;
+        
+//         // For += we DON'T force split just because of spaces
+//     }
+
+//     if (!current->args[(*i)] || (!should_split && !force_split))
+//         return;
+
+//     // Perform splitting if needed
+//     split = split_if_needed(current->args[(*i)]);
+//     if (split && split[1])
+//     {
+//         word_count = ft_lint(split);
+//         new_args = malloc(sizeof(char *) * 
+//                    (ft_lint(current->args) + word_count));
+        
+//         if (new_args)
+//         {
+//             prepare_new_args(new_args, current, (*i));
+//             (*i) = rebuild_cmd_args(new_args, current, split, 
+//                                 (*i), word_count);
+//         }
+//     }
+//     if (split)
+//         free_string_array(split);
+// }
+
 void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *i)
 {
     char **split;
@@ -455,19 +526,19 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
     int force_split = 0;
     char *plus_equals;
     int is_append = 0;
+    int is_export_cmd = 0;
+
+    if (current->cmd && strcmp(current->cmd, "export") == 0)
+        is_export_cmd = 1;
     
     if (current->args[(*i)])
     {
-        // Check if this is an append operation
         plus_equals = strstr(current->args[(*i)], "+=");
         if (plus_equals && plus_equals < equals)
             is_append = 1;
         
-        // Handle digit at start
         if (isdigit(current->args[(*i)][0]))
             force_split = 1;
-            
-        // Check original args before quotes removed
         if (current->args_befor_quotes_remover) 
         {
             int count = 0;
@@ -478,30 +549,20 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
             {
                 char *orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
                 char *orig_plus_equals = strstr(current->args_befor_quotes_remover[*i], "+=");
-                
-                // For regular assignments, check quotes in var name
-                if (!is_append && orig_equals && 
-                    check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
-                    force_split = 1;
-                
-                // For append operations, ONLY check for quotes/$ in var name
                 if (is_append && orig_plus_equals && orig_plus_equals < orig_equals &&
                     check_var_quotes(current->args_befor_quotes_remover[*i], orig_plus_equals))
+                    force_split = 1;
+                if (!is_append && orig_equals && 
+                    check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
                     force_split = 1;
             }
         }
         
-        // For regular assignments (not +=), check for spaces in value part
-        if (!is_append && equals && strchr(equals + 1, ' '))
-            force_split = 1;
-        
-        // For += we DON'T force split just because of spaces
     }
 
     if (!current->args[(*i)] || (!should_split && !force_split))
         return;
 
-    // Perform splitting if needed
     split = split_if_needed(current->args[(*i)]);
     if (split && split[1])
     {
@@ -629,14 +690,23 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
     {
         equals = strchr(current->args[i], '=');
         if (had_removed_var == 1)
+        {
             arg_should_split = 1;
+        }
         else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
             current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
+            {
             arg_should_split = 1; 
+                
+            }
         else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
+        {
             arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
+        }
         else
+        {
             arg_should_split = should_split_arg(current->args[i], NULL);
+        }
             
         // Process only this specific argument, not affecting others
         split_the_rest_helper(equals, arg_should_split, current, &i);

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/11 00:03:20 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:53:40 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,7 +485,7 @@ int main(int argc, char *argv[], char *env[])
 			// 	free_cmd_list(cmd);
     		// if (token_list) 
 			// 	free_token_list(token_list);
-			// break ;
+			break ;
 		}
 		// if(global_sig != 0)
 		// {
@@ -497,14 +497,14 @@ int main(int argc, char *argv[], char *env[])
 		{
 			exit_status = get_or_set(SET, 258); 
 			free(input);
-			// continue;
+			continue;
 		}
 		preprocessed_input = preprocess_command(input); 
 			free(input);
          if (!preprocessed_input)
 		 {
 			free(input);
-            // continue;
+            continue;
 		 }
 		 char *new_input = change_space(preprocessed_input);
 		token_list = tokin_list_maker(new_input);
