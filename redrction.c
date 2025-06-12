@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:59:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/08 20:22:52 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:14:21 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,30 @@ void ft_redircte(t_redir *rederction, t_env *env, t_cmd *cmd)
         }
         else if(tmp->type == 0)
         {
-            dup2(tmp->fd[0], 0);
-            close(tmp->fd[0]); 
+            if (tmp->fd[0] != -1)
+            {
+                dup2(tmp->fd[0], 0);
+                close(tmp->fd[0]); 
+                
+            }
         }
         else if (tmp->type == 1)
         {
-            dup2(tmp->fd[0], 1);
-            close(tmp->fd[0]);
+            if (tmp->fd[0] != -1)
+            {
+                dup2(tmp->fd[0], 1);
+                close(tmp->fd[0]);  
+            }
             
         }
         else if(tmp->type == 2 )
         {
-            dup2(tmp->fd[0], 1);
-            close (tmp->fd[0]);
+            if (tmp->fd[0] != -1)
+            {
+                dup2(tmp->fd[0], 1);
+                close (tmp->fd[0]);
+                
+            }
         }  
         tmp = tmp->next;
     }

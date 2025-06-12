@@ -125,6 +125,7 @@ export ""d+=$a /// split [done]
 export "d"+=$a  /// split  [done]
 export d""+="$a" /// no split [done]
 export ""d+="$a" /// no split [done]
+********************************************************
 export "d"+="$a" /// no split [done]
 export $d+=$a /// split [done]
 export $d+="$a" ///  no split [done]

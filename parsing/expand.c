@@ -291,8 +291,5 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
         }
         current = current->next;
     }
-    if (should_split | had_empty_var)
         apply_word_splitting(cmd_list, expand);
-    else
-        free_expanded(expand);
 }
