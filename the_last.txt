@@ -105,7 +105,7 @@ the exit
 
 
 
-export a="ls la" f="q k" d="ls la"
+export a="ls la" 
 export f="q k"
 export d="e" 
 
@@ -131,7 +131,7 @@ export $d+="$a" ///  no split [done]
 export "$d"+="$a" /// no split [done]
 
 export [split]  [split] [split]
-export s""=$a   ""e=$a   $d=$a   [failed]
+export s""=$a   ""e=$a   $d=$a   [done]
 export $d=$a    s""=$a   ""e=$a [done]
 export s""=$a   $d=$a    ""e=$a [done]
 export ""e=$a   $d=$a  s""=$a [done]
@@ -305,3 +305,11 @@ export [no split]  [no split] [split]
 export [no split]  [split] [split]
 export [split]  [no split] [split]
 export [no split]  [split] [no split]
+
+
+
+
+
+if [export] do not have quotes " or ' and [export] is not in a var and there no $EMTY var befor export
+then we must see if the key do not have quotes or the key is not a var then we will not split 
+then we will add quotes in the start of the var of valuer

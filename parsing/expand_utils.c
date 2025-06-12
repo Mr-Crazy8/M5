@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/11 15:09:58 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:06:12 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,40 +528,40 @@ void split_the_rest_helper(char *equals, int should_split, t_cmd *current, int *
     int is_append = 0;
     int is_export_cmd = 0;
 
-    if (current->cmd && strcmp(current->cmd, "export") == 0)
-        is_export_cmd = 1;
+    // if (current->cmd && strcmp(current->cmd, "export") == 0)//
+    //     is_export_cmd = 1;//
     
-    if (current->args[(*i)])
-    {
-        plus_equals = strstr(current->args[(*i)], "+=");
-        if (plus_equals && plus_equals < equals)
-            is_append = 1;
+    // if (current->args[(*i)])
+    // {
+    //     plus_equals = strstr(current->args[(*i)], "+=");//
+    //     if (plus_equals && plus_equals < equals)//
+    //         is_append = 1;//
         
-        if (isdigit(current->args[(*i)][0]))
-            force_split = 1;
-        if (current->args_befor_quotes_remover) 
-        {
-            int count = 0;
-            while (current->args_befor_quotes_remover[count])
-                count++;
+    //     if (isdigit(current->args[(*i)][0]))//
+    //         force_split = 1;//
+    //     if (current->args_befor_quotes_remover) 
+    //     {
+    //         int count = 0;
+    //         while (current->args_befor_quotes_remover[count])
+    //             count++;
                 
-            if (*i < count && current->args_befor_quotes_remover[*i]) 
-            {
-                char *orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');
-                char *orig_plus_equals = strstr(current->args_befor_quotes_remover[*i], "+=");
-                if (is_append && orig_plus_equals && orig_plus_equals < orig_equals &&
-                    check_var_quotes(current->args_befor_quotes_remover[*i], orig_plus_equals))
-                    force_split = 1;
-                if (!is_append && orig_equals && 
-                    check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))
-                    force_split = 1;
-            }
-        }
+    //         if (*i < count && current->args_befor_quotes_remover[*i]) //
+    //         {
+    //             char *orig_equals = strchr(current->args_befor_quotes_remover[*i], '=');//
+    //             char *orig_plus_equals = strstr(current->args_befor_quotes_remover[*i], "+=");//
+    //             if (is_append && orig_plus_equals && orig_plus_equals < orig_equals &&////
+    //                 check_var_quotes(current->args_befor_quotes_remover[*i], orig_plus_equals))//
+    //                 force_split = 1;///
+    //             if (!is_append && orig_equals && ///
+    //                 check_var_quotes(current->args_befor_quotes_remover[*i], orig_equals))///
+    //                 force_split = 1;//
+    //         }
+    //     }
         
-    }
+    // }
 
-    if (!current->args[(*i)] || (!should_split && !force_split))
-        return;
+    if (!current->args[(*i)] || (!should_split && !force_split))///
+        return;//
 
     split = split_if_needed(current->args[(*i)]);
     if (split && split[1])
@@ -688,25 +688,25 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
     i = 1; 
     while (current->args && current->args[i]) 
     {
-        equals = strchr(current->args[i], '=');
-        if (had_removed_var == 1)
-        {
-            arg_should_split = 1;
-        }
-        else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
-            current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
-            {
-            arg_should_split = 1; 
+        // equals = strchr(current->args[i], '=');
+        // if (had_removed_var == 1)
+        // {
+        //     arg_should_split = 1;
+        // }
+        // else if (!equals && current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover) && 
+        //     current->args_befor_quotes_remover[i] && strchr(current->args_befor_quotes_remover[i], '$')) 
+        //     {
+        //     arg_should_split = 1; 
                 
-            }
-        else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
-        {
-            arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
-        }
-        else
-        {
-            arg_should_split = should_split_arg(current->args[i], NULL);
-        }
+        //     }
+        // else if (current->args_befor_quotes_remover && i < ft_lint(current->args_befor_quotes_remover)) 
+        // {
+        //     arg_should_split = should_split_arg(current->args[i], current->args_befor_quotes_remover[i]);
+        // }
+        // else
+        // {
+        //     arg_should_split = should_split_arg(current->args[i], NULL);
+        // }
             
         // Process only this specific argument, not affecting others
         split_the_rest_helper(equals, arg_should_split, current, &i);
@@ -715,76 +715,6 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
 }
 
 
-
-char **copy_string_array(char **array)
-{
-    char **copy;
-    int count;
-    int i;
-    
-    if (!array)
-        return (NULL);
-    
-    count = ft_lint(array);
-    copy = malloc(sizeof(char *) * (count + 1));
-    if (!copy)
-        return (NULL);
-    
-    i = 0;
-    while (i < count)
-    {
-        if (array[i])
-        {
-            copy[i] = ft_strdup(array[i]);
-            if (!copy[i])
-            {
-                free_string_array_partial(copy, i);
-                return (NULL);
-            }
-        }
-        else
-        {
-            copy[i] = NULL;
-        }
-        i++;
-    }
-    copy[count] = NULL;
-    return (copy);
-}
-
-
-// void free_string_array(char **array)
-// {
-//     int i;
-    
-//     if (!array)
-//         return;
-    
-//     i = 0;
-//     while (array[i])
-//     {
-//         free(array[i]);
-//         i++;
-//     }
-//     free(array);
-// }
-
-void free_string_array_partial(char **array, int count)
-{
-    int i;
-    
-    if (!array)
-        return;
-    
-    i = 0;
-    while (i < count)
-    {
-        if (array[i])
-            free(array[i]);
-        i++;
-    }
-    free(array);
-}
 
 
 void cmd_splitting(t_cmd *cmd_list )
@@ -930,20 +860,20 @@ int fix_export_var_names(t_cmd *cmd)
 void apply_word_splitting(t_cmd *cmd_list, t_exp_helper *expand)
 {
     t_cmd *current = cmd_list;
-    int should_split;
+    int should_split = 0;
     
     while (current)
     {
         
-        cmd_splitting(current);
+        //cmd_splitting(current);
         
         
-        should_split = 1;
+       // should_split = 1;
         
-        if (current->cmd && strcmp(current->cmd, "export") == 0) {
-             fix_export_var_names(current);
-            should_split = is_special_export_case(current);
-        }
+       // if (current->cmd && strcmp(current->cmd, "export") == 0) {
+            //  fix_export_var_names(current);
+           // should_split = is_special_export_case(current);
+        //}
         split_the_rest(current, should_split, expand->had_removed_var);
                
 

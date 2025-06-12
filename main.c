@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/11 10:53:40 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:20:50 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,7 +351,10 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	tmp = cmd;
 	int *fd;
 	if (max_heredoc_checker(cmd) == 1)
-		return;
+	{
+		get_or_set(SET, 2);
+		exit(2);
+	}
 	int here_doc_count = heredoc_count(cmd);
 	while (tmp)
 	{
@@ -443,7 +446,79 @@ char *change_space(char *str)
 	}
 	return str;
 }
+char *split_helper(char *str, char *befor, int exp)
+{
+    char **split;
+	char *join2 = NULL;
+	char *join1 = NULL ;
+	char *join3 = NULL;
+	char *join4 = NULL;
 
+	
+    if (exp == 1)
+    {
+		if (strchr(str, '=') != NULL)
+		{
+			
+        split = ft_split(str, '=');
+		if (split != NULL)
+		{
+			char *key = ft_strtrim(split[0], "+");
+			printf("[%s]\n", key);
+			if ( (((strchr(key, '\'') == NULL && strchr(key, '\"') == NULL) && strchr(key, '$') == NULL)))
+			{
+				
+			
+				if (split && split[1] && split[1][0] == '$')
+				{
+					join1 = ft_strjoin("\"", split[1]);
+					join2 = ft_strjoin(join1, "\"");
+				}
+				else
+					return str;
+		
+				join3 = ft_strjoin(split[0], "=");
+				join4 = ft_strjoin(join3, join2);
+			}
+
+		}
+		}
+
+    }
+
+	return join4;
+}
+
+void split_stoper(t_cmd *cmd)
+{
+	t_cmd *tmp;
+	tmp = cmd;
+	char *new_str;
+	int exp = 0;
+	int i = 0;
+	while(tmp)
+	{
+		while (tmp->args[i])
+		{
+			new_str = split_helper(tmp->args[i], tmp->args_befor_quotes_remover[i], exp);
+			if (strcmp(tmp->args[i], "export") == 0)
+				{
+					if (((strchr(tmp->args[i], '\'') == NULL || strchr(tmp->args[i], '\"') == NULL) || strchr(tmp->args_befor_quotes_remover[i], '$') == NULL) && i == 0)
+						{
+			 					exp = 1;
+						}
+				}
+			if (new_str != NULL)
+			{
+				free(tmp->args[i]);
+				tmp->args[i] = NULL;
+				tmp->args[i] = new_str;
+			}
+			i++;
+		}
+		tmp = tmp->next;
+	}
+}
 
 int main(int argc, char *argv[], char *env[])
 {
@@ -513,6 +588,7 @@ int main(int argc, char *argv[], char *env[])
 		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))
 		{
 			cmd = parser(token_list);
+			split_stoper(cmd);
 			free_token_list(token_list);
 			expand_handle(cmd, env_struct, get_or_set(GET, 0));
 			

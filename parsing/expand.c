@@ -156,6 +156,7 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
     return (0);
 }
 
+
 void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status, int pipe_out)
 {
 	if (!expand_fill_str(expand, str))
@@ -180,6 +181,7 @@ void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status
     if (expand->expanded)
         expand->expanded[expand->j] = '\0';
     expand->expanded = ft_strtrim(change_space((expand->expanded)), " ");
+ 
 }
 
 
@@ -200,17 +202,6 @@ t_exp_helper *alloc_expand()
     return expand;
 }
 
-void case_handle(t_cmd *current, int *i, int *pls_case, int *should_split)
-{
-    if (((current->args[(*i)][0] == '\'' && current->args[(*i)][strlen(current->args[(*i)]) - 1] == '\'') ||
-            (current->args[(*i)][0] == '"' && current->args[(*i)][strlen(current->args[(*i)]) - 1] == '"')) && current->args[(*i) + 1] != NULL)
-               (*should_split) = 0;
-    else
-    {
-            (*should_split) = 1;
-    } 
-
-}
 
 void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
 {
@@ -234,7 +225,6 @@ void expand_handle(t_cmd *cmd_list, t_env *env, int exit_status)
         pls_case = 0;
         while (current->args && current->args[i])
         {
-            case_handle(current, &i, &pls_case, &should_split);
             process_string(current->args[i], expand, env, exit_status, cmd_list->pipe_out);
             if (expand->expanded && expand->expanded[0] == '\0' && 
                 strchr(current->args[i], '$'))
