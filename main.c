@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/12 18:16:16 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:06:51 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -742,11 +742,6 @@ int main(int argc, char *argv[], char *env[])
 			// 	free_token_list(token_list);
 			break ;
 		}
-		// if(global_sig != 0)
-		// {
-		// 	free(input);
-		// 	continue;
-		// }
 		add_history(input);
 		if (check_quotes(input))
 		{
