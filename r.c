@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:33:44 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/03 13:58:44 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:53:54 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void ft_print_error(t_cmd *cmd)
     // puts("%d")
     if(errno == 2)
     {
+        
         ft_putstr_fd(": No such file or directory\n", 2);
         cmd->data.exit_status = get_or_set(SET, 127);
         exit(127);

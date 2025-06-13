@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:15:39 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/09 15:17:01 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:16:59 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ void	ambiguous_checker(t_redir *redir)
 	tmp = redir;
 	while (tmp)
 	{
+		if (tmp->type != 3 && tmp->orig_token[0] == '$')
+		{
+			
 		if ((tmp->orig_token[0] == '\'' && tmp->orig_token[1] == '\'') || (tmp->orig_token[0] == '\"' && tmp->orig_token[1] == '\"'))
 			tmp->Ambiguous = 1;
 		if ((tmp->orig_token[0] == '\'' || tmp->orig_token[0] == '\"')
@@ -74,6 +77,7 @@ void	ambiguous_checker(t_redir *redir)
 			tmp->Ambiguous = 1;
 		else
 			ambiguous_checker_helper(tmp);
+		}
 		tmp = tmp->next;
 	}
 }

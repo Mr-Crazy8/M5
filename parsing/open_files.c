@@ -78,7 +78,7 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
 
 void print_file_error(char *file, int i)
 {
-    write(2, "minishell $> ", 13);
+    write(2, "minishell : ", 13);
     write(2, file, ft_strlen(file));
     if (i == 0)
         write(2, " : No such file or directory\n", 29);
@@ -93,7 +93,17 @@ void print_file_error(char *file, int i)
         write(2, "\n", 1);
     }
 }
-
+void set_failed(t_redir *tp)
+{
+     int *fd = malloc(2 * sizeof(int));
+     fd[0] = -1;
+     fd[1] = -1;
+    while (tp && tp->fd)
+    {
+        tp->fd = fd;
+        tp = tp->next;
+    }
+}
 void file_opener(t_cmd *cmd, t_env *env)
 {
     t_cmd *tmp;
@@ -108,11 +118,9 @@ void file_opener(t_cmd *cmd, t_env *env)
         {   
             
             fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
-            printf("fd 1 =====> [%d]\n", fd[0]);
-            printf("fd 2 =====> [%d]\n", fd[1]);
             if (fd[0] == -1)
             {
-                tp->fd = fd;
+                set_failed(tp);
                 break;
             }
             else

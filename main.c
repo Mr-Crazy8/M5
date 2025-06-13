@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/12 16:11:18 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:16:16 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -771,12 +771,13 @@ int main(int argc, char *argv[], char *env[])
 			split_stoper(cmd);
 			free_token_list(token_list);
 			expand_handle(cmd, env_struct, get_or_set(GET, 0));
-			
 			ambiguous_finder(cmd);
+			
 			process_quotes_for_cmd(cmd, 1);
 			change_back_cmd(cmd);
 			file_opener(cmd, env_struct);
-			// print_cmd(cmd);
+			print_ambiguous_redir_errors(cmd);
+			print_cmd(cmd);
 			check_line(&cmd, env_struct, env);
 			//expand_handle(cmd, env_struct, cmd->data.exit_status);
 			
