@@ -10,10 +10,13 @@ void free_redirs(t_redir *redir_list)
     while(current)
     {
         next = current->next;
+        if (current->fd)
+            free(current->fd);
         if (current->file)
             free(current->file);
         if (current->orig_token)
             free(current->orig_token);
+        free(current);
         current = next;
     }
 }

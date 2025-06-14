@@ -27,16 +27,6 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
     if (type == 3)
     {
        fd_heredoc = heredoc_opener();
-        if (!fd_heredoc)
-        {
-            // If heredoc_opener fails, create a dummy fd array
-            fd = malloc(2 * sizeof(int));
-            if (!fd)
-                return NULL;
-            fd[0] = -1;
-            fd[1] = -1;
-            return fd;
-        }
         return fd_heredoc;
     }
     fd = malloc(2 * sizeof(int));
