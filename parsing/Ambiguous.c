@@ -6,23 +6,54 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:15:39 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/12 18:16:59 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:29:00 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	check_for_space(char *str)
-{
-	int	i;
+// int	check_for_space(char *str)
+// {
+// 	int	i;
 
+// 	i = 0;
+// 	while (str && str[i] && str[i] != ' ')
+// 		i++;
+// 	if (i > 0)
+// 		return (1);
+// 	return (0);
+// }
+
+int check_for_space(char *str) 
+{
+	int i;
+	int word_count;
+	int in_word;
+	
 	i = 0;
-	while (str && str[i] && str[i] != ' ')
+	word_count = 0;
+	in_word = 0;
+	if (!str)
+		return (0);
+	while (str && str[i]) 
+	{
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+		{
+			if (!in_word)
+			{
+				word_count++;
+				in_word = 1;
+			}
+		}
+		else
+			in_word = 0;
 		i++;
-	if (i > 0)
+	}
+	if (word_count > 1)
 		return (1);
 	return (0);
 }
+
 
 char	*trim_space(char *str)
 {

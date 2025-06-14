@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/13 18:21:04 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:36:25 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -505,6 +505,18 @@ char *change_space(char *str)
 // 	}
 // 	return join4;	
 // }
+void free_extract_result(char **split)
+{
+    if (!split)
+        return;
+    
+    if (split[0])
+        free(split[0]);
+    if (split[1])
+        free(split[1]);
+    free(split);
+}
+
 
 char **extract(char *str)
 {
@@ -549,18 +561,15 @@ char *split_helper(char *str, char *befor, int exp)
 	char *join4 = NULL;
 	char *add = NULL;
 	char *join2 = NULL;
+	char *new_key = NULL;
 	if (exp == 1)
 	{
 		 if (strchr(str, '=') != NULL)
 		 {
 			split = extract(str);
-			printf("split[0] =====> [%s]\n", split[0]);
-			printf("split[1] =====> [%s]\n", split[1]);
-			printf("split[2] =====> [%s]\n", split[2]);
-			char *new_key = plus_checker(split[0]);
-			printf("new_split[0] ===========> [%s]\n", new_key);
 			if (split != NULL)
             {
+			new_key = plus_checker(split[0]);
 				lent = ft_lint(split);
 				if ((((strchr(split[0], '\'') == NULL && strchr(split[0], '\"') == NULL) && strchr(split[0], '$') == NULL)) && is_valid_key(new_key) == 0)
 				 {
@@ -570,6 +579,7 @@ char *split_helper(char *str, char *befor, int exp)
 						join2 = ft_strjoin(join1, "\"");
 						join3 = ft_strjoin("=", join2);
                 		join4 = ft_strjoin(split[0], join3);
+						free(join1);
 						free(join2);
                     	free(join3);
 					}
@@ -577,11 +587,13 @@ char *split_helper(char *str, char *befor, int exp)
 						{
 							join3 = ft_strjoin(split[0], "=");
 							join4 = ft_strjoin(join3, split[1]);
+							free(join3);
 						}
 					
 				 }
 				else
                     join4 = ft_strdup(str); 
+				free_extract_result(split);
 			}
            	else
                 join4 = ft_strdup(str); 
