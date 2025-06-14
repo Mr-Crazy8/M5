@@ -22,16 +22,26 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
 {
     int *fd = NULL;
     int *fd_heredoc;
-    fd = malloc(2 * sizeof(int));
 
 
     if (type == 3)
     {
        fd_heredoc = heredoc_opener();
-       free(fd);
-       return fd_heredoc;
-
+        if (!fd_heredoc)
+        {
+            // If heredoc_opener fails, create a dummy fd array
+            fd = malloc(2 * sizeof(int));
+            if (!fd)
+                return NULL;
+            fd[0] = -1;
+            fd[1] = -1;
+            return fd;
+        }
+        return fd_heredoc;
     }
+    fd = malloc(2 * sizeof(int));
+    if (!fd)
+        return NULL;
     if (type == 0 && Ambiguous != 1)
     {
         fd[0] = open(file, O_RDONLY);
@@ -101,6 +111,45 @@ void print_file_error(char *file, int i)
 
 
 
+// void file_opener(t_cmd *cmd, t_env *env)
+// {
+//     t_cmd *tmp;
+//     t_redir *tp = NULL;
+//     int *fd;
+//     int failed = 0;
+//     tmp = cmd;
+
+//     while (tmp)
+//     {
+//         tp = tmp->redirs;
+//         while (tp)
+//         {   
+            
+//             if (failed == 0)
+//                 fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
+//             if (fd[0] == -1 && failed == 0)
+//             {
+//                 tp->fd = fd;
+//                 failed = 1;
+//             }
+//             else if (failed == 1)
+//             {
+//                     fd = malloc(2 * sizeof(int));
+//                     fd[0] = -1;
+//                     fd[1] = -1;
+//                     tp->fd = fd;
+
+//             }
+//             else
+//             {
+//                 tp->fd = fd;
+//             }
+//             tp = tp->next;
+//         }
+//         tmp = tmp->next;
+//     }
+// }
+
 void file_opener(t_cmd *cmd, t_env *env)
 {
     t_cmd *tmp;
@@ -112,27 +161,49 @@ void file_opener(t_cmd *cmd, t_env *env)
     while (tmp)
     {
         tp = tmp->redirs;
+        failed = 0; // Reset failed flag for each command
+        
         while (tp)
         {   
-            
             if (failed == 0)
+            {
                 fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
-            if (fd[0] == -1 && failed == 0)
-            {
-                tp->fd = fd;
-                failed = 1;
-            }
-            else if (failed == 1)
-            {
+                if (!fd) // Check if malloc failed in open_file or heredoc_opener returned NULL
+                {
+                    // Handle malloc failure or NULL return
                     fd = malloc(2 * sizeof(int));
-                    fd[0] = -1;
-                    fd[1] = -1;
+                    if (fd)
+                    {
+                        fd[0] = -1;
+                        fd[1] = -1;
+                    }
                     tp->fd = fd;
-
+                    failed = 1;
+                }
+                else if (fd[0] == -1)
+                {
+                    tp->fd = fd;
+                    failed = 1;
+                }
+                else
+                {
+                    tp->fd = fd;
+                }
             }
             else
             {
-                tp->fd = fd;
+                // Create a dummy fd array for failed case
+                fd = malloc(2 * sizeof(int));
+                if (fd)
+                {
+                    fd[0] = -1;
+                    fd[1] = -1;
+                    tp->fd = fd;
+                }
+                else
+                {
+                    tp->fd = NULL;
+                }
             }
             tp = tp->next;
         }

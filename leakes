@@ -1,49 +1,7 @@
+cat << f
 
-
-ls > ew 
-
-
-==10037== 1,028 bytes in 1 blocks are definitely lost in loss record 34 of 64
-==10037==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10037==    by 0x112456: expand_fill_str (in /workspaces/M5/minishell)
-==10037==    by 0x110E1F: process_string (in /workspaces/M5/minishell)
-==10037==    by 0x111077: expand_handle (in /workspaces/M5/minishell)
-==10037==    by 0x11402F: main (in /workspaces/M5/minishell)
-==10037== 
-==10037== 1,028 bytes in 1 blocks are definitely lost in loss record 35 of 64
-==10037==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10037==    by 0x112456: expand_fill_str (in /workspaces/M5/minishell)
-==10037==    by 0x110E1F: process_string (in /workspaces/M5/minishell)
-==10037==    by 0x1113C4: expand_handle (in /workspaces/M5/minishell)
-==10037==    by 0x11402F: main (in /workspaces/M5/minishell)
-
-
-
-cat << d 
-
-
-==10874== 8 bytes in 1 blocks are definitely lost in loss record 9 of 78
-==10874==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10874==    by 0x11413B: open_file (in /workspaces/M5/minishell)
-==10874==    by 0x114513: file_opener (in /workspaces/M5/minishell)
-==10874==    by 0x11406B: main (in /workspaces/M5/minishell)
-==10874== 
-==10874== 8 bytes in 1 blocks are definitely lost in loss record 10 of 78
-==10874==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10874==    by 0x11619D: heredoc_opener (in /workspaces/M5/minishell)
-==10874==    by 0x114154: open_file (in /workspaces/M5/minishell)
-==10874==    by 0x114513: file_opener (in /workspaces/M5/minishell)
-==10874==    by 0x11406B: main (in /workspaces/M5/minishell)
-==10874== 
-==10874== 8 bytes in 1 blocks are definitely lost in loss record 11 of 78
-==10874==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10874==    by 0x114471: set_failed (in /workspaces/M5/minishell)
-==10874==    by 0x11452E: file_opener (in /workspaces/M5/minishell)
-==10874==    by 0x11406B: main (in /workspaces/M5/minishell)
-==10874== 
-==10874== 4,120 bytes in 4 blocks are definitely lost in loss record 64 of 78
-==10874==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==10874==    by 0x112456: expand_fill_str (in /workspaces/M5/minishell)
-==10874==    by 0x110E1F: process_string (in /workspaces/M5/minishell)
-==10874==    by 0x111077: expand_handle (in /workspaces/M5/minishell)
-==10874==    by 0x11402F: main (in /workspaces/M5/minishell)
+==2228== 8 bytes in 1 blocks are definitely lost in loss record 3 of 62
+==2228==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2228==    by 0x114153: open_file (in /workspaces/M5/minishell)
+==2228==    by 0x1144D7: file_opener (in /workspaces/M5/minishell)
+==2228==    by 0x114083: main (in /workspaces/M5/minishell)
