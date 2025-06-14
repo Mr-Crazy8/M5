@@ -23,11 +23,14 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
     int *fd = NULL;
     int *fd_heredoc;
     fd = malloc(2 * sizeof(int));
-    fd[0] = -1;
+
 
     if (type == 3)
     {
        fd_heredoc = heredoc_opener();
+       free(fd);
+       return fd_heredoc;
+
     }
     if (type == 0 && Ambiguous != 1)
     {
@@ -39,7 +42,10 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
             cmd->data.exit_status = get_or_set(SET, 1);
         }
         else if (fd[0] == -1)
+        {
             print_file_error(file, 0);
+
+        }
     }
     if (type == 1 && Ambiguous != 1)
     {
@@ -71,8 +77,7 @@ int *open_file(t_cmd *cmd, int type, char *file, int Ambiguous)
         fd[0] = -1;
         fd[1] = -1;
     }
-    if (type == 3)
-        return fd_heredoc;
+        
     return fd;
 }
 
@@ -93,22 +98,15 @@ void print_file_error(char *file, int i)
         write(2, "\n", 1);
     }
 }
-void set_failed(t_redir *tp)
-{
-     int *fd = malloc(2 * sizeof(int));
-     fd[0] = -1;
-     fd[1] = -1;
-    while (tp && tp->fd)
-    {
-        tp->fd = fd;
-        tp = tp->next;
-    }
-}
+
+
+
 void file_opener(t_cmd *cmd, t_env *env)
 {
     t_cmd *tmp;
     t_redir *tp = NULL;
     int *fd;
+    int failed = 0;
     tmp = cmd;
 
     while (tmp)
@@ -117,11 +115,20 @@ void file_opener(t_cmd *cmd, t_env *env)
         while (tp)
         {   
             
-            fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
-            if (fd[0] == -1)
+            if (failed == 0)
+                fd = open_file(cmd, tp->type, tp->file, tp->Ambiguous);
+            if (fd[0] == -1 && failed == 0)
             {
-                set_failed(tp);
-                break;
+                tp->fd = fd;
+                failed = 1;
+            }
+            else if (failed == 1)
+            {
+                    fd = malloc(2 * sizeof(int));
+                    fd[0] = -1;
+                    fd[1] = -1;
+                    tp->fd = fd;
+
             }
             else
             {

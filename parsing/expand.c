@@ -159,6 +159,7 @@ int expand_handle_helper1(t_exp_helper *expand, int exit_status, t_env *env, int
 
 void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status, int pipe_out)
 {
+    char *new_expanded;
 	if (!expand_fill_str(expand, str))
 	{
         free(expand->expanded);
@@ -180,8 +181,9 @@ void process_string(char *str, t_exp_helper *expand, t_env *env, int exit_status
 	}
     if (expand->expanded)
         expand->expanded[expand->j] = '\0';
-    expand->expanded = ft_strtrim(change_space((expand->expanded)), " ");
- 
+    new_expanded = ft_strtrim(change_space((expand->expanded)), " ");
+    free(expand->expanded);
+    expand->expanded = new_expanded;
 }
 
 

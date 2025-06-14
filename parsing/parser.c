@@ -221,6 +221,7 @@ t_redir *creat_redir_node(int type, char *file)
     // tmp->fd = -1;
     tmp->Ambiguous = 0;
     tmp->type = type;
+    tmp->fd = NULL;
     tmp->next = NULL;
 
     return (tmp);

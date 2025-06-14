@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/13 11:06:51 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:21:04 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,226 +446,152 @@ char *change_space(char *str)
 	}
 	return str;
 }
-// char *split_helper(char *str, char *befor, int exp)
-// {
-//     char **split;
-// 	char *join2 = NULL;
-// 	char *join1 = NULL ;
-// 	char *join3 = NULL;
-// 	char *join4 = NULL;
-
-	
-//     if (exp == 1)
-//     {
-// 		if (strchr(str, '=') != NULL)
-// 		{
-			
-//         split = ft_split(str, '=');
-// 		if (split != NULL)
-// 		{
-// 			char *key = ft_strtrim(split[0], "+");
-// 			printf("[%s]\n", key);
-// 			if ( (((strchr(key, '\'') == NULL && strchr(key, '\"') == NULL) && strchr(key, '$') == NULL)))
-// 			{
-				
-			
-// 				if (split && split[1] && split[1][0] == '$')
-// 				{
-// 					join1 = ft_strjoin("\"", split[1]);
-// 					join2 = ft_strjoin(join1, "\"");
-// 				}
-// 				else
-// 					return str;
-		
-// 				join3 = ft_strjoin(split[0], "=");
-// 				join4 = ft_strjoin(join3, join2);
-// 			}
-
-// 		}
-// 		}
-
-//     }
-
-// 	return join4;
-// }
-
-// void split_stoper(t_cmd *cmd)
-// {
-// 	t_cmd *tmp;
-// 	tmp = cmd;
-// 	char *new_str;
-// 	int exp = 0;
-// 	int i = 0;
-// 	while(tmp)
-// 	{
-// 		while (tmp->args[i])
-// 		{
-// 			new_str = split_helper(tmp->args[i], tmp->args_befor_quotes_remover[i], exp);
-// 			if (strcmp(tmp->args[i], "export") == 0)
-// 				{
-// 					if (((strchr(tmp->args[i], '\'') == NULL && strchr(tmp->args[i], '\"') == NULL) && strchr(tmp->args_befor_quotes_remover[i], '$') == NULL) && i == 0)
-// 						{
-// 			 					exp = 1;
-// 						}
-// 				}
-// 			if (new_str != NULL)
-// 			{
-// 				free(tmp->args[i]);
-// 				tmp->args[i] = NULL;
-// 				tmp->args[i] = new_str;
-// 			}
-// 			i++;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
 
 
 // char *split_helper(char *str, char *befor, int exp)
 // {
-//     char **split;
-// 	char *join2 = NULL;
-// 	char *join1 = NULL ;
-// 	char *join3 = NULL;
+// 	int i = 1;
+// 	int lent;
+// 	char **split;
+// 	char *key;
+// 	char *new_value = NULL;
+// 	char *join1;
+// 	char *join3;
 // 	char *join4 = NULL;
-
-	
-//     if (exp == 1)
-//     {
-// 		if (strchr(str, '=') != NULL)
-// 		{
-			
-//         split = ft_split(str, '=');
-// 		if (split != NULL)
-// 		{
-// 			char *key = ft_strtrim(split[0], "+");
-// 			printf("[%s]\n", key);
-// 			if ( (((strchr(key, '\'') == NULL && strchr(key, '\"') == NULL) && strchr(key, '$') == NULL)))
-// 			{
-				
-			
-// 				if (split && split[1] && split[1][0] == '$')
-// 				{
-// 					join1 = ft_strjoin("\"", split[1]);
-// 					join2 = ft_strjoin(join1, "\"");
-// 				}
-// 				else
-// 					return str;
-		
-// 				join3 = ft_strjoin(split[0], "=");
-// 				join4 = ft_strjoin(join3, join2);
-// 			}
-
-// 		}
-// 		}
-
-//     }
-
-// 	return join4;
-// }
-
-// void split_stoper(t_cmd *cmd)
-// {
-// 	t_cmd *tmp;
-// 	tmp = cmd;
-// 	char *new_str;
-// 	int exp = 0;
-// 	int i = 0;
-// 	while(tmp)
+// 	char *add = NULL;
+// 	char *join2;
+// 	if (exp == 1)
 // 	{
-// 		while (tmp->args[i])
-// 		{
-// 			new_str = split_helper(tmp->args[i], tmp->args_befor_quotes_remover[i], exp);
-// 			if (strcmp(tmp->args[i], "export") == 0)
-// 				{
-// 					if (((strchr(tmp->args[i], '\'') == NULL || strchr(tmp->args[i], '\"') == NULL) || strchr(tmp->args_befor_quotes_remover[i], '$') == NULL) && i == 0)
+// 		 if (strchr(str, '=') != NULL)
+// 		 {
+// 			split = ft_split(str, '=');
+// 			if (split != NULL)
+//             {
+// 				lent = ft_lint(split);
+// 				key = ft_strtrim(split[0], "+");
+// 				if ((((strchr(key, '\'') == NULL && strchr(key, '\"') == NULL) && strchr(key, '$') == NULL)))
+// 				 {
+// 					while(split && split[i])
+// 					{
+// 						if (split && split[i] && split[i][0] == '$')
 // 						{
-// 			 					exp = 1;
+// 							join1 = ft_strjoin("\"", split[1]);
+//                         	join2 = ft_strjoin(join1, "\"");
+// 							if (i < lent)
+// 								add = ft_strjoin(join2, "=");
+// 							else
+// 								add = NULL;
+// 							new_value = ft_strjoin(new_value, add);
+//                         	free(join1);
+// 							free(join2);
+// 							if (add != NULL)
+// 								free(add);
+							
 // 						}
-// 				}
-// 			if (new_str != NULL)
-// 			{
-// 				free(tmp->args[i]);
-// 				tmp->args[i] = NULL;
-// 				tmp->args[i] = new_str;
+// 						i++;
+// 					}
+// 					join3 = ft_strjoin(new_value, "=");
+//                 	join4 = ft_strjoin(join3, join2);
+// 					free(join2);
+//                     free(join3);
+					
+// 				 }
+// 				else
+//                     join4 = ft_strdup(str); 
 // 			}
-// 			i++;
-// 		}
-// 		tmp = tmp->next;
+//             join4 = ft_strdup(str);
+			
+// 		 }
 // 	}
+// 	return join4;	
 // }
 
-char *split_helper(char *str, char *befor, int exp)
+char **extract(char *str)
 {
-    char **split;
-    char *join1 = NULL;
-    char *join2 = NULL;
-    char *join3 = NULL;
-    char *join4 = NULL;
-    char *key;
-
-    if (exp == 1)
-    {
-        if (strchr(str, '=') != NULL)
-        {
-            split = ft_split(str, '=');
-            if (split != NULL)
-            {
-                key = ft_strtrim(split[0], "+");
-                printf("[%s]\n", key);
-                if ((((strchr(key, '\'') == NULL && strchr(key, '\"') == NULL) && strchr(key, '$') == NULL)))
-                {
-                    if (split && split[1] && split[1][0] == '$')
-                    {
-                        join1 = ft_strjoin("\"", split[1]);
-                        join2 = ft_strjoin(join1, "\"");
-                        free(join1); // Free intermediate result
-                        
-                        join3 = ft_strjoin(split[0], "=");
-                        join4 = ft_strjoin(join3, join2);
-                        
-                        // Free intermediate resources
-                        free(join2);
-                        free(join3);
-                    }
-                    else
-                    {
-                        join4 = ft_strdup(str); // Create a duplicate instead of returning original
-                    }
-                }
-                else
-                {
-                    join4 = ft_strdup(str); // Create a duplicate for this case too
-                }
-                free(key);
-                
-                // Free split array
-                int i = 0;
-                while (split[i])
-                {
-                    free(split[i]);
-                    i++;
-                }
-                free(split);
-            }
-            else
-            {
-                join4 = ft_strdup(str); // Handle NULL split case
-            }
-        }
-        else
-        {
-            join4 = ft_strdup(str); // Handle case where '=' is not found
-        }
-    }
-    else
-    {
-        join4 = ft_strdup(str); // Handle case where exp != 1
-    }
-
-    return join4;
+	int i = 0;
+	char *key;
+	char *value;
+	char **split = malloc(sizeof(char *) * 3);
+	while (str && str[i] && str[i] != '=')
+		i++;
+	key = ft_substr(str, 0, i);
+	value = ft_substr(str, i+1, ft_strlen(str) - (i+1));
+	split[0] = key;
+	split[1] = value;
+	split[2] = NULL;
+	
+	return split;
 }
 
+char *plus_checker(char *str)
+{
+	int i = 0;
+	int count;
+	char *new_str;
+	while (str && str[i])
+		i++;
+	if (str[i] == '\0' && str[i - 1] == '+')
+	{
+		str[i - 1] = '\0';
+	}
+	printf("_______{%s}_______\n", str);
+	return str;
+}
+char *split_helper(char *str, char *befor, int exp)
+{
+	int i = 1;
+	int lent;
+	char **split;
+	char *key;
+	char *new_value = NULL;
+	char *join1 = NULL;
+	char *join3 = NULL;
+	char *join4 = NULL;
+	char *add = NULL;
+	char *join2 = NULL;
+	if (exp == 1)
+	{
+		 if (strchr(str, '=') != NULL)
+		 {
+			split = extract(str);
+			printf("split[0] =====> [%s]\n", split[0]);
+			printf("split[1] =====> [%s]\n", split[1]);
+			printf("split[2] =====> [%s]\n", split[2]);
+			char *new_key = plus_checker(split[0]);
+			printf("new_split[0] ===========> [%s]\n", new_key);
+			if (split != NULL)
+            {
+				lent = ft_lint(split);
+				if ((((strchr(split[0], '\'') == NULL && strchr(split[0], '\"') == NULL) && strchr(split[0], '$') == NULL)) && is_valid_key(new_key) == 0)
+				 {
+					if (split && split[1] && strchr(split[1], '$') != NULL)
+					{
+						join1 = ft_strjoin("\"", split[1]);
+						join2 = ft_strjoin(join1, "\"");
+						join3 = ft_strjoin("=", join2);
+                		join4 = ft_strjoin(split[0], join3);
+						free(join2);
+                    	free(join3);
+					}
+					else
+						{
+							join3 = ft_strjoin(split[0], "=");
+							join4 = ft_strjoin(join3, split[1]);
+						}
+					
+				 }
+				else
+                    join4 = ft_strdup(str); 
+			}
+           	else
+                join4 = ft_strdup(str); 
+			
+		 }
+		 else
+                join4 = ft_strdup(str);
+	}
+	return join4;	
+}
 void split_stoper(t_cmd *cmd)
 {
     t_cmd *tmp;
