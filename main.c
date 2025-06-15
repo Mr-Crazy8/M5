@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/14 11:36:25 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:30:16 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,7 @@ void add_one_shlvl(t_env *env)
         tmp->next = new_node;
     }
 }
+
 int max_heredoc_checker(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
@@ -322,6 +323,8 @@ int max_heredoc_checker(t_cmd *cmd)
 		}
 	return 0;
 }
+
+
 
 int heredoc_count(t_cmd *cmd)
 {
@@ -505,6 +508,188 @@ char *change_space(char *str)
 // 	}
 // 	return join4;	
 // }
+//--------
+// void free_extract_result(char **split)
+// {
+//     if (!split)
+//         return;
+    
+//     if (split[0])
+//         free(split[0]);
+//     if (split[1])
+//         free(split[1]);
+//     free(split);
+// }
+
+
+// char **extract(char *str)
+// {
+// 	int i = 0;
+// 	char *key;
+// 	char *value;
+// 	char **split = malloc(sizeof(char *) * 3);
+	
+// 	if (!split)
+//         return NULL;
+// 	while (str && str[i] && str[i] != '=')
+// 		i++;
+// 	key = ft_substr(str, 0, i);
+// 	if (!key) 
+// 	{
+//         free(split);
+//         return NULL;
+//     }
+// 	printf("key ======= [%s]\n", key);
+// 	value = ft_substr(str, i+1, ft_strlen(str) - (i+1));
+// 	if (!value) 
+// 	{
+//         free(key);
+//         free(split);
+//         return NULL;
+//     }
+// 	split[0] = key;
+// 	split[1] = value;
+// 	split[2] = NULL;
+	
+// 	return split;
+// }
+
+// char *plus_checker(char *str)
+// {
+// 	int i = 0;
+
+// 	 if (!str)
+//         return str;
+
+		
+// 	while (str[i])
+// 		i++;
+//     if (i > 0 && str[i - 1] == '+')
+//     {
+//         str[i - 1] = '\0';
+//     }
+// 	printf("_______{%s}_______\n", str);
+// 	return str;
+// }
+// char *split_helper(char *str, char *befor, int exp)
+// {
+// 	int i = 1;
+// 	int lent;
+// 	char **split;
+// 	char *key;
+// 	char *new_value = NULL;
+// 	char *join1 = NULL;
+// 	char *join3 = NULL;
+// 	char *join4 = NULL;
+// 	char *add = NULL;
+// 	char *join2 = NULL;
+// 	char *new_key = NULL;
+// 	if (exp == 1)
+// 	{
+// 		 if (strchr(str, '=') != NULL)
+// 		 {
+// 			split = extract(str);
+// 			if (split != NULL)
+//             {
+// 				printf("split[0] ==========>  [%s]\n", split[0]);
+// 				printf("split[1] ==========>  [%s]\n", split[1]);
+// 				new_key = plus_checker(ft_strdup(split[0]));
+				
+// 				lent = ft_lint(split);
+// 				printf("new_key ==========>  [%s]\n",new_key);
+// 				if ((((strchr(split[0], '\'') == NULL && strchr(split[0], '\"') == NULL) && strchr(split[0], '$') == NULL)) && is_valid_key(new_key) == 0)
+// 				 {
+// 					if (split && split[1] && strchr(split[1], '$') != NULL)
+// 					{
+// 						join1 = ft_strjoin("\"", split[1]);
+// 						if (!join1) 
+// 						{
+//                         free(new_key);
+//                         free_extract_result(split);
+						
+//                         return NULL;
+//                     	}
+// 						join2 = ft_strjoin(join1, "\"");
+// 						if (!join2) 
+// 						{
+//                         free(join1);
+//                         free(new_key);
+//                         free_extract_result(split);
+//                         return NULL;
+//                        }
+// 						join3 = ft_strjoin("=", join2);
+// 						 if (!join3) 
+// 						 {
+//                         free(join1);
+//                         free(join2);
+//                         free(new_key);
+//                         free_extract_result(split);
+//                         return NULL;
+//                         }
+//                 		join4 = ft_strjoin(split[0], join3);
+// 						free(join1);
+// 						free(join2);
+//                     	free(join3);
+// 					}
+// 					else
+// 						{
+// 							join3 = ft_strjoin(split[0], "=");
+// 							 if (!join3) 
+// 							 {
+//                         		free(new_key);
+//                         		free_extract_result(split);
+//                         		return NULL;
+//                     		}
+// 							join4 = ft_strjoin(join3, split[1]);
+// 							free(join3);
+// 						}
+					
+// 				 }
+// 				else
+//                     join4 = ft_strdup(str);
+// 				free(new_key); 
+// 				free_extract_result(split);
+// 			}
+//            	else
+//                 join4 = ft_strdup(str); 
+			
+// 		 }
+// 		 else
+//                 join4 = ft_strdup(str);
+// 	}
+// 	return join4;	
+// }
+// void split_stoper(t_cmd *cmd)
+// {
+//     t_cmd *tmp;
+//     tmp = cmd;
+//     char *new_str;
+//     int exp = 0;
+    
+//     while(tmp)
+//     {
+//         int i = 0;
+//         exp = 0; 
+        
+//         while (tmp->args && tmp->args[i])
+//         {
+//             if (i == 0 && strcmp(tmp->args[i], "export") == 0) 
+//                 exp = 1;
+//             if (tmp->args_befor_quotes_remover && tmp->args_befor_quotes_remover[i])
+//             {
+//                 new_str = split_helper(tmp->args[i], tmp->args_befor_quotes_remover[i], exp);
+//                 if (new_str != NULL)
+//                 {
+//                     free(tmp->args[i]);
+//                     tmp->args[i] = new_str;
+//                 }
+//             }
+//             i++;
+//         }
+//         tmp = tmp->next;
+//     }
+// }-------
+
 void free_extract_result(char **split)
 {
     if (!split)
@@ -519,111 +704,187 @@ void free_extract_result(char **split)
 
 
 char **extract(char *str)
-{
-	int i = 0;
-	char *key;
-	char *value;
-	char **split = malloc(sizeof(char *) * 3);
-	while (str && str[i] && str[i] != '=')
-		i++;
-	key = ft_substr(str, 0, i);
-	value = ft_substr(str, i+1, ft_strlen(str) - (i+1));
-	split[0] = key;
-	split[1] = value;
-	split[2] = NULL;
-	
-	return split;
+{ 
+    int i = 0;
+    char *key;
+    char *value;
+    char **split = malloc(sizeof(char *) * 3);
+    
+    if (!split)
+        return NULL;
+    while (str && str[i] && str[i] != '=')
+        i++;
+    key = ft_substr(str, 0, i);
+    if (!key) 
+    {
+        free(split);
+        return NULL;
+    }
+    value = ft_substr(str, i+1, ft_strlen(str) - (i+1));
+    if (!value) 
+    {
+        free(key);
+        free(split);
+        return NULL;
+    }
+    split[0] = key;
+    split[1] = value;
+    split[2] = NULL;
+    
+    return split;
 }
 
 char *plus_checker(char *str)
 {
-	int i = 0;
-	int count;
-	char *new_str;
-	while (str && str[i])
-		i++;
-	if (str[i] == '\0' && str[i - 1] == '+')
-	{
-		str[i - 1] = '\0';
-	}
-	printf("_______{%s}_______\n", str);
-	return str;
+    int i = 0;
+    
+    if (!str)
+        return str;
+        
+    while (str[i])
+        i++;
+        
+    if (i > 0 && str[i - 1] == '+')
+        str[i - 1] = '\0';
+    return str;
 }
+
 char *split_helper(char *str, char *befor, int exp)
 {
-	int i = 1;
-	int lent;
-	char **split;
-	char *key;
-	char *new_value = NULL;
-	char *join1 = NULL;
-	char *join3 = NULL;
-	char *join4 = NULL;
-	char *add = NULL;
-	char *join2 = NULL;
-	char *new_key = NULL;
-	if (exp == 1)
-	{
-		 if (strchr(str, '=') != NULL)
-		 {
-			split = extract(str);
-			if (split != NULL)
+    char **split;
+    char *join1 = NULL;
+    char *join3 = NULL;
+    char *join4 = NULL;
+    char *join2 = NULL;
+    char *new_key = NULL;
+    
+    if (exp != 1)
+        return NULL;
+        
+    if (strchr(str, '=') != NULL)
+    {
+        split = extract(str);
+        if (split != NULL)
+        {
+            new_key = ft_strdup(split[0]);
+            if (!new_key)
             {
-			new_key = plus_checker(split[0]);
-				lent = ft_lint(split);
-				if ((((strchr(split[0], '\'') == NULL && strchr(split[0], '\"') == NULL) && strchr(split[0], '$') == NULL)) && is_valid_key(new_key) == 0)
-				 {
-					if (split && split[1] && strchr(split[1], '$') != NULL)
-					{
-						join1 = ft_strjoin("\"", split[1]);
-						join2 = ft_strjoin(join1, "\"");
-						join3 = ft_strjoin("=", join2);
-                		join4 = ft_strjoin(split[0], join3);
-						free(join1);
-						free(join2);
-                    	free(join3);
-					}
-					else
-						{
-							join3 = ft_strjoin(split[0], "=");
-							join4 = ft_strjoin(join3, split[1]);
-							free(join3);
-						}
-					
-				 }
-				else
-                    join4 = ft_strdup(str); 
-				free_extract_result(split);
-			}
-           	else
-                join4 = ft_strdup(str); 
-			
-		 }
-		 else
+                free_extract_result(split);
+                return NULL;
+            }
+            
+            new_key = plus_checker(new_key);
+            if ((((strchr(split[0], '\'') == NULL && strchr(split[0], '\"') == NULL) && 
+                 strchr(split[0], '$') == NULL)) && is_valid_key(new_key) == 0)
+            {
+                if (split && split[1] && strchr(split[1], '$') != NULL)
+                {
+                    join1 = ft_strjoin("\"", split[1]);
+                    if (!join1) 
+                    {
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    join2 = ft_strjoin(join1, "\"");
+                    if (!join2) 
+                    {
+                        free(join1);
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    join3 = ft_strjoin("=", join2);
+                    if (!join3) 
+                    {
+                        free(join1);
+                        free(join2);
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    join4 = ft_strjoin(split[0], join3);
+                    if (!join4)
+                    {
+                        free(join1);
+                        free(join2);
+                        free(join3);
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    free(join1);
+                    free(join2);
+                    free(join3);
+                }
+                else
+                {
+                    join3 = ft_strjoin(split[0], "=");
+                    if (!join3) 
+                    {
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    join4 = ft_strjoin(join3, split[1]);
+                    if (!join4)
+                    {
+                        free(join3);
+                        free(new_key);
+                        free_extract_result(split);
+                        return NULL;
+                    }
+                    free(join3);
+                }
+            }
+            else
+            {
                 join4 = ft_strdup(str);
-	}
-	return join4;	
+                if (!join4)
+                {
+                    free(new_key);
+                    free_extract_result(split);
+                    return NULL;
+                }
+            }
+            free(new_key); 
+            free_extract_result(split);
+        }
+        else
+        {
+            join4 = ft_strdup(str);
+            if (!join4)
+                return NULL;
+        }
+    }
+    else
+    {
+        join4 = ft_strdup(str);
+        if (!join4)
+            return NULL;
+    }
+    return join4;    
 }
+
 void split_stoper(t_cmd *cmd)
 {
     t_cmd *tmp;
-    tmp = cmd;
     char *new_str;
     int exp = 0;
     
+    if (!cmd)
+        return;
+        
+    tmp = cmd;
     while(tmp)
     {
         int i = 0;
-        exp = 0; // Reset exp for each command
+        exp = 0; 
         
         while (tmp->args && tmp->args[i])
         {
-            if (i == 0 && strcmp(tmp->args[i], "export") == 0) // Check only for first argument
-            {
+            if (i == 0 && tmp->args[i] && strcmp(tmp->args[i], "export") == 0) 
                 exp = 1;
-            }
-            
-            // Only call split_helper if args_befor_quotes_remover exists
             if (tmp->args_befor_quotes_remover && tmp->args_befor_quotes_remover[i])
             {
                 new_str = split_helper(tmp->args[i], tmp->args_befor_quotes_remover[i], exp);
@@ -651,14 +912,14 @@ int main(int argc, char *argv[], char *env[])
 		struct termios infos;
 	(void)argc;
 	(void)argv;
-	if(!isatty(1) || !isatty(0))
+	if(!isatty(1) || !isatty(0))     /// must stay
 	{
 		exit(1);
 	}
-	env_struct = env_maker(env, &env_struct);
-	if(!env_struct)
-		env_null(&env_struct);
-	add_one_shlvl(env_struct);
+	env_struct = env_maker(env, &env_struct);   /// must stay
+	if(!env_struct)									/// must stay
+		env_null(&env_struct); 							/// must stay
+	add_one_shlvl(env_struct);      					/// must stay
 	token_list = NULL;
 	tcgetattr(1, &infos);
 	infos.c_lflag &= ~(ECHOCTL);
@@ -681,48 +942,48 @@ int main(int argc, char *argv[], char *env[])
 			break ;
 		}
 		add_history(input);
-		if (check_quotes(input))
+		if (check_quotes(input))         /// must stay
 		{
 			exit_status = get_or_set(SET, 258); 
 			free(input);
 			continue;
 		}
-		preprocessed_input = preprocess_command(input); 
+		preprocessed_input = preprocess_command(input);     /// must stay 
 			free(input);
          if (!preprocessed_input)
 		 {
 			free(input);
             continue;
 		 }
-		 char *new_input = change_space(preprocessed_input);
-		token_list = tokin_list_maker(new_input);
+		 char *new_input = change_space(preprocessed_input);     /// must stay
+		token_list = tokin_list_maker(new_input);  /// must stay
 		
 		free(preprocessed_input);
-		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))
+		if (token_list && !error_pipi(token_list)  && !check_syntax_errors(token_list))    /// must stay
 		{
-			cmd = parser(token_list);
-			split_stoper(cmd);
-			free_token_list(token_list);
-			expand_handle(cmd, env_struct, get_or_set(GET, 0));
-			ambiguous_finder(cmd);
+			cmd = parser(token_list);/// must stay
+			split_stoper(cmd);/// must stay
+			free_token_list(token_list);/// must stay
+			expand_handle(cmd, env_struct, get_or_set(GET, 0));/// must stay
+			ambiguous_finder(cmd);/// must stay
 			
-			process_quotes_for_cmd(cmd, 1);
-			change_back_cmd(cmd);
-			file_opener(cmd, env_struct);
-			print_ambiguous_redir_errors(cmd);
+			process_quotes_for_cmd(cmd, 1);/// must stay
+			change_back_cmd(cmd);/// must stay
+			file_opener(cmd, env_struct);/// must stay
+			print_ambiguous_redir_errors(cmd);/// must stay
 			print_cmd(cmd);
-			check_line(&cmd, env_struct, env);
+			check_line(&cmd, env_struct, env);/// must stay
 			//expand_handle(cmd, env_struct, cmd->data.exit_status);
 			
-			free_cmd_list(cmd);
-			global_sig = 0;
+			free_cmd_list(cmd);/// must stay
+			global_sig = 0;/// must stay
 			
 		}
-		else if (error_pipi(token_list)  || check_syntax_errors(token_list))
-			exit_status = get_or_set(SET, 258); 
-		else if (token_list)
+		else if (error_pipi(token_list)  || check_syntax_errors(token_list))/// must stay
+			exit_status = get_or_set(SET, 258); /// must stay
+		else if (token_list)/// must stay
 		{
-			free_token_list(token_list);
+			free_token_list(token_list);/// must stay
 		}
 
 		// 	infos.c_lflag &= ~(ECHOCTL);

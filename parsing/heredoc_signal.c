@@ -1,7 +1,7 @@
 #include "parsing.h"
 
 
-
+///is not in use
 int	here_doc_static(int type, int status)
 {
 	static int	exit_status = 0;

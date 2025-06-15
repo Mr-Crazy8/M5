@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:15:39 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/14 12:29:00 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:30:56 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 // 	return (0);
 // }
 
-int check_for_space(char *str) 
+int check_for_space(char *str)
 {
 	int i;
 	int word_count;

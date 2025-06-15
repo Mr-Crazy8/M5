@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:16:14 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/13 11:10:46 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 10:26:29 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void print_old(char **str);
 char **copy_string_array(char **array);
 void free_string_array_partial(char **array, int count);
 
-int is_valid_var_name(char *str, int len)  ///remove
+int is_valid_var_name(char *str, int len)
 {
     int i = 0;
     if (!str || len <= 0)
@@ -35,7 +35,7 @@ int is_valid_var_name(char *str, int len)  ///remove
     return 1;
 }
 
-int should_split_arg(char *arg, char *original_arg) //remove
+int should_split_arg(char *arg, char *original_arg)
 {
     char *equals;
     char *plus_equals;
@@ -45,31 +45,21 @@ int should_split_arg(char *arg, char *original_arg) //remove
     
     if (!arg || !*arg)
         return 0;
-    
-    // Always split if there's a $ in the current arg (after expansion)
     if (strchr(arg, '$'))
     {
         printf("100 should_split_arg\n");
         return 1;
     }
-    
-    // Check for both = and += operators
     equals = strchr(arg, '=');
     plus_equals = strstr(arg, "+=");
-    
-    // No equals sign at all, nothing to split for assignments
     if (!equals)
     {   
         printf("107 should_split_arg\n");
         return 0; 
     }
-    
-    // Check if this is an append operation
     if (plus_equals && plus_equals < equals)
     {
         is_append = 1;
-        
-        // For append operations, we need special handling
         if (!is_valid_var_name(arg, plus_equals - arg))
         {
             printf("append var name invalid should_split_arg\n");
@@ -78,29 +68,21 @@ int should_split_arg(char *arg, char *original_arg) //remove
     }
     else 
     {
-        // For regular assignments, check if the variable name is valid
         if (!is_valid_var_name(arg, equals - arg))
         {   
             printf("112 should_split_arg\n");
             return 1;
         }
     }
-    
-    // Check the original argument (before quotes were removed)
     if (original_arg) 
     {
         orig_equals = strchr(original_arg, '=');
         orig_plus_equals = strstr(original_arg, "+=");
-        
-        // For normal equals, always check for quotes in var name
         if (!is_append && orig_equals && check_var_quotes(original_arg, orig_equals))
         {
             printf("121 should_split_arg\n");
             return 1;
         }
-        
-        // For += operator, ONLY check for quotes or $ in var name
-        // but don't split just because of spaces after the = sign
         if (is_append && orig_plus_equals && 
             orig_plus_equals < orig_equals &&
             check_var_quotes(original_arg, orig_plus_equals))
@@ -109,17 +91,13 @@ int should_split_arg(char *arg, char *original_arg) //remove
             return 1;
         }
     }
-    
-    // // For regular = assignments (not +=), check for spaces in value
    if (!is_append && strchr(equals + 1, ' ') && 
         original_arg && check_var_quotes(original_arg, strchr(original_arg, '=')))
         return 1;
-    
-    // For += we DON'T split just because of spaces
-    
     printf("125 should_split_arg\n");
     return 0; 
 }
+
 
 char **split_if_needed(char *str)
 {
@@ -149,7 +127,7 @@ char **split_if_needed(char *str)
     return result;
 }
 
-int check_var_quotes(char *orig_arg, char *orig_equals) // remove
+int check_var_quotes(char *orig_arg, char *orig_equals)
 {
     int j = 0;
     
@@ -176,7 +154,7 @@ int check_var_quotes(char *orig_arg, char *orig_equals) // remove
 }
 
 
-int check_export_cmd(t_cmd *cmd)  ///remove
+int check_export_cmd(t_cmd *cmd)
 {
     if (!cmd || !cmd->cmd || !cmd->args || !cmd->args[0])
         return 0;
@@ -193,7 +171,7 @@ int check_export_cmd(t_cmd *cmd)  ///remove
 
 
 
-int is_special_export_case(t_cmd *cmd)  //remove
+int is_special_export_case(t_cmd *cmd)
 {
     if (!cmd || !cmd->cmd || !cmd->args || !cmd->args[0])
         return 0;
@@ -216,7 +194,7 @@ int ft_lint(char **str)
 
 
 
-void cmd_splitting_helper(t_cmd *current, char **new_args, char **split, int word_count, int arg_count)  // remove
+void cmd_splitting_helper(t_cmd *current, char **new_args, char **split, int word_count, int arg_count)
 {
     int j;
     char **old_args = current->args;
@@ -350,7 +328,7 @@ void split_the_rest(t_cmd *current, int should_split, int had_removed_var)
 
 
 
-void cmd_splitting(t_cmd *cmd_list ) /// remove
+void cmd_splitting(t_cmd *cmd_list )
 {
      t_cmd *current = cmd_list;
      int word_count;
