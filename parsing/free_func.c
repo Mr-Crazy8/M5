@@ -1,15 +1,16 @@
-#include "parsing.h"
-// void free_split_str(char **split_str)
-// {
-//     int j;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_func.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/15 14:58:38 by anel-men          #+#    #+#             */
+/*   Updated: 2025/06/15 16:55:23 by anel-men         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//     j = 0;
-//     if (!split_str)  // Add this NULL check
-//         return;
-//     while (split_str[j])
-//         free(split_str[j++]);
-//     free(split_str);
-// }
+#include "parsing.h"
 
 char	**free_split(char **split, size_t j)
 {
@@ -19,12 +20,12 @@ char	**free_split(char **split, size_t j)
 	return (NULL);
 }
 
-void free_env_struct(t_env *env_struct)
+void	free_env_struct(t_env *env_struct)
 {
-	 t_env *tmp;
-	t_env *tmp2;
+	t_env	*tmp;
+	t_env	*tmp2;
 
-	tmp = env_struct;       
+	tmp = env_struct;
 	while (tmp)
 	{
 		tmp2 = tmp->next;
@@ -34,7 +35,7 @@ void free_env_struct(t_env *env_struct)
 			free(tmp->value);
 		free(tmp);
 		tmp = tmp2;
-	}  
+	}
 }
 
 void	free_token_list(t_token *token_list)
@@ -46,47 +47,46 @@ void	free_token_list(t_token *token_list)
 	while (current)
 	{
 		next = current->next;
-		free(current->DATA);
-		free(current->TOKIN);
+		free(current->data);
+		free(current->tokin);
 		free(current);
 		current = next;
 	}
 }
 
-char **free_split_q(char **split, size_t j)
+char	**free_split_q(char **split, size_t j)
 {
-    while (j > 0)
-        free(split[--j]);
-    free(split);
-    return (NULL);
+	while (j > 0)
+		free(split[--j]);
+	free(split);
+	return (NULL);
 }
 
-
-void free_string_array(char **array)
+void	free_string_array(char **array)
 {
-    if (!array)
-        return;
-    int i = 0;
-    while (array[i])
-    {
-        free(array[i]);
-        i++;
-    }
-    free(array);
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }
 
-void free_expanded(t_exp_helper *expand)
+void	free_expanded(t_exp_helper *expand)
 {
-    if (expand) 
-     {
-        if (expand->expanded)
-            free(expand->expanded);
-        if (expand->var_name)
-            free(expand->var_name);
-        if (expand->var_value)
-            free(expand->var_value);
-        free(expand);
-    }
-    
+	if (expand)
+	{
+		if (expand->expanded)
+			free(expand->expanded);
+		if (expand->var_name)
+			free(expand->var_name);
+		if (expand->var_value)
+			free(expand->var_value);
+		free(expand);
+	}
 }
-

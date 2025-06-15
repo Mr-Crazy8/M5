@@ -6,12 +6,11 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 12:00:49 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/05/27 18:08:29 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:04:02 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
 
 static	int	ft_count_strings(char const *s, char c)
 {

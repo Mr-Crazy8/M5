@@ -11,16 +11,15 @@ SRCS = r.c parsing/ft_split.c libft_utils.c echo.c \
 		env_null.c redrction.c parsing/add_back_func.c         parsing/lexer_helper_0.c \
 		parsing/debugging_tools.c       parsing/lexer_helper_1.c \
 		 parsing/parser.c     parsing/parser_helper.c     lll.c    parsing/expand_utils.c\
-		parsing/expand.c                parsing/parser_helper_1.c \
+		parsing/expand.c \
 		parsing/expand_helper_0.c       parsing/parser_helper_2.c parsing/parsing_main.c\
 		parsing/expand_helper_1.c       parsing/parser_helper_4.c \
 		parsing/free_func.c              main.c parsing/open_files.c \
 		parsing/free_func_1.c           parsing/syntx_check.c parsing/Ambiguous.c\
 		parsing/ft_itoa.c               parsing/syntx_check_helper_0.c \
 		parsing/lexer.c                 parsing/syntx_check_helper_1.c   Heredoc_Expansion.c\
-		parsing/expand_utils_1.c parsing/expand_utils_2.c parsing/expand_utils_3.c \
 		parsing/expand_utils_4.c parsing/expand_utils_5.c parsing/expand_utils_6.c \
-		parsing/parsing_utiles.c parsing/heredoc_signal.c\
+		parsing/parsing_utiles.c parsing/Ambiguous_helper.c\
 
 # Object files
 OBJS = $(SRCS:.c=.o)

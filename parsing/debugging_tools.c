@@ -10,7 +10,7 @@ void	print_tokens(t_token *token_list)   /// must be delete
 	while (current)
 	{
 		printf("Token %d: DATA=[%s], TYPE=[%s]\n",
-			i++, current->DATA, current->TOKIN);
+			i++, current->data, current->tokin);
 		current = current->next;
 	}
 }
@@ -89,7 +89,7 @@ void print_cmd(t_cmd *cmd_list)   /// must be delete
                 if (tp)
                 {
                     printf("fd for the file : %d\n", tp->fd[0]);
-                    printf("ambiguous %d\n", tp->Ambiguous);
+                    printf("ambiguous %d\n", tp->ambiguous);
                 }
                 tp = tp->next;
             }

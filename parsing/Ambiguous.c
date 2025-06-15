@@ -6,72 +6,11 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:15:39 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/14 14:30:56 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:23:55 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-// int	check_for_space(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str && str[i] && str[i] != ' ')
-// 		i++;
-// 	if (i > 0)
-// 		return (1);
-// 	return (0);
-// }
-
-int check_for_space(char *str)
-{
-	int i;
-	int word_count;
-	int in_word;
-	
-	i = 0;
-	word_count = 0;
-	in_word = 0;
-	if (!str)
-		return (0);
-	while (str && str[i]) 
-	{
-		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
-		{
-			if (!in_word)
-			{
-				word_count++;
-				in_word = 1;
-			}
-		}
-		else
-			in_word = 0;
-		i++;
-	}
-	if (word_count > 1)
-		return (1);
-	return (0);
-}
-
-
-char	*trim_space(char *str)
-{
-	int		i;
-	int		start;
-	int		end;
-	char	*trim_str;
-
-	i = 0;
-	while (str && str[i] && str[i] == ' ')
-		i++;
-	start = i;
-	while (str && str[i] && str[i] != ' ')
-		i++;
-	end = i;
-	trim_str = ft_substr(str, start, end - start);
-	return (trim_str);
-}
 
 void	ambiguous_checker_helper(t_redir *tmp)
 {
@@ -91,23 +30,23 @@ void	ambiguous_checker(t_redir *redir)
 	{
 		if (tmp->type != 3 && tmp->orig_token[0] == '$')
 		{
-			
-		if ((tmp->orig_token[0] == '\'' && tmp->orig_token[1] == '\'') || (tmp->orig_token[0] == '\"' && tmp->orig_token[1] == '\"'))
-			tmp->Ambiguous = 1;
-		if ((tmp->orig_token[0] == '\'' || tmp->orig_token[0] == '\"')
-			&& (tmp->orig_token[ft_strlen(tmp->orig_token) - 1] == '\''
-				|| tmp->orig_token[ft_strlen(tmp->orig_token) - 1] == '\"'))
-		{
-			tmp = tmp->next;
-			continue ;
-		}
-		if (!tmp->file || tmp->file[0] == '\0')
-			tmp->Ambiguous = 1;
-		else if (tmp->file && check_for_space(tmp->file) == 1
-			&& tmp->orig_token[0] == '$')
-			tmp->Ambiguous = 1;
-		else
-			ambiguous_checker_helper(tmp);
+			if ((tmp->orig_token[0] == '\'' && tmp->orig_token[1] == '\'')
+				|| (tmp->orig_token[0] == '\"' && tmp->orig_token[1] == '\"'))
+				tmp->ambiguous = 1;
+			if ((tmp->orig_token[0] == '\'' || tmp->orig_token[0] == '\"')
+				&& (tmp->orig_token[ft_strlen(tmp->orig_token) - 1] == '\''
+					|| tmp->orig_token[ft_strlen(tmp->orig_token) - 1] == '\"'))
+			{
+				tmp = tmp->next;
+				continue ;
+			}
+			if (!tmp->file || tmp->file[0] == '\0')
+				tmp->ambiguous = 1;
+			else if (tmp->file && check_for_space(tmp->file) == 1
+				&& tmp->orig_token[0] == '$')
+				tmp->ambiguous = 1;
+			else
+				ambiguous_checker_helper(tmp);
 		}
 		tmp = tmp->next;
 	}

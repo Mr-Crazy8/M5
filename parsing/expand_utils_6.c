@@ -6,33 +6,37 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:51:19 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:56:24 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 11:48:33 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int ensure_buffer_space_hp(t_exp_helper *expand)
+int	ensure_buffer_space_hp(t_exp_helper *expand)
 {
-    if (!expand->buffer_size)
+	size_t	original_len;
+
+	if (!expand->buffer_size)
 	{
-		size_t original_len = strlen(expand->original);
+		original_len = ft_strlen(expand->original);
 		if (original_len > SIZE_MAX / 2 - 1024)
 		{
-            write(2, "minishell: memory allocation failed: input too large\n" , 54);
+			write(2, "minishell: \n", 13);
+			write(2, "memory allocation failed: input too large\n", 43);
 			return (0);
 		}
 		expand->buffer_size = original_len * 2 + 1024;
 	}
-    return 1;
+	return (1);
 }
-int ensure_buffer_space(t_exp_helper *expand, size_t additional_needed)
-{
-    char *new_buffer;
-    size_t new_size;
 
-    if (!ensure_buffer_space_hp(expand))
-        return (0);
+int	ensure_buffer_space(t_exp_helper *expand, size_t additional_needed)
+{
+	char	*new_buffer;
+	size_t	new_size;
+
+	if (!ensure_buffer_space_hp(expand))
+		return (0);
 	if (expand->j + additional_needed >= expand->buffer_size)
 	{
 		new_size = expand->buffer_size * 2;
@@ -41,9 +45,9 @@ int ensure_buffer_space(t_exp_helper *expand, size_t additional_needed)
 		new_buffer = ft_calloc(1, new_size);
 		if (!new_buffer)
 		{
-            write(2, "minishell: memory allocation failed\n", 37);
+			write(2, "minishell: memory allocation failed\n", 37);
 			exit(1);
-        }
+		}
 		if (expand->expanded)
 		{
 			memcpy(new_buffer, expand->expanded, expand->j);
@@ -54,4 +58,3 @@ int ensure_buffer_space(t_exp_helper *expand, size_t additional_needed)
 	}
 	return (1);
 }
-

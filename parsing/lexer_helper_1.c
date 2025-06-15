@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:07:47 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:09:31 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:29:37 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	is_whitespace(char c)
 		|| c == '\r' || c == '\v' || c == '\f');
 }
 
-
 int	special_character_cheker(char character)
 {
 	if (character == '|')
@@ -29,7 +28,6 @@ int	special_character_cheker(char character)
 t_token	*special_character_handle(char *input, int *i)
 {
 	t_token	*node;
-	char	buffer[100];
 	int		buffer_index;
 
 	buffer_index = 0;

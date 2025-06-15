@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:07:21 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/14 14:30:16 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:41:23 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,7 @@ int is_builtin(char **args)
 		else
 			return (1);
 }
-// int get_or_set(int type, int status)
-// {
-// 	static int exit_status = 0;
 
-// 	if (type == SET)
-// 		exit_status = status; // rje3 dkre hadik kifch dkhlha m3a exit_status;
-// 	return (exit_status); // always return the current value
-// }
 void excute_builting(t_cmd **command, t_env *env_list, char *env[])
 {
 	t_cmd	*cmd;
@@ -105,21 +98,7 @@ void execute_single_command(t_cmd *cmd, t_env *list_env, char *env[])
 
 void handel_signal(int sig)
 {
-	struct termios infos;
-
-	if (sig == SIGINT && here_doc_static(GET, 0) == 1)
-	{
-		signal_static(SET, 1);
-		// rl_done = 1;
-            ft_putstr_fd("\n", 1);
-			        rl_done = 1;
-        //     // Update display
-            // rl_on_new_line();
-            // rl_redisplay();
-            // rl_replace_line("", 0);
-  		
-	}
-	else if (sig == SIGINT)
+	if (sig == SIGINT)
 	{
 		global_sig = sig;
 		ft_putstr_fd("\n", 1);
@@ -352,13 +331,11 @@ void check_here_doc(t_cmd *cmd, t_env *env)
 	t_redir *tmp_redir;
 	tmp_redir = NULL;
 	tmp = cmd;
-	int *fd;
 	if (max_heredoc_checker(cmd) == 1)
 	{
 		get_or_set(SET, 2);
 		exit(2);
 	}
-	int here_doc_count = heredoc_count(cmd);
 	while (tmp)
 	{
 		tmp_redir = tmp->redirs;

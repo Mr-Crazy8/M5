@@ -3,94 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayoakouh <ayoakouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:00:55 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/28 17:15:01 by ayoakouh         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:08:28 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-
-
-
-// Add this function to track the quote state
-int handle_quotes(char c, int *quote_state)
+int	handle_quotes(char c, int *quote_state)
 {
-    if (*quote_state == 0 && (c == '\'' || c == '\"'))
-    {
-        if (c == '\'')
-            *quote_state = 1;
-        else
-            *quote_state = 2;
-        return (1);
-    }
-    else if ((*quote_state == 1 && c == '\'') || (*quote_state == 2 && c == '\"'))
-    {
-        *quote_state = 0;
-        return (1);
-    }
-    return (0);
+	if (*quote_state == 0 && (c == '\'' || c == '\"'))
+	{
+		if (c == '\'')
+			*quote_state = 1;
+		else
+			*quote_state = 2;
+		return (1);
+	}
+	else if ((*quote_state == 1 && c == '\'')
+		|| (*quote_state == 2 && c == '\"'))
+	{
+		*quote_state = 0;
+		return (1);
+	}
+	return (0);
 }
 
-// Updated function to check for special characters, respecting quotes
-int special_character_cheker_with_quotes(char character, int quote_state)
+int	special_character_cheker_with_quotes(char character, int quote_state)
 {
-    if (quote_state == 0 && character == '|')
-        return (1);
-    return (0);
+	if (quote_state == 0 && character == '|')
+		return (1);
+	return (0);
 }
 
-void scan_for_token(char *input, int *i, int input_length, int *start_index)
+void	scan_for_token(char *input, int *i, int input_length, int *start_index)
 {
-    int quote_state;
+	int	quote_state;
 
-    quote_state = 0;
-    while (*i < input_length && input[*i] == ' ')
-        (*i)++;
-        
-    *start_index = *i;
-    while (*i < input_length)
-    {
-        // Handle quotes - update quote state
-        if (input[*i] == '\'' || input[*i] == '\"')
-        {
-            handle_quotes(input[*i], &quote_state);
-            (*i)++;
-            continue;
-        }
-        if (quote_state == 0 && special_character_cheker(input[*i]))
-            break;
-            
-        (*i)++;
-    }
+	quote_state = 0;
+	while (*i < input_length && input[*i] == ' ')
+		(*i)++;
+	*start_index = *i;
+	while (*i < input_length)
+	{
+		if (input[*i] == '\'' || input[*i] == '\"')
+		{
+			handle_quotes(input[*i], &quote_state);
+			(*i)++;
+			continue ;
+		}
+		if (quote_state == 0 && special_character_cheker(input[*i]))
+			break ;
+		(*i)++;
+	}
 }
 
-void handle_block(char *input, int *i, int input_length, t_token **token_list)
+void	handle_block(char *input, int *i,
+		int input_length, t_token **token_list)
 {
-    int start_index;
-    t_token *node;
-    char *word;
-    
-    scan_for_token(input, i, input_length, &start_index);
-    
-    if (start_index < *i)
-    {
-        word = ft_substr(input, start_index, *i - start_index);
-        if (word)
-        {
-            node = creat_token(word, "word_tokin");
-            free(word);
-            if (node)
-                ft_lstadd_back_token(token_list, node);
-        }
-    }
-    
-    if (*i < input_length && special_character_cheker(input[*i]))
-        handle_block_helper(input, i, token_list);
-}
+	int		start_index;
+	t_token	*node;
+	char	*word;
 
+	scan_for_token(input, i, input_length, &start_index);
+	if (start_index < *i)
+	{
+		word = ft_substr(input, start_index, *i - start_index);
+		if (word)
+		{
+			node = creat_token(word, "word_tokin");
+			free(word);
+			if (node)
+				ft_lstadd_back_token(token_list, node);
+		}
+	}
+	if (*i < input_length && special_character_cheker(input[*i]))
+		handle_block_helper(input, i, token_list);
+}
 
 t_token	*tokin_list_maker(char *input)
 {
@@ -107,5 +98,3 @@ t_token	*tokin_list_maker(char *input)
 		handle_block(input, &i, input_length, &token_list);
 	return (token_list);
 }
-
-

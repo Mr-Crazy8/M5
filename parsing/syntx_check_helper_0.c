@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:26:07 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/01 11:13:51 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:17:51 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_for_redirection(char *str)
 {
 	int	i;
 	int	count;
-	int len;
+	int	len;
 
 	i = 0;
 	len = 0;
@@ -91,7 +91,7 @@ void	print_error(char *str, int *i)
 int	invalid_filename_checker(char *str, int *i)
 {
 	char	operator_type;
-	int     quote_state;  // 0: no quote, 1: single quote, 2: double quote
+	int		quote_state;
 
 	quote_state = 0;
 	operator_type = str[(*i)];
@@ -100,20 +100,18 @@ int	invalid_filename_checker(char *str, int *i)
 		(*i)++;
 	while (str[(*i)] && str[(*i)] == ' ')
 		(*i)++;
-	if (str[(*i)] == '\0' || 
-	   (str[(*i)] == '>' && quote_state == 0) || 
-	   (str[(*i)] == '<' && quote_state == 0) || 
-	   (str[(*i)] == '|' && quote_state == 0))
+	if (str[(*i)] == '\0'
+		|| (str[(*i)] == '>' && quote_state == 0)
+		|| (str[(*i)] == '<' && quote_state == 0)
+		|| (str[(*i)] == '|' && quote_state == 0))
 	{
 		print_error(str, i);
 		return (1);
 	}
 	else
 	{
-		// Process filename with quote handling
 		while (str[(*i)])
 		{
-			// Update quote state
 			if (str[(*i)] == '\'')
 			{
 				if (quote_state == 0)
@@ -128,17 +126,15 @@ int	invalid_filename_checker(char *str, int *i)
 				else if (quote_state == 2)
 					quote_state = 0;
 			}
-			
-			if (quote_state == 0 && (str[(*i)] == ' ' || 
-				str[(*i)] == '>' || str[(*i)] == '<' || str[(*i)] == '|'))
-				break;
-			
+			if (quote_state == 0 && (str[(*i)] == ' '
+					|| str[(*i)] == '>' || str[(*i)] == '<'
+					|| str[(*i)] == '|'))
+				break ;
 			(*i)++;
 		}
 	}
 	return (0);
 }
-
 
 int	check_invalid_filename(char *str)
 {

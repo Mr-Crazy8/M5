@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:22:58 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/12 17:53:40 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:29:30 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ void ft_excute_mult_pipe(t_cmd *cmd, t_env *list_env, char *env[])
     pid_t pid;
     t_cmd *prev = NULL;
     t_cmd *head = NULL;
-    t_cmd *tmp = cmd;
     int last_pid = 0;
     int status = 0;
     int last_status = 0;

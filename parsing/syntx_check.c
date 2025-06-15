@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:13:27 by anel-men          #+#    #+#             */
-/*   Updated: 2025/05/31 10:51:36 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:53:33 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,16 @@ int	error_pipi(t_token *token_list)
 	list = token_list;
 	while (list)
 	{
-		if (list == token_list && list->TOKIN
-			&& strcmp(list->TOKIN, "pipe_token") == 0)
+		if (list == token_list && list->tokin
+			&& strcmp(list->tokin, "pipe_token") == 0)
 			error_flag = 1;
-		if (list->TOKIN && strcmp(list->TOKIN, "pipe_token") == 0
-			&& (!list->next || !list->next->TOKIN
-				|| strcmp(list->next->TOKIN, "word_tokin") != 0))
+		if (list->tokin && strcmp(list->tokin, "pipe_token") == 0
+			&& (!list->next || !list->next->tokin
+				|| strcmp(list->next->tokin, "word_tokin") != 0))
 			error_flag = 1;
-		if (list->TOKIN && list->next && list->next->TOKIN
-			&& strcmp(list->TOKIN, "pipe_token") == 0
-			&& strcmp(list->next->TOKIN, "pipe_token") == 0)
+		if (list->tokin && list->next && list->next->tokin
+			&& strcmp(list->tokin, "pipe_token") == 0
+			&& strcmp(list->next->tokin, "pipe_token") == 0)
 			error_flag = 1;
 		if (error_flag == 1)
 			return (print_error_pipe());
@@ -94,8 +94,8 @@ int	check_syntax_errors(t_token *token_list)
 	current = token_list;
 	while (current && !error_found)
 	{
-		if (strcmp(current->TOKIN, "word_tokin") == 0)
-			error_found = check_invalid_filename(current->DATA);
+		if (strcmp(current->tokin, "word_tokin") == 0)
+			error_found = check_invalid_filename(current->data);
 		current = current->next;
 	}
 	return (error_found);

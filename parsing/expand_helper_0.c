@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 11:21:05 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/04 11:21:55 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 11:34:21 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,11 @@ char	*selective_remove_quotes(char *str, int remove_mode)
 	return (new_str);
 }
 
-void processed_cmd(t_cmd *current, char	*processed)
+void	processed_cmd(t_cmd *current, char	*processed)
 {
 	free(current->cmd);
 	current->cmd = processed;
 }
-
 
 void	process_quotes_for_cmd_hp(t_cmd *current, int *i, int remove_mode)
 {
@@ -119,7 +118,7 @@ void	process_quotes_for_cmd_hp(t_cmd *current, int *i, int remove_mode)
 	}
 }
 
-void processed_redir(t_redir *redir, char *processed)
+void	processed_redir(t_redir *redir, char *processed)
 {
 	free(redir->file);
 	redir->file = processed;

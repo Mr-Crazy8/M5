@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:33:44 by ayoakouh          #+#    #+#             */
-/*   Updated: 2025/06/12 16:53:54 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:29:49 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ void ft_print_error(t_cmd *cmd)
 void handle_absolute_path(t_cmd *cmd, char **help)
 {
     pid_t child_pid;
-    int status = 0;
     child_pid = fork();
     if (child_pid == 0)
     {

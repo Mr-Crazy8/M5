@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 11:46:00 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/14 14:33:22 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 11:42:20 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 	return (ptr);
 }
-
 
 static int	is_in_set(char c, const char *set)
 {
@@ -82,7 +81,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (strtrim);
 }
 
-
 int	ft_isdigiti(int c)
 {
 	if (c >= '0' && c <= '9')
@@ -93,21 +91,20 @@ int	ft_isdigiti(int c)
 		return (0);
 }
 
-
-char *chenger(char *str)
+char	*chenger(char *str)
 {
-    int i = 0;
+	int	i;
 
-    if (!str)
-        return NULL;
-    while (str[i])
-    {
-        if (str[i] == '\'')
-            str[i] = 3;
-        else if (str[i] == '\"')
-            str[i] = 4;
-        i++;
-    }
-    return (str);
-
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			str[i] = 3;
+		else if (str[i] == '\"')
+			str[i] = 4;
+		i++;
+	}
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:29:47 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/08 20:29:54 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:02:38 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	print_ambiguous_redir_errors(t_cmd *cmd)
 		redir = tmp->redirs;
 		while (redir)
 		{
-			if (redir->Ambiguous)
+			if (redir->ambiguous)
 			{
 				write(2, prefix, ft_strlen(prefix));
 				if (redir->orig_token)

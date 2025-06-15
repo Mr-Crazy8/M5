@@ -6,7 +6,7 @@
 /*   By: anel-men <anel-men@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 11:04:29 by anel-men          #+#    #+#             */
-/*   Updated: 2025/06/08 14:13:41 by anel-men         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:54:41 by anel-men         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ char	*ft_strdup(const char *s)
 	return (dup);
 }
 
-
-
 t_token	*creat_token(char *data, char *token_type)
 {
 	t_token	*new_token;
@@ -58,17 +56,17 @@ t_token	*creat_token(char *data, char *token_type)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (NULL);
-	new_token->DATA = ft_strdup(data);
-	if (!(new_token->DATA))
+	new_token->data = ft_strdup(data);
+	if (!(new_token->data))
 		return (free(new_token), NULL);
-	new_token->TOKIN = ft_strdup(token_type);
-	if (!(new_token->TOKIN))
+	new_token->tokin = ft_strdup(token_type);
+	if (!(new_token->tokin))
 	{
-		free(new_token->DATA);
+		free(new_token->data);
 		free(new_token);
 		return (NULL);
 	}
-	new_token->befor_DATA_expand = NULL;
+	new_token->befor_data_expand = NULL;
 	new_token->next = NULL;
 	return (new_token);
 }
